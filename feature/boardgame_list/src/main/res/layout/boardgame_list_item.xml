@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/white">
+
+    <View
+        android:id="@+id/v_thumb"
+        android:layout_width="10dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <ImageView
+        android:id="@+id/iv_cover"
+        android:layout_width="70dp"
+        android:layout_height="100dp"
+        android:layout_margin="8dp"
+        android:padding="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/v_thumb"
+        app:layout_constraintTop_toBottomOf="@id/tv_title"
+        tools:src="@drawable/ic_weight" />
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        tools:text="7 Wonders"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_players"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:drawableStart="@drawable/ic_users_sized"
+        android:drawablePadding="12dp"
+        tools:text="De 1 à 4 Joueurs"
+        app:layout_constraintStart_toEndOf="@id/iv_cover"
+        app:layout_constraintTop_toTopOf="@id/iv_cover" />
+
+    <TextView
+        android:id="@+id/tv_duration"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:drawableStart="@drawable/ic_stopwatch_sized"
+        android:drawablePadding="12dp"
+        tools:text="De 30 à 120 minutes"
+        app:layout_constraintStart_toEndOf="@id/iv_cover"
+        app:layout_constraintTop_toBottomOf="@id/tv_players" />
+
+    <TextView
+        android:id="@+id/tv_weight"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:drawableStart="@drawable/ic_weight_sized"
+        android:drawablePadding="12dp"
+        tools:text="Complexité 4.5/5"
+        app:layout_constraintStart_toEndOf="@id/iv_cover"
+        app:layout_constraintTop_toBottomOf="@id/tv_duration" />
+
+    <TextView
+        android:id="@+id/tv_rating"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:drawableStart="@drawable/ic_star_half_alt_sized"
+        android:drawablePadding="12dp"
+        tools:text="Note 8.2/10"
+        app:layout_constraintStart_toEndOf="@id/iv_cover"
+        app:layout_constraintTop_toBottomOf="@id/tv_weight" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

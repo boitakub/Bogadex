@@ -1,0 +1,71 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-test:
+    name: Build, Lint and Test
+
+    # runs-on: ubuntu-latest
+    runs-on: macos-latest
+
+    steps:
+      ## Checkout and prepare repository ###
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Set up our JDK environment
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: '11'
+
+      # Step 2: Decode Google services configuration file
+      # - name: Decode google-services.json
+      #  env:
+      #    FIREBASE_CONFIG: ${{ secrets.FIREBASE_CONFIG }}
+      #  run: echo $FIREBASE_CONFIG > app/google-services.json
+
+      # Step 3: Check the code with ktlint, you can remove this job if you don't use ktlint
+      # - name: Run Kotlin Linter
+      #   run: ./gradlew ktlintDebugCheck
+
+      # Step 3: Check the code with Android linter
+      - name: Run Android Linter
+        run: ./gradlew lintDebug
+
+      # Step 4: Yun your unit tests
+      - name: Run Unit Tests
+        run: ./gradlew testDebugUnitTest
+
+      # Step 4: Assemble debug apk to send to firebase test lab
+      - name: Assemble Debug APK
+        run: ./gradlew assembleDebug
+
+  generate-apk:
+    name: Generate apk
+    runs-on: ubuntu-latest
+    needs:
+      - build-and-test
+    steps:
+      ## Checkout and prepare repository ###
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Set up our JDK environment
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: '11'
+
+      - name: Generate apk
+        run: ./gradlew assembleDebug
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v1
+        with:
+          name: build-output
+          path: app/build/outputs/apk/debug/app-debug.apk
