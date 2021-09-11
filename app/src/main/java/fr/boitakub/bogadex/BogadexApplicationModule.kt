@@ -16,9 +16,9 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-class BogadexApplicationModule {
+open class BogadexApplicationModule {
 
-    private fun baseUrl() = "https://www.boardgamegeek.com/".toHttpUrl()
+    open fun baseUrl() = "https://www.boardgamegeek.com/".toHttpUrl()
 
     @Provides
     fun provideBaseUrl(): HttpUrl = baseUrl()
@@ -41,7 +41,7 @@ class BogadexApplicationModule {
 
     @Provides
     @Singleton
-    fun provideApiService(retrofit: Retrofit) = retrofit.create(BggService::class.java)
+    fun provideApiService(retrofit: Retrofit): BggService = retrofit.create(BggService::class.java)
 
     @Provides
     @Singleton

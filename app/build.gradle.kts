@@ -14,7 +14,8 @@ android {
         minSdk = 23
         targetSdk = 30
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testApplicationId = "fr.boitakub.bogadex.tests"
+        testInstrumentationRunner = "fr.boitakub.bogadex.tests.InstrumentHiltTestRunner"
     }
 
     buildTypes {
@@ -36,9 +37,13 @@ android {
     buildFeatures {
         viewBinding = true
     }
+    sourceSets {
+        getByName("androidTest").assets.srcDirs("src/androidTest/assets")
+    }
 }
 
 dependencies {
+    implementation(project(":common"))
     implementation(project(":shared:clean_architecture"))
     implementation(project(":shared:bgg_api_client"))
     implementation(project(":feature:boardgame"))
@@ -67,7 +72,19 @@ dependencies {
     kapt("androidx.room:room-compiler:2.3.0")
     implementation("androidx.room:room-ktx:2.3.0")
 
+    // DI in AndroidTest
+    androidTestImplementation("com.google.dagger:hilt-android-testing:2.38.1")
+    kaptAndroidTest("com.google.dagger:hilt-android-compiler:2.38.1")
+
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.3")
+    androidTestImplementation("androidx.test:core-ktx:1.4.0")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
+    androidTestImplementation("com.adevinta.android:barista:4.1.0") {
+        exclude("org.jetbrains.kotlin")
+    }
+    androidTestImplementation("androidx.work:work-testing:2.6.0")
+
+    // Mock
+    androidTestImplementation("com.squareup.okhttp3:mockwebserver:4.9.1")
 }
