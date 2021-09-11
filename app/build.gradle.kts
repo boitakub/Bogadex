@@ -6,6 +6,8 @@ plugins {
     id("io.github.reactivecircus.app-versioning") version "1.0.0"
 }
 
+apply(rootProject.file("./gradle/jacoco.gradle"))
+
 android {
     compileSdk = 30
 
@@ -19,6 +21,9 @@ android {
     }
 
     buildTypes {
+        debug {
+            isTestCoverageEnabled = true
+        }
         getByName("release") {
             isMinifyEnabled = false
             proguardFiles(

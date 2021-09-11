@@ -16,7 +16,7 @@ object DatabaseModule {
 
     @Singleton
     @Provides
-    fun providesNoteDatabase(@ApplicationContext context: Context): BogadexDatabase {
+    fun providesBogadexDatabase(@ApplicationContext context: Context): BogadexDatabase {
         return Room.databaseBuilder(context, BogadexDatabase::class.java, BogadexDatabase.DB_NAME)
             .build()
     }

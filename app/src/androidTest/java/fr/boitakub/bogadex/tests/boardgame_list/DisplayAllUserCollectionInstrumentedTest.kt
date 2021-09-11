@@ -12,6 +12,7 @@ import androidx.work.Configuration
 import androidx.work.testing.SynchronousExecutor
 import androidx.work.testing.WorkManagerTestInitHelper
 import com.adevinta.android.barista.assertion.BaristaListAssertions.assertDisplayedAtPosition
+import com.adevinta.android.barista.interaction.BaristaClickInteractions.clickOn
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import fr.boitakub.bogadex.MainActivity
