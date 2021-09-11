@@ -23,6 +23,13 @@ jobs:
           distribution: 'adopt'
           java-version: '11'
 
+      - name: Cache Gradle packages
+        uses: actions/cache@v1
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
+          restore-keys: ${{ runner.os }}-gradle
+
       # Step 2: Decode Google services configuration file
       # - name: Decode google-services.json
       #  env:
@@ -44,6 +51,37 @@ jobs:
       # Step 4: Assemble debug apk to send to firebase test lab
       - name: Assemble Debug APK
         run: ./gradlew assembleDebug
+
+      # Step 4: Assemble debug test apk to send to firebase test lab
+      - name: Assemble Debug Test APK
+        run: ./gradlew assembleDebugAndroidTest
+
+      # Step 5: Run emulator
+      - name: Run integration test on emulator
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 27
+          target: google_apis
+          script: ./gradlew createDebugCoverageReport --stacktrace
+
+      # Step 6: Generate report
+      - name: Generate report
+        run: ./gradlew jacocoTestReport
+
+      # Step 7: Upload report
+      - name: Upload Reports
+        uses: actions/upload-artifact@v2
+        if: always()
+        with:
+          name: reports
+          path: |
+            /build/coverage-report
+            app/build/reports
+
+      - name: Run codacy-coverage-reporter
+        uses: codacy/codacy-coverage-reporter-action@v1
+        with:
+          project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
 
   generate-apk:
     name: Generate apk
