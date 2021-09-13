@@ -13,7 +13,7 @@ import coil.load
 import fr.boitakub.boardgame_list.databinding.BoardgameListItemBinding
 import fr.boitakub.boardgame_list.databinding.BoardgameListItemGridBinding
 import fr.boitakub.bogadex.boardgame.UpdateBoardGameIntentWorker
-import fr.boitakub.bogadex.boardgame.model.BoardGame
+import fr.boitakub.bogadex.boardgame.model.CollectionItemWithDetails
 import fr.boitakub.common.ui.CommonListAdapter
 import fr.boitakub.common.ui.CommonListViewHolder
 import java.util.Date
@@ -21,7 +21,7 @@ import java.util.concurrent.TimeUnit
 import kotlin.math.abs
 
 internal class BoardGameCollectionListAdapter(layoutManager: GridLayoutManager) :
-    CommonListAdapter<BoardGameItemViewHolder, BoardGame>(layoutManager) {
+    CommonListAdapter<BoardGameItemViewHolder, CollectionItemWithDetails>(layoutManager) {
 
     override fun getItemViewType(position: Int): Int {
         val spanCount: Int = layoutManager.spanCount
@@ -45,28 +45,28 @@ internal class BoardGameCollectionListAdapter(layoutManager: GridLayoutManager) 
 
         val game = itemList[position]
         if (holder.binding is BoardgameListItemBinding) {
-            holder.binding.tvTitle.text = game.title
-            holder.binding.ivCover.load(game.coverUrl)
+            holder.binding.tvTitle.text = game.item.title
+            holder.binding.ivCover.load(game.item.coverUrl)
             holder.binding.tvPlayers.text =
-                "De " + game.minPlayer.toString() + " à " + game.maxPlayer.toString() + " joueurs"
+                "De " + game.details?.minPlayer.toString() + " à " + game.details?.maxPlayer.toString() + " joueurs"
             holder.binding.tvDuration.text =
-                "Entre " + game.minPlayTime.toString() + " et " + game.maxPlayTime.toString() + "minutes"
+                "Entre " + game.details?.minPlayTime.toString() + " et " + game.details?.maxPlayTime.toString() + "minutes"
             holder.binding.tvWeight.text = "Complexité moyenne de " + String.format(
                 "%.2f",
-                game.statistic.averageWeight
+                game.details?.statistic?.averageWeight
             ) + "/5"
             holder.binding.tvRating.text = "Note moyenne de " + String.format(
                 "%.2f",
-                game.statistic.average
+                game.details?.statistic?.average
             ) + "/10"
         } else if (holder.binding is BoardgameListItemGridBinding) {
-            holder.binding.tvTitle.text = game.title
-            holder.binding.ivCover.load(game.coverUrl)
+            holder.binding.tvTitle.text = game.item.title
+            holder.binding.ivCover.load(game.item.coverUrl)
         }
 
         if (isOutdated(game)) {
             val data = Data.Builder()
-            data.putString("bggId", game.bggId)
+            data.putString("bggId", game.item.bggId)
 
             val request = OneTimeWorkRequestBuilder<UpdateBoardGameIntentWorker>()
                 .addTag("Sync")
@@ -80,11 +80,11 @@ internal class BoardGameCollectionListAdapter(layoutManager: GridLayoutManager) 
         }
     }
 
-    private fun isOutdated(game: BoardGame): Boolean {
-        val diffInMillies: Long = abs(Date().time - game.updateDate.time)
+    private fun isOutdated(game: CollectionItemWithDetails): Boolean {
+        val diffInMillies: Long = abs(Date().time - game.item.updateDate.time)
         val diff: Long = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS)
 
-        if (game.minPlayer == 0) {
+        if (game.details?.minPlayer == 0) {
             return true
         } else if (diff > 15) {
             return true

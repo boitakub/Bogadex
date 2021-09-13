@@ -8,10 +8,12 @@ import fr.boitakub.bgg_api_client.UserCollection
 import fr.boitakub.bogadex.boardgame.BggServiceHelper
 import fr.boitakub.bogadex.boardgame.BoardGameListDao
 import fr.boitakub.bogadex.boardgame.mapper.CollectionMapper
-import fr.boitakub.bogadex.boardgame.model.CollectionItem
+import fr.boitakub.bogadex.boardgame.model.BoardGame
+import fr.boitakub.bogadex.boardgame.model.CollectionItemWithDetails
 import fr.boitakub.clean_architecture.UseCase
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.onEach
 import okio.buffer
 import okio.sink
 import java.io.File
@@ -22,16 +24,22 @@ class RetrieveBggUserCollection @Inject constructor(
     private val database: BoardGameListDao,
     private val mapper: CollectionMapper,
     @ApplicationContext val context: Context,
-) : UseCase<Flow<List<CollectionItem>>, String> {
-    override fun apply(input: String): Flow<List<CollectionItem>> {
-        return flow {
-            emit(database.getAll())
-            val networkResult = service.listCollection(BggGameUserCollectionRequest(input))
-            writeMockData(input, networkResult)
-            val mappedValues = networkResult?.let { mapper.map(it) }
-            mappedValues?.let { database.updateCollection(it.boardgames) }
-            emit(database.getAll())
-        }
+) : UseCase<Flow<List<CollectionItemWithDetails>>, String> {
+    override fun apply(input: String): Flow<List<CollectionItemWithDetails>> {
+        return database.getCollectionWithDetails()
+            .onEach {
+                service.listCollection(BggGameUserCollectionRequest(input)).onEach {
+                    database.updateCollection(mapper.map(it).boardgames)
+                    writeMockData(input, it)
+                }
+            }
+            .combine(service.listCollection(BggGameUserCollectionRequest(input))) { local, remote ->
+                if (local.isEmpty()) {
+                    mapper.map(remote).boardgames.map { CollectionItemWithDetails(it, BoardGame()) }
+                } else {
+                    local
+                }
+            }
     }
 
     private fun writeMockData(input: String?, result: UserCollection?) {

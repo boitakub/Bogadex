@@ -2,8 +2,9 @@ package fr.boitakub.bogadex.boardgame
 
 import fr.boitakub.bgg_api_client.BggGameUserCollectionRequest
 import fr.boitakub.bgg_api_client.UserCollection
+import kotlinx.coroutines.flow.Flow
 
 interface BggServiceHelper {
 
-    suspend fun listCollection(listCollection: BggGameUserCollectionRequest?): UserCollection?
+    fun listCollection(listCollection: BggGameUserCollectionRequest?): Flow<UserCollection>
 }

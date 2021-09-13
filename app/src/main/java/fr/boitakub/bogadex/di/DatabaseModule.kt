@@ -20,12 +20,4 @@ object DatabaseModule {
         return Room.databaseBuilder(context, BogadexDatabase::class.java, BogadexDatabase.DB_NAME)
             .build()
     }
-
-    @Singleton
-    @Provides
-    fun providesBoardGameDao(noteDatabase: BogadexDatabase) = noteDatabase.boardGameDao()
-
-    @Singleton
-    @Provides
-    fun providesBoardGameListDao(noteDatabase: BogadexDatabase) = noteDatabase.boardGameListDao()
 }

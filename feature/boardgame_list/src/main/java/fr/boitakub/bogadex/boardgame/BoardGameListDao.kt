@@ -7,12 +7,18 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
 import fr.boitakub.bogadex.boardgame.model.CollectionItem
+import fr.boitakub.bogadex.boardgame.model.CollectionItemWithDetails
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface BoardGameListDao {
 
     @Query("SELECT * FROM collection_item")
-    suspend fun getAll(): List<CollectionItem>
+    fun getAll(): Flow<List<CollectionItem>>
+
+    @Transaction
+    @Query("SELECT * FROM collection_item")
+    fun getCollectionWithDetails(): Flow<List<CollectionItemWithDetails>>
 
     @Transaction
     suspend fun updateCollection(boardGames: List<CollectionItem>) {

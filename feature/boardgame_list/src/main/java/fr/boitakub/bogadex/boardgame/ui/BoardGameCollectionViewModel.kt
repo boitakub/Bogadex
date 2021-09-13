@@ -6,8 +6,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import fr.boitakub.bogadex.boardgame.model.BoardGame
-import fr.boitakub.bogadex.boardgame.usecase.ListAllUserBoardGames
+import fr.boitakub.bogadex.boardgame.model.CollectionItemWithDetails
+import fr.boitakub.bogadex.boardgame.usecase.RetrieveBggUserCollection
 import fr.boitakub.clean_architecture.Presenter
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onCompletion
@@ -15,12 +15,12 @@ import javax.inject.Inject
 
 @HiltViewModel
 class BoardGameCollectionViewModel @Inject constructor(
-    repository: ListAllUserBoardGames,
+    repository: RetrieveBggUserCollection,
     provideExampleBggAccount: String,
 ) :
     ViewModel(), Presenter {
 
-    val gameList: LiveData<List<BoardGame>> =
+    val gameList: LiveData<List<CollectionItemWithDetails>> =
         repository.apply(provideExampleBggAccount)
             .catch { e ->
                 e.message?.let { onError(it) }

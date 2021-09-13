@@ -22,7 +22,7 @@ interface BggService {
 
     @GET("/xmlapi2/collection?stats=1")
     @Headers("Cache-Control: max-age=1800")
-    suspend fun userCollection(@Query("username") bggUserId: String?): UserCollection?
+    suspend fun userCollection(@Query("username") bggUserId: String?): UserCollection
 
     companion object {
         private const val DEFAULT_API_CONNECTION_TIMEOUT_IN_SECONDS: Long = 30
