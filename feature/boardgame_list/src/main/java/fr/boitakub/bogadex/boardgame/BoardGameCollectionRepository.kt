@@ -3,7 +3,7 @@ package fr.boitakub.bogadex.boardgame
 import android.content.Context
 import com.tickaroo.tikxml.TikXml
 import dagger.hilt.android.qualifiers.ApplicationContext
-import fr.boitakub.bgg_api_client.BggGameUserCollectionRequest
+import fr.boitakub.bgg_api_client.BggService
 import fr.boitakub.bgg_api_client.UserCollection
 import fr.boitakub.bogadex.boardgame.mapper.CollectionMapper
 import fr.boitakub.bogadex.boardgame.model.BoardGame
@@ -22,7 +22,7 @@ import javax.inject.Inject
 class BoardGameCollectionRepository @Inject constructor(
     @ApplicationContext val context: Context,
     override val local: BoardGameListDao,
-    override val remote: BggServiceHelper,
+    override val remote: BggService,
     private val mapper: CollectionMapper,
     private val refreshGameDetails: RefreshGameDetails
 ) : Repository {
@@ -34,7 +34,7 @@ class BoardGameCollectionRepository @Inject constructor(
 
     private fun getAllRemoteResorts(user: String): Flow<List<CollectionItem>> = flow {
         emit(emptyList())
-        val networkResult = remote.listCollection(BggGameUserCollectionRequest(user))
+        val networkResult = remote.userCollection(user)
         val result: List<CollectionItem> = mapper.map(networkResult).boardgames
         emit(result)
         local.updateCollection(result)

@@ -5,7 +5,6 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import fr.boitakub.bogadex.base.extensions.DatabaseExtensions
 import fr.boitakub.bogadex.boardgame.BoardGameDao
 import fr.boitakub.bogadex.boardgame.BoardGameListDao
 import fr.boitakub.bogadex.boardgame.model.BoardGame

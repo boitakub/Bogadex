@@ -1,4 +1,4 @@
-package fr.boitakub.bogadex.base.extensions
+package fr.boitakub.bogadex
 
 import androidx.room.TypeConverter
 import fr.boitakub.bogadex.boardgame.model.Wished

@@ -1,7 +1,5 @@
 package fr.boitakub.bgg_api_client;
 
-import android.content.Intent;
-
 import java.io.IOException;
 
 import okhttp3.Interceptor;
