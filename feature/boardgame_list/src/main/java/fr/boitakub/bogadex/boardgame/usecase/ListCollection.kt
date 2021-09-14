@@ -1,11 +1,15 @@
 package fr.boitakub.bogadex.boardgame.usecase
 
+import fr.boitakub.bogadex.boardgame.BoardGameCollectionRepository
+import fr.boitakub.bogadex.boardgame.model.CollectionItemWithDetails
 import fr.boitakub.clean_architecture.UseCase
-import fr.boitakub.bogadex.boardgame.model.Collection as BoardGameCollection
+import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
-class ListCollection : UseCase<BoardGameCollection, BoardGameCollection> {
-
-    override fun apply(input: BoardGameCollection): BoardGameCollection {
-        return input
+open class ListCollection @Inject constructor(
+    private val repository: BoardGameCollectionRepository,
+) : UseCase<Flow<List<CollectionItemWithDetails>>, String> {
+    override fun apply(input: String): Flow<List<CollectionItemWithDetails>> {
+        return repository.get(input)
     }
 }

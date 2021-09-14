@@ -8,7 +8,34 @@
     <fragment
         android:id="@+id/navigation_boardgame"
         android:name="fr.boitakub.bogadex.boardgame.ui.BoardGameCollectionFragment"
+        android:label="@string/title_home"
+        tools:layout="@layout/common_list_fragment">
+        <argument
+            android:name="filter"
+            app:argType="string"
+            android:defaultValue="all" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_collection"
+        android:name="fr.boitakub.bogadex.boardgame.ui.BoardGameCollectionFragment"
         android:label="@string/title_collection"
-        tools:layout="@layout/common_list_fragment" />
+        tools:layout="@layout/common_list_fragment">
+        <argument
+            android:name="filter"
+            app:argType="string"
+            android:defaultValue="collection" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_wishlist"
+        android:name="fr.boitakub.bogadex.boardgame.ui.BoardGameCollectionFragment"
+        android:label="@string/title_wishlist"
+        tools:layout="@layout/common_list_fragment">
+        <argument
+            android:name="filter"
+            app:argType="string"
+            android:defaultValue="wishlist" />
+    </fragment>
 
 </navigation>
