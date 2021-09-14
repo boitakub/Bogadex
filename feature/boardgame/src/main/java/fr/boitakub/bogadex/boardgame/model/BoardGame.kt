@@ -6,6 +6,8 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import fr.boitakub.clean_architecture.BusinessModel
 import java.util.Date
+import java.util.concurrent.TimeUnit
+import kotlin.math.abs
 
 @Entity(tableName = "boardgame")
 data class BoardGame(
@@ -20,4 +22,17 @@ data class BoardGame(
     @ColumnInfo(name = "cover_url") var coverUrl: String? = "",
     @ColumnInfo(name = "update_date") var updateDate: Date = Date(),
     @Embedded var statistic: BoardGameBggStatistic = BoardGameBggStatistic()
-) : BusinessModel
+) : BusinessModel {
+
+    fun isOutdated(): Boolean {
+        val diffInMillies: Long = abs(Date().time - updateDate.time)
+        val diff: Long = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS)
+
+        if (minPlayer == 0) {
+            return true
+        } else if (diff > 15) {
+            return true
+        }
+        return false
+    }
+}

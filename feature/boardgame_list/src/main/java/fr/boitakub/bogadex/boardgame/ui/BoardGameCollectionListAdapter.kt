@@ -4,21 +4,12 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.viewbinding.ViewBinding
-import androidx.work.Constraints
-import androidx.work.Data
-import androidx.work.NetworkType
-import androidx.work.OneTimeWorkRequestBuilder
-import androidx.work.WorkManager
 import coil.load
 import fr.boitakub.boardgame_list.databinding.BoardgameListItemBinding
 import fr.boitakub.boardgame_list.databinding.BoardgameListItemGridBinding
-import fr.boitakub.bogadex.boardgame.UpdateBoardGameIntentWorker
 import fr.boitakub.bogadex.boardgame.model.CollectionItemWithDetails
 import fr.boitakub.common.ui.CommonListAdapter
 import fr.boitakub.common.ui.CommonListViewHolder
-import java.util.Date
-import java.util.concurrent.TimeUnit
-import kotlin.math.abs
 
 internal class BoardGameCollectionListAdapter(layoutManager: GridLayoutManager) :
     CommonListAdapter<BoardGameItemViewHolder, CollectionItemWithDetails>(layoutManager) {
@@ -63,33 +54,6 @@ internal class BoardGameCollectionListAdapter(layoutManager: GridLayoutManager) 
             holder.binding.tvTitle.text = game.item.title
             holder.binding.ivCover.load(game.item.coverUrl)
         }
-
-        if (isOutdated(game)) {
-            val data = Data.Builder()
-            data.putString("bggId", game.item.bggId)
-
-            val request = OneTimeWorkRequestBuilder<UpdateBoardGameIntentWorker>()
-                .addTag("Sync")
-                .setInputData(data.build())
-                .setConstraints(
-                    Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build()
-                )
-                .build()
-
-            WorkManager.getInstance(holder.binding.root.context).enqueue(request)
-        }
-    }
-
-    private fun isOutdated(game: CollectionItemWithDetails): Boolean {
-        val diffInMillies: Long = abs(Date().time - game.item.updateDate.time)
-        val diff: Long = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS)
-
-        if (game.details?.minPlayer == 0) {
-            return true
-        } else if (diff > 15) {
-            return true
-        }
-        return false
     }
 
     companion object {
