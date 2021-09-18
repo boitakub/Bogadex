@@ -68,7 +68,7 @@ class DisplayAllUserCollectionInstrumentedTest {
     }
 
     @Test
-    fun has_scenarioList_displayed() {
+    fun has_homeList_displayed() {
         mockWebServer.dispatcher = object : Dispatcher() {
             override fun dispatch(request: RecordedRequest): MockResponse {
                 if (request.path!!.contains("/xmlapi2/collection")) {
@@ -89,11 +89,65 @@ class DisplayAllUserCollectionInstrumentedTest {
         val intent = Intent(ApplicationProvider.getApplicationContext(), MainActivity::class.java)
         scenario = launchActivity(intent)
 
-        assertDisplayedAtPosition(R.id.recycler_view, 1, R.id.tv_title, "7 Wonders Duel")
+        assertDisplayedAtPosition(R.id.recycler_view, 0, R.id.tv_title, "5211")
     }
 
     @Test
-    fun has_moduleList_displayedOnGrid() {
+    fun has_collectionList_displayed() {
+        mockWebServer.dispatcher = object : Dispatcher() {
+            override fun dispatch(request: RecordedRequest): MockResponse {
+                if (request.path!!.contains("/xmlapi2/collection")) {
+                    return MockResponse()
+                        .setResponseCode(200)
+                        .setBody(FileReader.readStringFromFile("Cubenbois.xml"))
+                        .setBodyDelay(1, TimeUnit.SECONDS)
+                } else if (request.path!!.contains("/xmlapi2/thing")) {
+                    return MockResponse()
+                        .setResponseCode(200)
+                        .setBody(FileReader.readStringFromFile("86246.xml"))
+                        .setBodyDelay(1, TimeUnit.SECONDS)
+                }
+                return MockResponse().setResponseCode(404)
+            }
+        }
+
+        val intent = Intent(ApplicationProvider.getApplicationContext(), MainActivity::class.java)
+        scenario = launchActivity(intent)
+
+        clickOn(R.id.navigation_collection)
+
+        assertDisplayedAtPosition(R.id.recycler_view, 0, R.id.tv_title, "7 Wonders Duel")
+    }
+
+    @Test
+    fun has_wishLit_displayed() {
+        mockWebServer.dispatcher = object : Dispatcher() {
+            override fun dispatch(request: RecordedRequest): MockResponse {
+                if (request.path!!.contains("/xmlapi2/collection")) {
+                    return MockResponse()
+                        .setResponseCode(200)
+                        .setBody(FileReader.readStringFromFile("Cubenbois.xml"))
+                        .setBodyDelay(1, TimeUnit.SECONDS)
+                } else if (request.path!!.contains("/xmlapi2/thing")) {
+                    return MockResponse()
+                        .setResponseCode(200)
+                        .setBody(FileReader.readStringFromFile("86246.xml"))
+                        .setBodyDelay(1, TimeUnit.SECONDS)
+                }
+                return MockResponse().setResponseCode(404)
+            }
+        }
+
+        val intent = Intent(ApplicationProvider.getApplicationContext(), MainActivity::class.java)
+        scenario = launchActivity(intent)
+
+        clickOn(R.id.navigation_wishlist)
+
+        assertDisplayedAtPosition(R.id.recycler_view, 1, R.id.tv_title, "Anachrony")
+    }
+
+    @Test
+    fun has_collectionList_displayedOnGrid() {
         mockWebServer.dispatcher = object : Dispatcher() {
             override fun dispatch(request: RecordedRequest): MockResponse {
                 if (request.path!!.contains("/xmlapi2/collection")) {

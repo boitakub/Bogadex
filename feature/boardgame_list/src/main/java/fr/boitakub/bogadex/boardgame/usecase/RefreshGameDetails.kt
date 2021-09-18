@@ -1,7 +1,6 @@
 package fr.boitakub.bogadex.boardgame.usecase
 
 import android.content.Context
-import androidx.work.BackoffPolicy
 import androidx.work.Constraints
 import androidx.work.Data
 import androidx.work.NetworkType
@@ -11,7 +10,6 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import fr.boitakub.bogadex.boardgame.UpdateBoardGameIntentWorker
 import fr.boitakub.bogadex.boardgame.model.CollectionItemWithDetails
 import fr.boitakub.clean_architecture.UseCase
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -32,11 +30,6 @@ class RefreshGameDetails @Inject constructor(@ApplicationContext val context: Co
                 .setInputData(data.build())
                 .setConstraints(
                     Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build()
-                )
-                .setBackoffCriteria(
-                    BackoffPolicy.EXPONENTIAL,
-                    scheduledRefresh * 5,
-                    TimeUnit.MINUTES
                 )
                 .build()
 
