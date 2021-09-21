@@ -12,13 +12,13 @@ import java.util.List;
 public class BoardGame extends Publishable {
 
     @PropertyElement
-    String thumbnail;
+    public String thumbnail;
 
     @PropertyElement
-    String image;
+    public String image;
 
     @PropertyElement
-    String description;
+    public String description;
 
     @Path("minplayers")
     @Attribute(name = "value")

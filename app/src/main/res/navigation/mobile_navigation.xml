@@ -6,7 +6,7 @@
     app:startDestination="@+id/navigation_boardgame">
 
     <fragment
-        android:id="@+id/navigation_boardgame"
+        android:id="@id/navigation_boardgame"
         android:name="fr.boitakub.bogadex.boardgame.ui.BoardGameCollectionFragment"
         android:label="@string/title_home"
         tools:layout="@layout/common_list_fragment">
@@ -17,7 +17,7 @@
     </fragment>
 
     <fragment
-        android:id="@+id/navigation_collection"
+        android:id="@id/navigation_collection"
         android:name="fr.boitakub.bogadex.boardgame.ui.BoardGameCollectionFragment"
         android:label="@string/title_collection"
         tools:layout="@layout/common_list_fragment">
@@ -28,7 +28,7 @@
     </fragment>
 
     <fragment
-        android:id="@+id/navigation_wishlist"
+        android:id="@id/navigation_wishlist"
         android:name="fr.boitakub.bogadex.boardgame.ui.BoardGameCollectionFragment"
         android:label="@string/title_wishlist"
         tools:layout="@layout/common_list_fragment">
@@ -36,6 +36,16 @@
             android:name="filter"
             app:argType="string"
             android:defaultValue="wishlist" />
+    </fragment>
+
+    <fragment
+        android:id="@id/navigation_boardgame_details"
+        android:name="fr.boitakub.bogadex.boardgame.ui.BoardGameDetailFragment"
+        android:label="{title}"
+        tools:layout="@layout/common_list_fragment">
+        <argument
+            android:name="title"
+            app:argType="string" />
     </fragment>
 
 </navigation>

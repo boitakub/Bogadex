@@ -2,9 +2,12 @@ package fr.boitakub.bogadex.boardgame.ui
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.viewbinding.ViewBinding
 import coil.load
+import fr.boitakub.boardgame_list.R
 import fr.boitakub.boardgame_list.databinding.BoardgameListItemBinding
 import fr.boitakub.boardgame_list.databinding.BoardgameListItemGridBinding
 import fr.boitakub.bogadex.boardgame.model.CollectionItemWithDetails
@@ -35,13 +38,17 @@ internal class BoardGameCollectionListAdapter(layoutManager: GridLayoutManager) 
     override fun onBindViewHolder(holder: BoardGameItemViewHolder, position: Int) {
 
         val game = itemList[position]
+        holder.binding.root.setOnClickListener {
+            val bundle = bundleOf("bggId" to game.item.bggId, "title" to game.item.title)
+            holder.binding.root.findNavController().navigate(R.id.navigation_boardgame_details, bundle)
+        }
         if (holder.binding is BoardgameListItemBinding) {
             holder.binding.tvTitle.text = game.item.title
             holder.binding.ivCover.load(game.item.coverUrl)
             holder.binding.tvPlayers.text =
                 "De " + game.details?.minPlayer.toString() + " à " + game.details?.maxPlayer.toString() + " joueurs"
             holder.binding.tvDuration.text =
-                "Entre " + game.details?.minPlayTime.toString() + " et " + game.details?.maxPlayTime.toString() + "minutes"
+                "Entre " + game.details?.minPlayTime.toString() + " et " + game.details?.maxPlayTime.toString() + " minutes"
             holder.binding.tvWeight.text = "Complexité moyenne de " + String.format(
                 "%.2f",
                 game.details?.statistic?.averageWeight

@@ -16,13 +16,15 @@ class BoardGameMapper @Inject constructor() :
         BoardGame(
             source.id.toString(),
             BoardGameHelper.nameChooser(source.name),
+            source.description,
             source.yearPublished,
             source.minplayers,
             source.maxplayers,
             source.playingtime,
             source.minplaytime,
             source.maxplaytime,
-            "",
+            source.image,
+            source.thumbnail,
             Date(),
             map(source.statistics)
         )
@@ -33,10 +35,10 @@ class BoardGameMapper @Inject constructor() :
     private fun map(source: Statistics): BoardGameBggStatistic {
         return BoardGameBggStatistic(
             source.usersrated.toIntOrNull() ?: 0,
-            source.average.toDoubleOrNull() ?: 0.0,
-            source.bayesaverage.toDoubleOrNull() ?: 0.0,
+            source.average.toFloatOrNull() ?: 0f,
+            source.bayesaverage.toFloatOrNull() ?: 0f,
             source.numweights,
-            source.averageweight,
+            source.averageweight.toFloat(),
             source.owned,
             source.wanting,
             source.wishing,
