@@ -1,9 +1,8 @@
 plugins {
-    id("com.android.application")
-    id("kotlin-android")
-    id("kotlin-kapt")
+    id("com.android.library")
+    kotlin("android")
+    kotlin("kapt")
     id("dagger.hilt.android.plugin")
-    id("io.github.reactivecircus.app-versioning") version "1.0.0"
 }
 
 apply(rootProject.file("./gradle/jacoco.gradle"))
@@ -12,12 +11,11 @@ android {
     compileSdk = 31
 
     defaultConfig {
-        applicationId = "fr.boitakub.bogadex"
         minSdk = 23
         targetSdk = 31
 
-        testApplicationId = "fr.boitakub.bogadex.tests"
-        testInstrumentationRunner = "fr.boitakub.bogadex.tests.InstrumentHiltTestRunner"
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles("consumer-rules.pro")
     }
 
     buildTypes {
@@ -41,9 +39,10 @@ android {
     }
     buildFeatures {
         viewBinding = true
+        compose = true
     }
-    sourceSets {
-        getByName("androidTest").assets.srcDirs("src/androidTest/assets")
+    composeOptions {
+        kotlinCompilerExtensionVersion = libs.versions.compose.get()
     }
 }
 
@@ -51,13 +50,14 @@ dependencies {
     implementation(project(":common"))
     implementation(project(":shared:clean_architecture"))
     implementation(project(":shared:bgg_api_client"))
-    implementation(project(":feature:boardgame"))
-    implementation(project(":feature:boardgame_list"))
 
     //region Core & Lifecycle
 
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.fragment.ktx)
+
+    implementation(libs.androidx.lifecycle.runtime)
+    implementation(libs.androidx.lifecycle.viewModel)
+    implementation(libs.androidx.lifecycle.liveData)
 
     //endregion
 
@@ -72,17 +72,16 @@ dependencies {
 
     //region UI
 
-    implementation(libs.material)
-    implementation(libs.androidx.navigation.ui.ktx)
-    implementation(libs.androidx.navigation.fragment.ktx)
+    implementation(libs.androidx.composeUi)
+    implementation(libs.androidx.composeUiTooling)
+    implementation(libs.androidx.composeMaterial)
+    implementation(libs.androidx.foundation)
 
     //endregion
 
-    //region Networking
+    //region UI
 
-    implementation(libs.okhttp.core)
-    implementation(libs.okhttp.loggingInterceptor)
-    implementation(libs.retrofit.core)
+    implementation(libs.coil.compose)
 
     //endregion
 
@@ -96,8 +95,6 @@ dependencies {
     //region Database
 
     implementation(libs.room.runtime)
-    kapt(libs.room.compiler)
-    implementation(libs.room.ktx)
 
     //endregion
 
@@ -111,12 +108,6 @@ dependencies {
 
     androidTestImplementation(libs.testing.androidx.junit)
     androidTestImplementation(libs.testing.espresso.core)
-    androidTestImplementation(libs.testing.core.ktx)
-    androidTestImplementation(libs.testing.hilt.android)
-    kaptAndroidTest(libs.hilt.androidCompiler)
-    androidTestImplementation(libs.testing.barista)
-    androidTestImplementation(libs.testing.work)
-    androidTestImplementation(libs.testing.okhttp.mockwebserver)
 
     //endregion
 }

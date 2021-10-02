@@ -52,6 +52,7 @@ Go to the [Releases](https://github.com/boitakub/Bogadex/releases) to download t
 * [Coil](https://github.com/coil-kt/coil) - loading images.
 * [Material-Components](https://github.com/material-components/material-components-android) - Material design components like ripple animation, cardView.
 * [Codacy](https://codacy.com/) - Code quality and coverage analysis
+* [Version Catalogs](https://docs.gradle.org/current/userguide/platforms.html) - Group dependencies for multi-modules using Gradle 7 VersionCatalogs and [centralized in one file](/gradle/libs.versions.toml) - [Guide](https://blog.stylingandroid.com/gradle-version-catalogs/)
 
 ## Flow & Delivery 🚚
 
