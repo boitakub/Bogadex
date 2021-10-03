@@ -45,18 +45,24 @@ internal class BoardGameCollectionListAdapter(layoutManager: GridLayoutManager) 
         if (holder.binding is BoardgameListItemBinding) {
             holder.binding.tvTitle.text = game.item.title
             holder.binding.ivCover.load(game.item.coverUrl)
-            holder.binding.tvPlayers.text =
-                "De " + game.details?.minPlayer.toString() + " à " + game.details?.maxPlayer.toString() + " joueurs"
-            holder.binding.tvDuration.text =
-                "Entre " + game.details?.minPlayTime.toString() + " et " + game.details?.maxPlayTime.toString() + " minutes"
-            holder.binding.tvWeight.text = "Complexité moyenne de " + String.format(
-                "%.2f",
+            holder.binding.tvPlayers.text = holder.itemView.context.getString(
+                R.string.players,
+                game.details?.minPlayer,
+                game.details?.maxPlayer
+            )
+            holder.binding.tvDuration.text = holder.itemView.context.getString(
+                R.string.duration,
+                game.details?.minPlayTime,
+                game.details?.maxPlayTime
+            )
+            holder.binding.tvWeight.text = holder.itemView.context.getString(
+                R.string.weight,
                 game.details?.statistic?.averageWeight
-            ) + "/5"
-            holder.binding.tvRating.text = "Note moyenne de " + String.format(
-                "%.2f",
+            )
+            holder.binding.tvRating.text = holder.itemView.context.getString(
+                R.string.rating,
                 game.details?.statistic?.average
-            ) + "/10"
+            )
         } else if (holder.binding is BoardgameListItemGridBinding) {
             holder.binding.tvTitle.text = game.item.title
             holder.binding.ivCover.load(game.item.coverUrl)

@@ -1,18 +1,18 @@
 package fr.boitakub.bogadex.boardgame.mapper
 
-import fr.boitakub.bgg_api_client.BoardGameHelper
-import fr.boitakub.bgg_api_client.Statistics
+import fr.boitakub.architecture.Mapper
+import fr.boitakub.bgg.client.BoardGameHelper
+import fr.boitakub.bgg.client.Statistics
 import fr.boitakub.bogadex.boardgame.model.BoardGame
 import fr.boitakub.bogadex.boardgame.model.BoardGameBggStatistic
-import fr.boitakub.clean_architecture.Mapper
 import java.util.Date
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class BoardGameMapper @Inject constructor() :
-    Mapper<BoardGame, Iterable<fr.boitakub.bgg_api_client.BoardGame>> {
-    private fun map(source: fr.boitakub.bgg_api_client.BoardGame): BoardGame =
+    Mapper<BoardGame, Iterable<fr.boitakub.bgg.client.BoardGame>> {
+    private fun map(source: fr.boitakub.bgg.client.BoardGame): BoardGame =
         BoardGame(
             source.id.toString(),
             BoardGameHelper.nameChooser(source.name),
@@ -29,7 +29,7 @@ class BoardGameMapper @Inject constructor() :
             map(source.statistics)
         )
 
-    override fun map(source: Iterable<fr.boitakub.bgg_api_client.BoardGame>): BoardGame =
+    override fun map(source: Iterable<fr.boitakub.bgg.client.BoardGame>): BoardGame =
         map(source.first())
 
     private fun map(source: Statistics): BoardGameBggStatistic {

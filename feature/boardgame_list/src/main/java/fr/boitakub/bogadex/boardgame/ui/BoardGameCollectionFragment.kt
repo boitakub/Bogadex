@@ -25,7 +25,7 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class BoardGameCollectionFragment :
     Fragment(),
-    fr.boitakub.clean_architecture.View<BoardGameCollectionViewModel> {
+    fr.boitakub.architecture.View<BoardGameCollectionViewModel> {
 
     @Inject
     lateinit var repository: BoardGameCollectionRepository

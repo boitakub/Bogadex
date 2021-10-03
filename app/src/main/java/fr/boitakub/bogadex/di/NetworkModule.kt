@@ -4,7 +4,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import fr.boitakub.bgg_api_client.BggService
+import fr.boitakub.bgg.client.BggService
 import fr.boitakub.bogadex.BuildConfig
 import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
@@ -26,8 +26,8 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideRetrofit(okHttpClient: OkHttpClient, BASE_URL: HttpUrl): Retrofit =
-        BggService.getDefaultRetrofitClient(BASE_URL, okHttpClient)
+    fun provideRetrofit(okHttpClient: OkHttpClient, baseUrl: HttpUrl): Retrofit =
+        BggService.getDefaultRetrofitClient(baseUrl, okHttpClient)
 
     @Provides
     @Singleton

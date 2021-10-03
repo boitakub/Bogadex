@@ -1,8 +1,8 @@
 package fr.boitakub.bogadex.boardgame
 
 import androidx.annotation.WorkerThread
-import fr.boitakub.bgg_api_client.BggService
-import fr.boitakub.clean_architecture.Repository
+import fr.boitakub.architecture.Repository
+import fr.boitakub.bgg.client.BggService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn

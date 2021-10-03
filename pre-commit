@@ -6,9 +6,8 @@ echo "*******************************"
 
 git stash -q --keep-index
 
-./gradlew ktlintFormat --daemon
 ./gradlew ktlintCheck --daemon
-./gradlew lint
+./gradlew detekt
 
 
 RESULT=$?

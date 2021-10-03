@@ -3,7 +3,8 @@ package fr.boitakub.common.ui
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
-abstract class CommonListAdapter<T : CommonListViewHolder, E>(val layoutManager: GridLayoutManager) : RecyclerView.Adapter<T>() {
+abstract class CommonListAdapter<T : CommonListViewHolder, E>(val layoutManager: GridLayoutManager) :
+    RecyclerView.Adapter<T>() {
 
     var itemList = mutableListOf<E>()
 

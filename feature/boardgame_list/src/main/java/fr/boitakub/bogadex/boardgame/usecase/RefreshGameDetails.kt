@@ -7,9 +7,9 @@ import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import dagger.hilt.android.qualifiers.ApplicationContext
+import fr.boitakub.architecture.UseCase
 import fr.boitakub.bogadex.boardgame.UpdateBoardGameIntentWorker
 import fr.boitakub.bogadex.boardgame.model.CollectionItemWithDetails
-import fr.boitakub.clean_architecture.UseCase
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -17,11 +17,10 @@ import javax.inject.Singleton
 class RefreshGameDetails @Inject constructor(@ApplicationContext val context: Context) :
     UseCase<Void?, CollectionItemWithDetails> {
 
-    private val maxScheduledRefresh = 40
-    var scheduledRefresh: Long = 0
+    var scheduledRefresh = SCHEDULED_REFRESH_START
 
     override fun apply(input: CollectionItemWithDetails): Void? {
-        if (input.details == null || input.details!!.isOutdated() && scheduledRefresh < maxScheduledRefresh) {
+        if (input.details == null || input.details!!.isOutdated() && scheduledRefresh < SCHEDULED_REFRESH_MAX) {
             val data = Data.Builder()
             data.putString("bggId", input.item.bggId)
 
@@ -37,5 +36,10 @@ class RefreshGameDetails @Inject constructor(@ApplicationContext val context: Co
             WorkManager.getInstance(context).enqueue(request)
         }
         return null
+    }
+
+    companion object {
+        const val SCHEDULED_REFRESH_START = 0
+        const val SCHEDULED_REFRESH_MAX = 40
     }
 }

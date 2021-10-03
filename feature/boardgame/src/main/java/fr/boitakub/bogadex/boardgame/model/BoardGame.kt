@@ -4,7 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import fr.boitakub.clean_architecture.BusinessModel
+import fr.boitakub.architecture.BusinessModel
 import java.util.Date
 import java.util.concurrent.TimeUnit
 import kotlin.math.abs
@@ -30,11 +30,10 @@ data class BoardGame(
         val diffInMillies: Long = abs(Date().time - updateDate.time)
         val diff: Long = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS)
 
-        if (minPlayer == 0) {
-            return true
-        } else if (diff > 15) {
-            return true
-        }
-        return false
+        return (minPlayer == 0 || diff > MAX_DIFF_IN_DAYS)
+    }
+
+    companion object {
+        const val MAX_DIFF_IN_DAYS = 15
     }
 }

@@ -48,10 +48,13 @@ android {
 
 dependencies {
     implementation(project(":common"))
-    implementation(project(":shared:clean_architecture"))
+    implementation(project(":shared:architecture"))
     implementation(project(":shared:bgg_api_client"))
 
     //region Core & Lifecycle
+
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.appcompat)
 
     implementation(libs.androidx.fragment.ktx)
 

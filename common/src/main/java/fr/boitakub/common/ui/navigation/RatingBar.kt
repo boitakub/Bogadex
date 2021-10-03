@@ -36,7 +36,7 @@ fun RatingBar(
     color: Color
 ) {
     Row(modifier = modifier.wrapContentSize()) {
-        (1..5).forEach { step ->
+        for (step in 1..5) {
             val stepRating = when {
                 rating > step -> 1f
                 step.rem(rating) < 1 -> rating - (step - 1f)

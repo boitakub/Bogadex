@@ -4,7 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import fr.boitakub.clean_architecture.BusinessModel
+import fr.boitakub.architecture.BusinessModel
 import java.util.Date
 
 @Entity(tableName = "collection_item")

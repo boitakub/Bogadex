@@ -1,9 +1,9 @@
 package fr.boitakub.bogadex.boardgame.mapper
 
-import fr.boitakub.bgg_api_client.UserBoardGame
-import fr.boitakub.bgg_api_client.UserCollection
+import fr.boitakub.architecture.Mapper
+import fr.boitakub.bgg.client.UserBoardGame
+import fr.boitakub.bgg.client.UserCollection
 import fr.boitakub.bogadex.boardgame.model.CollectionItem
-import fr.boitakub.clean_architecture.Mapper
 import java.util.Date
 import javax.inject.Inject
 import javax.inject.Singleton

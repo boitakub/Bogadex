@@ -1,7 +1,7 @@
 package fr.boitakub.bogadex.boardgame.model
 
 import androidx.room.ColumnInfo
-import fr.boitakub.clean_architecture.BusinessModel
+import fr.boitakub.architecture.BusinessModel
 
 data class CollectionStatus(
     @ColumnInfo(name = "is_own") val own: Boolean = false,

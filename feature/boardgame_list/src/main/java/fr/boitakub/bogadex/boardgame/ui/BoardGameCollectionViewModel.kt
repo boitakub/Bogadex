@@ -9,9 +9,9 @@ import androidx.lifecycle.viewModelScope
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
+import fr.boitakub.architecture.Presenter
 import fr.boitakub.bogadex.boardgame.model.CollectionItemWithDetails
 import fr.boitakub.bogadex.boardgame.usecase.ListCollection
-import fr.boitakub.clean_architecture.Presenter
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onCompletion
 

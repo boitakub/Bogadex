@@ -14,7 +14,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class BoardGameDetailFragment :
     Fragment(),
-    fr.boitakub.clean_architecture.View<BoardGameDetailViewModel> {
+    fr.boitakub.architecture.View<BoardGameDetailViewModel> {
 
     override val presenter: BoardGameDetailViewModel by viewModels()
 

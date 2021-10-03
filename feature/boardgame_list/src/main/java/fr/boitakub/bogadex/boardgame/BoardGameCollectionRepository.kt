@@ -3,14 +3,14 @@ package fr.boitakub.bogadex.boardgame
 import android.content.Context
 import com.tickaroo.tikxml.TikXml
 import dagger.hilt.android.qualifiers.ApplicationContext
-import fr.boitakub.bgg_api_client.BggService
-import fr.boitakub.bgg_api_client.UserCollection
+import fr.boitakub.architecture.Repository
+import fr.boitakub.bgg.client.BggService
+import fr.boitakub.bgg.client.UserCollection
 import fr.boitakub.bogadex.boardgame.mapper.CollectionMapper
 import fr.boitakub.bogadex.boardgame.model.BoardGame
 import fr.boitakub.bogadex.boardgame.model.CollectionItem
 import fr.boitakub.bogadex.boardgame.model.CollectionItemWithDetails
 import fr.boitakub.bogadex.boardgame.usecase.RefreshGameDetails
-import fr.boitakub.clean_architecture.Repository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flow

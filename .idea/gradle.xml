@@ -16,8 +16,8 @@
             <option value="$PROJECT_DIR$/feature/boardgame" />
             <option value="$PROJECT_DIR$/feature/boardgame_list" />
             <option value="$PROJECT_DIR$/shared" />
+            <option value="$PROJECT_DIR$/shared/architecture" />
             <option value="$PROJECT_DIR$/shared/bgg_api_client" />
-            <option value="$PROJECT_DIR$/shared/clean_architecture" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

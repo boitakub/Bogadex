@@ -1,3 +1,5 @@
+import io.gitlab.arturbosch.detekt.detekt
+
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
     repositories {
@@ -32,7 +34,20 @@ subprojects {
     // Optionally configure plugin
     configure<org.jlleitschuh.gradle.ktlint.KtlintExtension> {
         debug.set(true)
-        disabledRules.set(setOf("no-wildcard-imports"))
+    }
+
+    detekt {
+        config = files("$rootDir/detekt.yml")
+
+        parallel = true
+
+        // By default detekt does not check test source set and gradle specific files, so hey have to be added manually
+        input = files(
+            "$rootDir/build.gradle.kts",
+            "$rootDir/settings.gradle.kts",
+            "src/build.gradle.kts",
+            "src/main",
+        )
     }
 }
 
