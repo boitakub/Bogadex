@@ -3,7 +3,7 @@ plugins {
     id("kotlin-android")
     id("kotlin-kapt")
     id("dagger.hilt.android.plugin")
-    id("io.github.reactivecircus.app-versioning") version "1.0.0"
+    id("io.github.reactivecircus.app-versioning")
 }
 
 apply(rootProject.file("./gradle/jacoco.gradle"))

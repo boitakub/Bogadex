@@ -54,6 +54,7 @@ Go to the [Releases](https://github.com/boitakub/Bogadex/releases) to download t
 * [Material-Components](https://github.com/material-components/material-components-android) - Material design components like ripple animation, cardView.
 * [Codacy](https://codacy.com/) - Code quality and coverage analysis
 * [Version Catalogs](https://docs.gradle.org/current/userguide/platforms.html) - Group dependencies for multi-modules using Gradle 7 VersionCatalogs and [centralized in one file](/gradle/libs.versions.toml) - [Guide](https://blog.stylingandroid.com/gradle-version-catalogs/)
+* [refreshVersion](https://jmfayard.github.io/refreshVersions) - Bump dependencies version on all modules using one command and [centralized in one file](versions.properties)
 
 ## Flow & Delivery 🚚
 
@@ -86,7 +87,12 @@ Bogadex is based on MVVM architecture and a repository pattern with a modular ap
 
 ## Thanks & Praise 🎖️
 
-Bogadex is inspired by the wonderful repositories of ⭐[skydoves](https://github.com/skydoves), especially [Pokedex](https://github.com/skydoves/Pokedex). Thank you for the great job.
+Bogadex is inspired by the wonderful repositories :
+
+* [Jaewoong Eum](https://github.com/skydoves), especially [Pokedex](https://github.com/skydoves/Pokedex).
+* [Igor Wojda](https://github.com/igorwojda) and his great repo [android-showcase](https://github.com/igorwojda/android-showcase).
+
+Thank you for the great job.
 
 ## BoardGameGeek API 🎲
 
