@@ -44,6 +44,9 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion = libs.versions.compose.get()
     }
+    sourceSets {
+        getByName("androidTest").assets.srcDirs("src/androidTest/assets")
+    }
 }
 
 dependencies {
@@ -104,6 +107,7 @@ dependencies {
     //region Test
 
     testImplementation(libs.testing.junit)
+    testImplementation(libs.testing.core.ktx)
 
     //endregion
 
@@ -111,6 +115,8 @@ dependencies {
 
     androidTestImplementation(libs.testing.androidx.junit)
     androidTestImplementation(libs.testing.espresso.core)
+    androidTestImplementation(libs.testing.mockk.android)
+    androidTestImplementation(libs.testing.work)
 
     //endregion
 }

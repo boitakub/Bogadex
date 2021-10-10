@@ -27,6 +27,7 @@ testing-junit = "_"
 testing-core = "_"
 testing-androidx-junit = "_"
 testing-espresso-core = "_"
+testing-mockk = "_"
 testing-barista = "_"
 
 [libraries]
@@ -88,6 +89,10 @@ testing-espresso-core = { module = "androidx.test.espresso:espresso-core", versi
 testing-core-ktx = { module = "androidx.test:core-ktx", version.ref = "testing-core"}
 testing-compose-ui = { module = "androidx.compose.ui:ui-test-junit4", version.ref = "compose"}
 testing-compose-manifest = { module = "androidx.compose.ui:ui-test-manifest", version.ref = "compose"}
+
+testing-mockk-core = { module = "io.mockk:mockk", version.ref = "testing-mockk"}
+testing-mockk-agent = { module = "io.mockk:mockk-agent-jvm", version.ref = "testing-mockk"}
+testing-mockk-android = { module = "io.mockk:mockk-android", version.ref = "testing-mockk"}
 
 testing-barista = { module = "com.adevinta.android:barista", version.ref = "testing-barista"}
 
