@@ -109,6 +109,7 @@ dependencies {
 
     //region AndroidTest
 
+    androidTestImplementation(project(":shared:tests_tools"))
     androidTestImplementation(libs.testing.androidx.junit)
     androidTestImplementation(libs.testing.espresso.core)
     androidTestImplementation(libs.testing.core.ktx)

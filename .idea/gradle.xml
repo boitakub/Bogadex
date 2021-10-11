@@ -18,6 +18,7 @@
             <option value="$PROJECT_DIR$/shared" />
             <option value="$PROJECT_DIR$/shared/architecture" />
             <option value="$PROJECT_DIR$/shared/bgg_api_client" />
+            <option value="$PROJECT_DIR$/shared/tests_tools" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

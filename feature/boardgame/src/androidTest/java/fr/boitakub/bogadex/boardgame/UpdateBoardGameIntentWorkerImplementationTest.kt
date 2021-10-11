@@ -10,8 +10,8 @@ import androidx.work.testing.TestListenableWorkerBuilder
 import com.tickaroo.tikxml.TikXml
 import fr.boitakub.bgg.client.BggGameInfoResult
 import fr.boitakub.bgg.client.BggService
-import fr.boitakub.bogadex.boardgame.FileReader.readStringFromFile
 import fr.boitakub.bogadex.boardgame.mapper.BoardGameMapper
+import fr.boitakub.bogadex.tests.tools.FileReader.readStringFromFile
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.coVerify

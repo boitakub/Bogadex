@@ -17,8 +17,8 @@ import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import fr.boitakub.bogadex.MainActivity
 import fr.boitakub.bogadex.R
-import fr.boitakub.bogadex.tests.FileReader
 import fr.boitakub.bogadex.tests.OkHttp3IdlingResource
+import fr.boitakub.bogadex.tests.tools.FileReader.readStringFromFile
 import okhttp3.mockwebserver.Dispatcher
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
@@ -74,12 +74,12 @@ class DisplayAllUserCollectionInstrumentedTest {
                 if (request.path!!.contains("/xmlapi2/collection")) {
                     return MockResponse()
                         .setResponseCode(200)
-                        .setBody(FileReader.readStringFromFile("Cubenbois.xml"))
+                        .setBody(readStringFromFile("Cubenbois.xml"))
                         .setBodyDelay(1, TimeUnit.SECONDS)
                 } else if (request.path!!.contains("/xmlapi2/thing")) {
                     return MockResponse()
                         .setResponseCode(200)
-                        .setBody(FileReader.readStringFromFile("86246.xml"))
+                        .setBody(fr.boitakub.bogadex.tests.tools.FileReader.readStringFromFile("86246.xml"))
                         .setBodyDelay(1, TimeUnit.SECONDS)
                 }
                 return MockResponse().setResponseCode(404)
@@ -99,12 +99,12 @@ class DisplayAllUserCollectionInstrumentedTest {
                 if (request.path!!.contains("/xmlapi2/collection")) {
                     return MockResponse()
                         .setResponseCode(200)
-                        .setBody(FileReader.readStringFromFile("Cubenbois.xml"))
+                        .setBody(readStringFromFile("Cubenbois.xml"))
                         .setBodyDelay(1, TimeUnit.SECONDS)
                 } else if (request.path!!.contains("/xmlapi2/thing")) {
                     return MockResponse()
                         .setResponseCode(200)
-                        .setBody(FileReader.readStringFromFile("86246.xml"))
+                        .setBody(readStringFromFile("86246.xml"))
                         .setBodyDelay(1, TimeUnit.SECONDS)
                 }
                 return MockResponse().setResponseCode(404)
@@ -126,12 +126,12 @@ class DisplayAllUserCollectionInstrumentedTest {
                 if (request.path!!.contains("/xmlapi2/collection")) {
                     return MockResponse()
                         .setResponseCode(200)
-                        .setBody(FileReader.readStringFromFile("Cubenbois.xml"))
+                        .setBody(readStringFromFile("Cubenbois.xml"))
                         .setBodyDelay(1, TimeUnit.SECONDS)
                 } else if (request.path!!.contains("/xmlapi2/thing")) {
                     return MockResponse()
                         .setResponseCode(200)
-                        .setBody(FileReader.readStringFromFile("86246.xml"))
+                        .setBody(readStringFromFile("86246.xml"))
                         .setBodyDelay(1, TimeUnit.SECONDS)
                 }
                 return MockResponse().setResponseCode(404)
@@ -153,12 +153,12 @@ class DisplayAllUserCollectionInstrumentedTest {
                 if (request.path!!.contains("/xmlapi2/collection")) {
                     return MockResponse()
                         .setResponseCode(200)
-                        .setBody(FileReader.readStringFromFile("Cubenbois.xml"))
+                        .setBody(readStringFromFile("Cubenbois.xml"))
                         .setBodyDelay(1, TimeUnit.SECONDS)
                 } else if (request.path!!.contains("/xmlapi2/thing")) {
                     return MockResponse()
                         .setResponseCode(200)
-                        .setBody(FileReader.readStringFromFile("86246.xml"))
+                        .setBody(readStringFromFile("86246.xml"))
                         .setBodyDelay(1, TimeUnit.SECONDS)
                 }
                 return MockResponse().setResponseCode(404)
