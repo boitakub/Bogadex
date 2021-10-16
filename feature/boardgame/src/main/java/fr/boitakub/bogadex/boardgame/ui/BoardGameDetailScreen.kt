@@ -12,7 +12,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -30,13 +29,8 @@ import fr.boitakub.common.ui.navigation.RatingBar
 
 @Composable
 fun BoardGameDetailScreen(
-    boardGameId: String,
     viewModel: BoardGameDetailViewModel
 ) {
-
-    LaunchedEffect(key1 = boardGameId) {
-        viewModel.fetchBoardGameDetailsById(boardGameId)
-    }
 
     Column(
         modifier = Modifier
@@ -56,7 +50,7 @@ fun BoardGameDetailScreen(
 private fun MovieDetailHeader(
     viewModel: BoardGameDetailViewModel
 ) {
-    val boardGame: BoardGame? by viewModel.boardGameFlow.collectAsState(initial = null)
+    val boardGame: BoardGame? by viewModel.boardgame.collectAsState(initial = null)
 
     Column {
 
@@ -110,7 +104,7 @@ private fun MovieDetailHeader(
 private fun MovieDetailSummary(
     viewModel: BoardGameDetailViewModel
 ) {
-    val boardGame: BoardGame? by viewModel.boardGameFlow.collectAsState(initial = null)
+    val boardGame: BoardGame? by viewModel.boardgame.collectAsState(initial = null)
 
     Column {
 

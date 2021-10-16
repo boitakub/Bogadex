@@ -28,11 +28,13 @@ class BoardGameDetailFragment :
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        arguments?.getString("bggId")?.let {
+            presenter.load(it)
+        }
+
         return ComposeView(requireContext()).apply {
             setContent {
-                arguments?.getString("bggId")?.let {
-                    BoardGameDetailScreen(boardGameId = it, viewModel = presenter)
-                }
+                BoardGameDetailScreen(viewModel = presenter)
             }
         }
     }

@@ -1,11 +1,7 @@
 package fr.boitakub.bogadex.boardgame
 
-import androidx.annotation.WorkerThread
 import fr.boitakub.architecture.Repository
 import fr.boitakub.bgg.client.BggService
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
 class BoardGameRepository @Inject constructor(
@@ -13,9 +9,5 @@ class BoardGameRepository @Inject constructor(
     override val remote: BggService
 ) : Repository {
 
-    @WorkerThread
-    fun loadBoardGameById(id: String) = flow {
-        val movie = local.getBoardGameWithId(id)
-        emit(movie)
-    }.flowOn(Dispatchers.IO)
+    fun loadBoardGameById(id: String) = local.getBoardGameWithId(id)
 }

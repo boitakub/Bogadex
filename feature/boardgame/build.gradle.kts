@@ -30,6 +30,10 @@ android {
             )
         }
     }
+    packagingOptions {
+        exclude("META-INF/LGPL2.1")
+        exclude("META-INF/AL2.0")
+    }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
@@ -118,6 +122,10 @@ dependencies {
     androidTestImplementation(libs.testing.espresso.core)
     androidTestImplementation(libs.testing.mockk.android)
     androidTestImplementation(libs.testing.work)
+
+    // -- Compose Tests
+    androidTestImplementation(libs.testing.compose.ui)
+    debugImplementation(libs.testing.compose.manifest)
 
     //endregion
 }
