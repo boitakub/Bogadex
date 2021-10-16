@@ -40,7 +40,8 @@ internal class BoardGameCollectionListAdapter(layoutManager: GridLayoutManager) 
         val game = itemList[position]
         holder.binding.root.setOnClickListener {
             val bundle = bundleOf("bggId" to game.item.bggId, "title" to game.item.title)
-            holder.binding.root.findNavController().navigate(R.id.navigation_boardgame_details, bundle)
+            holder.binding.root.findNavController()
+                .navigate(R.id.navigation_boardgame_details, bundle)
         }
         if (holder.binding is BoardgameListItemBinding) {
             holder.binding.tvTitle.text = game.item.title
@@ -59,19 +60,17 @@ internal class BoardGameCollectionListAdapter(layoutManager: GridLayoutManager) 
                 R.string.weight,
                 game.details?.statistic?.averageWeight
             )
-            holder.binding.tvRating.text = holder.itemView.context.getString(
-                R.string.rating,
-                game.details?.statistic?.average
-            )
+            holder.binding.pvRating.noOfSides = game.details?.statistic?.average?.toInt() ?: 0
+            holder.binding.tvShapeRating.text = "${"%.1f".format(game.details?.statistic?.average)}"
         } else if (holder.binding is BoardgameListItemGridBinding) {
             holder.binding.tvTitle.text = game.item.title
-            holder.binding.ivCover.load(game.item.coverUrl)
+            holder.binding.ivCover.load(game.details?.image)
         }
     }
 
     companion object {
         const val SPAN_COUNT_ONE = 1
-        const val SPAN_COUNT_THREE = 3
+        const val SPAN_COUNT_THREE = 2
 
         const val VIEW_TYPE_SMALL = 1
         const val VIEW_TYPE_BIG = 2

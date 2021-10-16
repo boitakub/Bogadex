@@ -58,6 +58,8 @@ private fun MovieDetailHeader(
             painter = rememberImagePainter(boardGame?.image),
             contentDescription = "",
             modifier = Modifier
+                .fillMaxSize()
+                .padding(top = 16.dp)
                 .height(280.dp)
         )
 

@@ -75,6 +75,8 @@ dependencies {
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.coil.core)
 
+    implementation(libs.shapeOfView)
+
     //endregion
 
     //region Service & Worker
