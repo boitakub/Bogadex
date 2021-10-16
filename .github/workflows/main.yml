@@ -51,8 +51,7 @@ jobs:
       - name: Run integration test on emulator
         uses: reactivecircus/android-emulator-runner@v2
         with:
-          api-level: 27
-          target: google_apis
+          api-level: 28
           script: ./gradlew createDebugCoverageReport --stacktrace
 
       # Generate jacoco report
