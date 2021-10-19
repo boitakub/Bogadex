@@ -10,6 +10,7 @@ jobs:
   build-and-test:
     name: Build, Lint and Test
     runs-on: macos-latest
+    timeout-minutes: 20
 
     steps:
       - name: Checkout
@@ -21,13 +22,15 @@ jobs:
           distribution: 'adopt'
           java-version: '11'
 
-      - name: Cache Gradle packages
+      - name: Cache Gradle and wrapper
         uses: actions/cache@v2
         with:
-          path: ~/.gradle
-          key: gradle-${{ hashFiles('gradle-checksums.txt') }}-${{ hashFiles('gradle/wrapper/gradle-wrapper.properties') }}
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
           restore-keys: |
-            gradle-${{ hashFiles('gradle-checksums.txt') }}-
+            ${{ runner.os }}-gradle-
 
       # Decode Google services configuration file from secrets
       # - name: Decode google-services.json
@@ -36,22 +39,14 @@ jobs:
       #  run: echo $FIREBASE_CONFIG > app/google-services.json
 
       # Assemble debug apk
-      - name: Assemble Debug APK
-        run: ./gradlew assembleDebug
-
-      # Check the code with Android linter (need assemble)
-      - name: Run Android Linter
-        run: ./gradlew lint
-
-      # Assemble debug test apk
-      - name: Assemble Debug Test APK
-        run: ./gradlew assembleDebugAndroidTest
+      - name: Build
+        run: ./gradlew clean build --no-daemon --parallel build
 
       # Run emulator
       - name: Run integration test on emulator
         uses: reactivecircus/android-emulator-runner@v2
         with:
-          api-level: 28
+          api-level: 29
           script: ./gradlew createDebugCoverageReport --stacktrace
 
       # Generate jacoco report
@@ -78,6 +73,7 @@ jobs:
     name: Execute analyse on code
     continue-on-error: true
     runs-on: ubuntu-latest
+    timeout-minutes: 20
 
     steps:
       - name: Checkout
@@ -89,6 +85,16 @@ jobs:
           distribution: 'adopt'
           java-version: '11'
 
+      - name: Cache Gradle and wrapper
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
       # Check the code with detekt, you can remove this job if you don't use detekt
       - name: Run detekt Linter
         run: ./gradlew detekt
@@ -97,9 +103,14 @@ jobs:
       - name: Run Kotlin Linter
         run: ./gradlew ktlintCheck
 
+      # Check the code with Android linter (need assemble)
+      - name: Run Android Linter
+        run: ./gradlew lint
+
   generate-release-apk:
     name: Generate Releasable apk
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     needs:
       - build-and-test
 
@@ -112,6 +123,16 @@ jobs:
         with:
           distribution: 'adopt'
           java-version: '11'
+
+      - name: Cache Gradle and wrapper
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
 
       - name: Generate apk
         run: ./gradlew assembleRelease
