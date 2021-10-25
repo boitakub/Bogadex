@@ -38,10 +38,6 @@ jobs:
       #    FIREBASE_CONFIG: ${{ secrets.FIREBASE_CONFIG }}
       #  run: echo $FIREBASE_CONFIG > app/google-services.json
 
-      # Assemble debug apk
-      - name: Build
-        run: ./gradlew clean build --no-daemon --parallel build
-
       # Run emulator
       - name: Run integration test on emulator
         uses: reactivecircus/android-emulator-runner@v2
@@ -108,8 +104,9 @@ jobs:
         run: ./gradlew lint
 
   generate-release-apk:
-    name: Generate Releasable apk
+    name: Try generate Releasable
     runs-on: ubuntu-latest
+    environment: Release
     timeout-minutes: 20
     needs:
       - build-and-test
@@ -117,12 +114,22 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
 
       - name: Set up our JDK environment
         uses: actions/setup-java@v2
         with:
           distribution: 'adopt'
           java-version: '11'
+
+      - name: Decode Keystore
+        env:
+          ENCODED_STRING: ${{ secrets.KEYSTORE }}
+        run: |
+          TMP_KEYSTORE_FILE_PATH="${RUNNER_TEMP}"/keystore
+          mkdir "${TMP_KEYSTORE_FILE_PATH}"
+          echo $ENCODED_STRING | base64 -di > "${TMP_KEYSTORE_FILE_PATH}"/keystore_file.jks
 
       - name: Cache Gradle and wrapper
         uses: actions/cache@v2
@@ -134,11 +141,9 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
 
-      - name: Generate apk
-        run: ./gradlew assembleRelease
-
-      - name: Upload APK
-        uses: actions/upload-artifact@v1
-        with:
-          name: build-output
-          path: app/build/outputs/apk/release/app-release-unsigned.apk
+      - name: Build Release
+        run: ./gradlew app:assembleRelease
+        env:
+          SIGNING_KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
+          SIGNING_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
+          SIGNING_STORE_PASSWORD: ${{ secrets.SIGNING_STORE_PASSWORD }}

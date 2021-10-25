@@ -58,6 +58,11 @@ Go to the [Releases](https://github.com/boitakub/Bogadex/releases) to download t
 
 ## Flow & Delivery 🚚
 
+### Triggering a Release
+Release a build version triggers in the following scenarios:
+- You push a version tag to the repository.
+- You create a pull request targeting the main branch.
+
 * Check on pre-commit [Article](https://medium.com/@anjani.kjoshi/android-lint-pre-commit-hook-for-clean-code-747edfe57abf)
   + lint - for Android critical issues
   + KtLint - for kotlin file quality
@@ -66,6 +71,7 @@ Go to the [Releases](https://github.com/boitakub/Bogadex/releases) to download t
   + on GitHub Release
   + on Firebase App Distribution
   + on Google Play Store - Beta & Production -
+* Release signing [Article](https://proandroiddev.com/how-to-securely-build-and-sign-your-android-app-with-github-actions-ad5323452ce)
 
 <!--- ## MAD Score
 

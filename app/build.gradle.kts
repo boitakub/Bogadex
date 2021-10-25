@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     id("com.android.application")
     id("kotlin-android")
@@ -19,17 +21,40 @@ android {
         testApplicationId = "fr.boitakub.bogadex.tests"
         testInstrumentationRunner = "fr.boitakub.bogadex.tests.InstrumentHiltTestRunner"
     }
+    signingConfigs {
+        create("release") {
+            val props = Properties()
+            val propFile = file(System.getProperty("user.home") + "/CloudStation/Informatique/Keys/bogadex.properties")
+            if (propFile.exists()) {
+                props.load(propFile.inputStream())
+            }
 
+            if (!props.isEmpty) {
+                storeFile = file(System.getProperty("user.home") + props.getProperty("keystore"))
+                storePassword = props.getProperty("keystore.password")
+                keyAlias = props.getProperty("keyAlias")
+                keyPassword = props.getProperty("keyPassword")
+            } else {
+                storeFile = file(System.getenv("RUNNER_TEMP") + "/keystore/keystore_file.jks")
+                storePassword = System.getenv("SIGNING_STORE_PASSWORD")
+                keyAlias = System.getenv("SIGNING_KEY_ALIAS")
+                keyPassword = System.getenv("SIGNING_KEY_PASSWORD")
+            }
+        }
+    }
     buildTypes {
         debug {
+            isDebuggable = true
             isTestCoverageEnabled = true
         }
         getByName("release") {
+            isDebuggable = false
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            signingConfig = signingConfigs.getByName("release")
         }
     }
     compileOptions {
