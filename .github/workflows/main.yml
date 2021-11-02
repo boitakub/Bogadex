@@ -103,6 +103,10 @@ jobs:
       - name: Run Android Linter
         run: ./gradlew lint
 
+      # Check the code with Spotless
+      - name: Run Spotless
+        run: ./gradlew spotlessCheck
+
   generate-release-apk:
     name: Try generate Releasable
     runs-on: ubuntu-latest

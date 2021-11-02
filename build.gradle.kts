@@ -1,5 +1,9 @@
 import io.gitlab.arturbosch.detekt.detekt
 
+plugins {
+    id("com.diffplug.gradle.spotless") version "3.25.0"
+}
+
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
     repositories {
@@ -30,11 +34,7 @@ apply(plugin = "org.jlleitschuh.gradle.ktlint")
 subprojects {
     apply(plugin = "io.gitlab.arturbosch.detekt")
     apply(plugin = "org.jlleitschuh.gradle.ktlint")
-
-    // Optionally configure plugin
-    configure<org.jlleitschuh.gradle.ktlint.KtlintExtension> {
-        debug.set(true)
-    }
+    apply(plugin = "com.diffplug.gradle.spotless")
 
     detekt {
         config = files("$rootDir/detekt.yml")
@@ -49,10 +49,16 @@ subprojects {
             "src/main",
         )
     }
-}
 
-tasks.register("clean", Delete::class) {
-    delete(rootProject.buildDir)
+    spotless {
+        kotlin {
+            target("**/*.kt")
+            targetExclude("$buildDir/**/*.kt")
+            targetExclude("bin/**/*.kt")
+
+            licenseHeaderFile(file("${project.rootDir}/copyright.kt"))
+        }
+    }
 }
 
 val installGitHook = tasks.register("installGitHook", Copy::class) {

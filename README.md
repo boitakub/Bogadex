@@ -1,6 +1,6 @@
 <h1 align="center">Bogadex
 <p align="center">
-  <a href="https://github.com/boitakub/Bogadex"><img src="./app/src/main/res/mipmap-xxhdpi/ic_launcher_foreground.png" width="150" alt="Bogadex" /></a>
+  <a href="https://github.com/boitakub/Bogadex"><img src="https://raw.githubusercontent.com/boitakub/Bogadex/main/app/src/main/res/mipmap-xxhdpi/ic_launcher_foreground.png" width="150" alt="Bogadex" /></a>
 </p>
 </h1>
 
@@ -11,7 +11,7 @@
   <a href="https://www.codacy.com/gh/boitakub/Bogadex/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=boitakub/Bogadex&amp;utm_campaign=Badge_Coverage"><img src="https://app.codacy.com/project/badge/Coverage/92ff47411c2a4d65b4389f4924ea8f0d"/></a>
   <a href="https://kotlinlang.org"><img alt="API" src="https://img.shields.io/badge/Kotlin-1.5.20-blue.svg?style=flat"/></a>
   <a href="https://android-arsenal.com/api?level=23"><img alt="API" src="https://img.shields.io/badge/API-23%2B-brightgreen.svg?style=flat"/></a>
-  <a href="https://opensource.org/licenses/GPL-3.0"><img alt="License" src="https://img.shields.io/github/license/boitakub/bogadex"/></a>
+  <a href="https://opensource.org/licenses/Apache-2.0"><img alt="License" src="https://img.shields.io/github/license/boitakub/bogadex"/></a>
   <a href="https://github.com/carloscuesta/gitmoji"><img alt="gitmoji badge" src="https://img.shields.io/badge/gitmoji-%20😜%20😍-FFDD67.svg"/></a>
 </p>
 
@@ -22,7 +22,7 @@ Also dealing with data (from <a href="https://www.boardgamegeek.com/">BoardGameG
 </br>
 
 <p align="center">
-<img src="/previews/screenshot.png"/>
+<img src="/docs/assets/screenshot.png" height="300" alt="Bogadex - Screenshot"/>
 </p>
 
 ## Download 📲
@@ -59,9 +59,10 @@ Go to the [Releases](https://github.com/boitakub/Bogadex/releases) to download t
 ## Flow & Delivery 🚚
 
 ### Triggering a Release
+
 Release a build version triggers in the following scenarios:
-- You push a version tag to the repository.
-- You create a pull request targeting the main branch.
+* You push a version tag to the repository.
+* You create a pull request targeting the main branch.
 
 * Check on pre-commit [Article](https://medium.com/@anjani.kjoshi/android-lint-pre-commit-hook-for-clean-code-747edfe57abf)
   + lint - for Android critical issues
@@ -72,6 +73,14 @@ Release a build version triggers in the following scenarios:
   + on Firebase App Distribution
   + on Google Play Store - Beta & Production -
 * Release signing [Article](https://proandroiddev.com/how-to-securely-build-and-sign-your-android-app-with-github-actions-ad5323452ce)
+
+## Code formatting
+
+The CI uses [Spotless](https://github.com/diffplug/spotless) to check if your code is formatted correctly and contains the right licenses.
+Internally, Spotless uses [ktlint](https://github.com/pinterest/ktlint) to check the formatting of your code.
+To set up ktlint correctly with Android Studio, follow one of the [listed setup options](https://github.com/pinterest/ktlint#-with-intellij-idea).
+
+Before committing your code, run `./gradlew app:spotlessApply` to automatically format your code.
 
 <!--- ## MAD Score
 
@@ -107,9 +116,19 @@ Thank you for the great job.
 Pokedex using the [BoardGameGeekAPI](https://boardgamegeek.com/wiki/page/BGG_XML_API2/) for constructing RESTful-oriented API.<br>
 BoardGameGeekAPI provides a XML API interface to highly detailed objects built from thousands of lines of data related to Boardgames.
 
-## License ⚖️
+# License
+```xml
+Copyright 2021 Boitakub (Julien Foratier)
 
-Designed and developed by 2021 Boitakub (Julien Foratier)
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
 
-This project is licensed under the GNU General Public License v3.0. See the
-[LICENSE](LICENSE) file for details.
+   http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+```
