@@ -49,12 +49,15 @@ Go to the [Releases](https://github.com/boitakub/Bogadex/releases) to download t
   + [Bindables](https://github.com/skydoves/bindables) - Android DataBinding kit for notifying data changes to UI layers.
   + Business oriented with UseCases pattern
   + Repository pattern
+* Design
+    + [App bars: bottom](https://material.io/components/app-bars-bottom)
 * [Retrofit2 & OkHttp3](https://github.com/square/retrofit) - construct the REST APIs and paging network data.
 * [Coil](https://github.com/coil-kt/coil) - loading images.
 * [Material-Components](https://github.com/material-components/material-components-android) - Material design components like ripple animation, cardView.
 * [Codacy](https://codacy.com/) - Code quality and coverage analysis
 * [Version Catalogs](https://docs.gradle.org/current/userguide/platforms.html) - Group dependencies for multi-modules using Gradle 7 VersionCatalogs and [centralized in one file](/gradle/libs.versions.toml) - [Guide](https://blog.stylingandroid.com/gradle-version-catalogs/)
 * [refreshVersion](https://jmfayard.github.io/refreshVersions) - Bump dependencies version on all modules using one command and [centralized in one file](versions.properties)
+* [Gradle optimizations](https://proandroiddev.com/how-we-reduced-our-gradle-build-times-by-over-80-51f2b6d6b05b) - Some gradle tips to optimize build time
 
 ## Flow & Delivery 🚚
 

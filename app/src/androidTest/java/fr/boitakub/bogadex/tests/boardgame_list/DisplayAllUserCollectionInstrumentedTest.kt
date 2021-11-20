@@ -20,7 +20,11 @@ import android.util.Log
 import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.core.app.launchActivity
+import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.IdlingRegistry
+import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.matcher.ViewMatchers.withContentDescription
+import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.work.Configuration
@@ -104,6 +108,7 @@ class DisplayAllUserCollectionInstrumentedTest {
         val intent = Intent(ApplicationProvider.getApplicationContext(), MainActivity::class.java)
         scenario = launchActivity(intent)
 
+        onView(withId(R.id.recycler_view))
         assertDisplayedAtPosition(R.id.recycler_view, 0, R.id.tv_title, "5211")
     }
 
@@ -129,8 +134,10 @@ class DisplayAllUserCollectionInstrumentedTest {
         val intent = Intent(ApplicationProvider.getApplicationContext(), MainActivity::class.java)
         scenario = launchActivity(intent)
 
-        clickOn(R.id.navigation_collection)
+        onView(withContentDescription("Open navigation drawer")).perform(click())
+        clickOn(R.id.display_collection)
 
+        onView(withId(R.id.recycler_view))
         assertDisplayedAtPosition(R.id.recycler_view, 0, R.id.tv_title, "7 Wonders Duel")
     }
 
@@ -156,8 +163,10 @@ class DisplayAllUserCollectionInstrumentedTest {
         val intent = Intent(ApplicationProvider.getApplicationContext(), MainActivity::class.java)
         scenario = launchActivity(intent)
 
-        clickOn(R.id.navigation_wishlist)
+        onView(withContentDescription("Open navigation drawer")).perform(click())
+        clickOn(R.id.display_wishlist)
 
+        onView(withId(R.id.recycler_view))
         assertDisplayedAtPosition(R.id.recycler_view, 1, R.id.tv_title, "Anachrony")
     }
 
@@ -185,6 +194,7 @@ class DisplayAllUserCollectionInstrumentedTest {
 
         clickOn(R.id.menu_switch_layout)
 
+        onView(withId(R.id.recycler_view))
         assertDisplayedAtPosition(R.id.recycler_view, 1, R.id.tv_title, "7 Wonders Duel")
     }
 }

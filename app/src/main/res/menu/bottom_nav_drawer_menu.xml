@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/display_all"
+        android:icon="@drawable/ic_clear_all_24"
+        android:title="@string/display_all" />
+
+    <item
+        android:id="@+id/display_collection"
+        android:icon="@drawable/ic_outline_all_inbox_24"
+        android:title="@string/display_collection" />
+
+    <item
+        android:id="@+id/display_wishlist"
+        android:icon="@drawable/ic_outline_shopping_cart_24"
+        android:title="@string/display_wishlist" />
+
+</menu>

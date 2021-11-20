@@ -1,6 +1,11 @@
 <resources>
-    <string name="app_name">Bogadex</string>
-    <string name="title_home">Home</string>
-    <string name="title_collection">Collection</string>
-    <string name="title_wishlist">Wishlist</string>
+    <string name="app_name" translatable="false">Bogadex</string>
+    <string name="title_list_game">Game list</string>
+
+    <string name="display_all">Display all</string>
+    <string name="display_collection">My collection</string>
+    <string name="display_wishlist">My wishlist</string>
+
+    <string name="change_display">Toggle view</string>
+    <string name="content_change_display">Switch display of your collection</string>
 </resources>

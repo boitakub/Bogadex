@@ -1,6 +1,8 @@
 plugins {
     id("com.android.library")
     kotlin("android")
+    kotlin("kapt")
+    id("dagger.hilt.android.plugin")
 }
 
 apply(rootProject.file("./gradle/jacoco.gradle"))
@@ -45,6 +47,7 @@ android {
 }
 
 dependencies {
+    implementation(project(":shared:architecture"))
 
     //region UI
 
@@ -52,6 +55,15 @@ dependencies {
     implementation(libs.androidx.composeUi)
     implementation(libs.androidx.composeUiTooling)
     implementation(libs.androidx.foundation)
+
+    //endregion
+
+    //region Dependency Injection
+
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.androidCompiler)
+    implementation(libs.hilt.work)
+    kapt(libs.hilt.compiler)
 
     //endregion
 

@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <item name="navigation_boardgame" type="id"/>
-    <item name="navigation_collection" type="id"/>
-    <item name="navigation_wishlist" type="id"/>
+    <item name="navigation_boardgame_list" type="id"/>
     <item name="navigation_boardgame_details" type="id"/>
 </resources>
