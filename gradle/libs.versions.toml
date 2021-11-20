@@ -28,7 +28,6 @@ testing-core = "_"
 testing-androidx-junit = "_"
 testing-espresso-core = "_"
 testing-mockk = "_"
-testing-barista = "_"
 
 shapeOfView = "_"
 
@@ -90,6 +89,7 @@ shapeOfView = { module = "io.github.florent37:shapeofview", version.ref = "shape
 testing-junit = { module = "junit:junit", version.ref = "testing-junit"}
 testing-androidx-junit = { module = "androidx.test.ext:junit", version.ref = "testing-androidx-junit"}
 testing-espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "testing-espresso-core"}
+testing-espresso-contrib = { module = "androidx.test.espresso:espresso-contrib", version.ref = "testing-espresso-core"}
 testing-core-ktx = { module = "androidx.test:core-ktx", version.ref = "testing-core"}
 testing-compose-ui = { module = "androidx.compose.ui:ui-test-junit4", version.ref = "compose"}
 testing-compose-manifest = { module = "androidx.compose.ui:ui-test-manifest", version.ref = "compose"}
@@ -97,8 +97,6 @@ testing-compose-manifest = { module = "androidx.compose.ui:ui-test-manifest", ve
 testing-mockk-core = { module = "io.mockk:mockk", version.ref = "testing-mockk"}
 testing-mockk-agent = { module = "io.mockk:mockk-agent-jvm", version.ref = "testing-mockk"}
 testing-mockk-android = { module = "io.mockk:mockk-android", version.ref = "testing-mockk"}
-
-testing-barista = { module = "com.adevinta.android:barista", version.ref = "testing-barista"}
 
 [bundles]
 androidx-compose = [ "androidx-composeUi", "androidx-composeMaterial", "androidx-composeUiTooling" ]

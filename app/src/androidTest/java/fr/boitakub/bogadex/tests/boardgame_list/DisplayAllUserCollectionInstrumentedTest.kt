@@ -17,21 +17,24 @@ package fr.boitakub.bogadex.tests.boardgame_list
 
 import android.content.Intent
 import android.util.Log
+import androidx.recyclerview.widget.RecyclerView
 import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.core.app.launchActivity
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.IdlingRegistry
 import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.contrib.RecyclerViewActions.scrollToPosition
+import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withContentDescription
 import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.work.Configuration
 import androidx.work.testing.SynchronousExecutor
 import androidx.work.testing.WorkManagerTestInitHelper
-import com.adevinta.android.barista.assertion.BaristaListAssertions.assertDisplayedAtPosition
-import com.adevinta.android.barista.interaction.BaristaClickInteractions.clickOn
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import fr.boitakub.bogadex.MainActivity
@@ -98,7 +101,7 @@ class DisplayAllUserCollectionInstrumentedTest {
                 } else if (request.path!!.contains("/xmlapi2/thing")) {
                     return MockResponse()
                         .setResponseCode(200)
-                        .setBody(fr.boitakub.bogadex.tests.tools.FileReader.readStringFromFile("86246.xml"))
+                        .setBody(readStringFromFile("86246.xml"))
                         .setBodyDelay(1, TimeUnit.SECONDS)
                 }
                 return MockResponse().setResponseCode(404)
@@ -109,7 +112,8 @@ class DisplayAllUserCollectionInstrumentedTest {
         scenario = launchActivity(intent)
 
         onView(withId(R.id.recycler_view))
-        assertDisplayedAtPosition(R.id.recycler_view, 0, R.id.tv_title, "5211")
+            .perform(scrollToPosition<RecyclerView.ViewHolder>(0))
+        onView(withText("5211")).check(matches(isDisplayed()))
     }
 
     @Test
@@ -135,10 +139,11 @@ class DisplayAllUserCollectionInstrumentedTest {
         scenario = launchActivity(intent)
 
         onView(withContentDescription("Open navigation drawer")).perform(click())
-        clickOn(R.id.display_collection)
+        onView(withId(R.id.display_collection)).perform(click())
 
         onView(withId(R.id.recycler_view))
-        assertDisplayedAtPosition(R.id.recycler_view, 0, R.id.tv_title, "7 Wonders Duel")
+            .perform(scrollToPosition<RecyclerView.ViewHolder>(0))
+        onView(withText("7 Wonders Duel")).check(matches(isDisplayed()))
     }
 
     @Test
@@ -164,10 +169,11 @@ class DisplayAllUserCollectionInstrumentedTest {
         scenario = launchActivity(intent)
 
         onView(withContentDescription("Open navigation drawer")).perform(click())
-        clickOn(R.id.display_wishlist)
+        onView(withId(R.id.display_wishlist)).perform(click())
 
         onView(withId(R.id.recycler_view))
-        assertDisplayedAtPosition(R.id.recycler_view, 1, R.id.tv_title, "Anachrony")
+            .perform(scrollToPosition<RecyclerView.ViewHolder>(1))
+        onView(withText("Anachrony")).check(matches(isDisplayed()))
     }
 
     @Test
@@ -192,9 +198,10 @@ class DisplayAllUserCollectionInstrumentedTest {
         val intent = Intent(ApplicationProvider.getApplicationContext(), MainActivity::class.java)
         scenario = launchActivity(intent)
 
-        clickOn(R.id.menu_switch_layout)
+        onView(withId(R.id.menu_switch_layout)).perform(click())
 
         onView(withId(R.id.recycler_view))
-        assertDisplayedAtPosition(R.id.recycler_view, 1, R.id.tv_title, "7 Wonders Duel")
+            .perform(scrollToPosition<RecyclerView.ViewHolder>(0))
+        onView(withText("7 Wonders Duel")).check(matches(isDisplayed()))
     }
 }

@@ -137,10 +137,10 @@ dependencies {
     androidTestImplementation(project(":shared:tests_tools"))
     androidTestImplementation(libs.testing.androidx.junit)
     androidTestImplementation(libs.testing.espresso.core)
+    androidTestImplementation(libs.testing.espresso.contrib)
     androidTestImplementation(libs.testing.core.ktx)
     androidTestImplementation(libs.testing.hilt.android)
     kaptAndroidTest(libs.hilt.androidCompiler)
-    androidTestImplementation(libs.testing.barista)
     androidTestImplementation(libs.testing.work)
     androidTestImplementation(libs.testing.okhttp.mockwebserver)
 
