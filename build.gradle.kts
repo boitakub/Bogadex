@@ -61,13 +61,6 @@ subprojects {
     }
 }
 
-val installGitHook = tasks.register("installGitHook", Copy::class) {
-    from("${rootProject.rootDir}/pre-commit")
-    into("${rootProject.rootDir}/.git/hooks")
-    fileMode = 777
-}
-tasks.getByPath(":app:preBuild").dependsOn(installGitHook)
-
 subprojects {
     configurations.all {
         resolutionStrategy {
