@@ -1,7 +1,6 @@
-import io.gitlab.arturbosch.detekt.detekt
-
 plugins {
-    id("com.diffplug.gradle.spotless") version "3.25.0"
+    id("io.gitlab.arturbosch.detekt")
+    id("com.diffplug.gradle.spotless")
 }
 
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
@@ -20,7 +19,6 @@ buildscript {
         classpath(libs.kotlin.gradlePlugin)
 
         // -- Utility plugins
-        classpath(libs.detektPlugin)
         classpath(libs.ktlintPlugin)
         classpath(libs.jacocoPlugin)
 
@@ -38,8 +36,8 @@ subprojects {
 
     detekt {
         config = files("$rootDir/detekt.yml")
-
         parallel = true
+        buildUponDefaultConfig = true
 
         // By default detekt does not check test source set and gradle specific files, so hey have to be added manually
         input = files(
