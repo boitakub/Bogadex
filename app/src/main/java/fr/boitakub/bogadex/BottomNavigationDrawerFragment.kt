@@ -40,6 +40,7 @@ class BottomNavigationDrawerFragment(
                 R.id.display_all -> applicationViewModel.filterCollectionWith("all")
                 R.id.display_collection -> applicationViewModel.filterCollectionWith("collection")
                 R.id.display_wishlist -> applicationViewModel.filterCollectionWith("wishlist")
+                R.id.display_solo -> applicationViewModel.filterCollectionWith("solo")
             }
             val bundle = bundleOf("filter" to applicationViewModel.applicationState.value.collection)
             navController

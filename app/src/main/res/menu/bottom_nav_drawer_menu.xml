@@ -16,4 +16,9 @@
         android:icon="@drawable/ic_outline_shopping_cart_24"
         android:title="@string/display_wishlist" />
 
+    <item
+        android:id="@+id/display_solo"
+        android:icon="@drawable/ic_user_solid"
+        android:title="@string/display_solo" />
+
 </menu>

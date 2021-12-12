@@ -31,6 +31,7 @@ import fr.boitakub.bogadex.boardgame.BoardGameCollectionRepository
 import fr.boitakub.bogadex.boardgame.ui.BoardGameCollectionViewModel.Companion.provideFactory
 import fr.boitakub.bogadex.boardgame.usecase.ListCollection
 import fr.boitakub.bogadex.boardgame.usecase.ListCollectionItemOwned
+import fr.boitakub.bogadex.boardgame.usecase.ListCollectionItemSolo
 import fr.boitakub.bogadex.boardgame.usecase.ListCollectionItemWanted
 import fr.boitakub.common.databinding.CommonListFragmentBinding
 import fr.boitakub.common.ui.application.AppViewModel
@@ -118,6 +119,7 @@ class BoardGameCollectionFragment :
         return when (string) {
             "collection" -> ListCollectionItemOwned(repository)
             "wishlist" -> ListCollectionItemWanted(repository)
+            "solo" -> ListCollectionItemSolo(repository)
             else -> { // Note the block
                 ListCollection(repository)
             }
