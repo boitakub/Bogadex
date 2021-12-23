@@ -1,7 +1,6 @@
 [versions]
 kotlin = "_"
 androidBuildTools = "_"
-ktlint = "_"
 jacoco = "0.8.7"
 
 androidx-core = "_"
@@ -33,7 +32,6 @@ shapeOfView = "_"
 [libraries]
 kotlin-gradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 android-gradlePlugin = { module = "com.android.tools.build:gradle", version.ref = "androidBuildTools"}
-ktlintPlugin = { module = "org.jlleitschuh.gradle:ktlint-gradle", version.ref = "ktlint" }
 jacocoPlugin = { module = "org.jacoco:org.jacoco.core", version.ref = "jacoco" }
 hiltAndroidPlugin = { module = "com.google.dagger:hilt-android-gradle-plugin", version.ref = "hilt-android" }
 

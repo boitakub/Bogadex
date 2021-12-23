@@ -88,9 +88,12 @@ class BoardGameCollectionFragment :
         binding.recyclerView.adapter = adapter
 
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-            appViewModel.applicationState.asLiveData().observe(viewLifecycleOwner, {
-                applyApplicationChanges(it)
-            })
+            appViewModel.applicationState.asLiveData().observe(
+                viewLifecycleOwner,
+                {
+                    applyApplicationChanges(it)
+                }
+            )
         }
 
         presenter.gameList.observe(

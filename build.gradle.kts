@@ -1,6 +1,6 @@
 plugins {
     id("io.gitlab.arturbosch.detekt")
-    id("com.diffplug.gradle.spotless")
+    id("com.diffplug.spotless")
 }
 
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
@@ -19,7 +19,6 @@ buildscript {
         classpath(libs.kotlin.gradlePlugin)
 
         // -- Utility plugins
-        classpath(libs.ktlintPlugin)
         classpath(libs.jacocoPlugin)
 
         // -- Application plugins
@@ -27,12 +26,9 @@ buildscript {
     }
 }
 
-apply(plugin = "org.jlleitschuh.gradle.ktlint")
-
-subprojects {
+allprojects {
     apply(plugin = "io.gitlab.arturbosch.detekt")
-    apply(plugin = "org.jlleitschuh.gradle.ktlint")
-    apply(plugin = "com.diffplug.gradle.spotless")
+    apply(plugin = "com.diffplug.spotless")
 
     detekt {
         config = files("$rootDir/detekt.yml")
@@ -49,12 +45,23 @@ subprojects {
     }
 
     spotless {
+        ratchetFrom = "origin/main"
+
+        format("misc") {
+            target("*.gradle", "*.md", ".gitignore")
+
+            trimTrailingWhitespace()
+            indentWithTabs()
+            endWithNewline()
+        }
         kotlin {
             target("**/*.kt")
-            targetExclude("$buildDir/**/*.kt")
-            targetExclude("bin/**/*.kt")
-
+            ktlint()
             licenseHeaderFile(file("${project.rootDir}/copyright.txt"))
+        }
+        kotlinGradle {
+            target("*.gradle.kts")
+            ktlint()
         }
     }
 }

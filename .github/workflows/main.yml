@@ -10,7 +10,7 @@ jobs:
   build-and-test:
     name: Build, Lint and Test
     runs-on: macos-latest
-    timeout-minutes: 20
+    timeout-minutes: 30
 
     steps:
       - name: Checkout
@@ -69,7 +69,7 @@ jobs:
     name: Execute analyse on code
     continue-on-error: true
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 30
 
     steps:
       - name: Checkout
@@ -95,15 +95,11 @@ jobs:
       - name: Run detekt Linter
         run: ./gradlew detekt
 
-      # Check the code with ktlint, you can remove this job if you don't use ktlint
-      - name: Run Kotlin Linter
-        run: ./gradlew ktlintCheck
-
       # Check the code with Android linter (need assemble)
       - name: Run Android Linter
         run: ./gradlew lint
 
-      # Check the code with Spotless
+      # Check the code with Spotless (ktlint included)
       - name: Run Spotless
         run: ./gradlew spotlessCheck
 
@@ -120,7 +116,7 @@ jobs:
     name: Try generate Releasable
     runs-on: ubuntu-latest
     environment: Release
-    timeout-minutes: 20
+    timeout-minutes: 30
     needs:
       - build-and-test
 
