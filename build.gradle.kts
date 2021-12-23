@@ -54,7 +54,7 @@ subprojects {
             targetExclude("$buildDir/**/*.kt")
             targetExclude("bin/**/*.kt")
 
-            licenseHeaderFile(file("${project.rootDir}/copyright.kt"))
+            licenseHeaderFile(file("${project.rootDir}/copyright.txt"))
         }
     }
 }
