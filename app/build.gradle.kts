@@ -6,6 +6,9 @@ plugins {
     id("kotlin-kapt")
     id("dagger.hilt.android.plugin")
     id("io.github.reactivecircus.app-versioning")
+    id("com.google.gms.google-services")
+    id("com.google.firebase.crashlytics")
+    id("com.google.firebase.firebase-perf")
 }
 
 apply(rootProject.file("./gradle/jacoco.gradle"))
@@ -46,6 +49,12 @@ android {
         debug {
             isDebuggable = true
             isTestCoverageEnabled = true
+            configure<com.google.firebase.perf.plugin.FirebasePerfExtension> {
+                // Set this flag to 'false' to disable @AddTrace annotation processing and
+                // automatic monitoring of HTTP/S network requests
+                // for a specific build variant at compile time.
+                setInstrumentationEnabled(false)
+            }
         }
         getByName("release") {
             isDebuggable = false
@@ -138,12 +147,23 @@ dependencies {
 
     //endregion
 
+    //region Monitoring
+
+    implementation(platform("com.google.firebase:firebase-bom:29.0.3"))
+    implementation("com.google.firebase:firebase-crashlytics-ktx")
+    implementation("com.google.firebase:firebase-analytics-ktx")
+    implementation("com.google.firebase:firebase-perf-ktx")
+
+    //endregion
+
     //region AndroidTest
 
     androidTestImplementation(project(":shared:tests_tools"))
     androidTestImplementation(libs.testing.androidx.junit)
     androidTestImplementation(libs.testing.espresso.core)
-    androidTestImplementation(libs.testing.espresso.contrib)
+    androidTestImplementation(libs.testing.espresso.contrib) {
+        exclude(module = "protobuf-lite")
+    }
     androidTestImplementation(libs.testing.core.ktx)
     androidTestImplementation(libs.testing.hilt.android)
     kaptAndroidTest(libs.hilt.androidCompiler)

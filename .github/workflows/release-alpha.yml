@@ -35,6 +35,12 @@ jobs:
           mkdir "${TMP_KEYSTORE_FILE_PATH}"
           echo $ENCODED_STRING | base64 -di > "${TMP_KEYSTORE_FILE_PATH}"/keystore_file.jks
 
+      # Decode Google services configuration file from secrets
+      - name: Decode google-services.json
+        env:
+          FIREBASE_CONFIG: ${{ secrets.FIREBASE_CONFIG }}
+        run: echo $FIREBASE_CONFIG > app/google-services.json
+
       - name: Cache Gradle and wrapper
         uses: actions/cache@v2
         with:
@@ -61,15 +67,16 @@ jobs:
             **/release/*.apk
             **/release/*.aab
 
-      - uses: "marvinpinto/action-automatic-releases@latest"
+      - name: Deploy on GitHub
+        uses: marvinpinto/action-automatic-releases@latest
         with:
-          repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          draft: true
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
           prerelease: true
-          title: "Development Build"
+          title: "[Alpha] Bogadex"
+          automatic_release_tag: "alpha"
           files: |
-            LICENSE.txt
-            **/release/*.apk
+            **/release/*-release.apk
+            **/release/*-release.aab
 
       - name: Upload artifact to Firebase App Distribution
         uses: wzieba/Firebase-Distribution-Github-Action@v1
