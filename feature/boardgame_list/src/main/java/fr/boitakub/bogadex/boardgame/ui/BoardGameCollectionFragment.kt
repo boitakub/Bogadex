@@ -36,7 +36,6 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
@@ -49,6 +48,7 @@ import fr.boitakub.bogadex.boardgame.usecase.ListCollectionItemWanted
 import fr.boitakub.common.databinding.CommonListFragmentBinding
 import fr.boitakub.common.ui.application.AppViewModel
 import fr.boitakub.common.ui.application.ApplicationState
+import kotlinx.coroutines.flow.collect
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -87,15 +87,6 @@ class BoardGameCollectionFragment :
         super.onViewCreated(view, savedInstanceState)
         binding.recyclerView.adapter = adapter
 
-        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-            appViewModel.applicationState.asLiveData().observe(
-                viewLifecycleOwner,
-                {
-                    applyApplicationChanges(it)
-                }
-            )
-        }
-
         presenter.gameList.observe(
             viewLifecycleOwner,
             {
@@ -120,10 +111,21 @@ class BoardGameCollectionFragment :
                 }
             }
         )
+
+        observeApplicationState()
+    }
+
+    private fun observeApplicationState() {
+        lifecycleScope.launchWhenStarted {
+            appViewModel.applicationState.collect {
+                applyApplicationChanges(it)
+            }
+        }
     }
 
     private fun applyApplicationChanges(data: ApplicationState) {
         switchLayout(data.viewType)
+        adapter.applyFilter(presenter.gameList.value, data.filters)
     }
 
     private fun switchLayout(state: Int) {

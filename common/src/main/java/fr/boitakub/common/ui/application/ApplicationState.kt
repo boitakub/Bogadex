@@ -28,4 +28,6 @@
  */
 package fr.boitakub.common.ui.application
 
-data class ApplicationState(val collection: String = "all", val viewType: Int = 1)
+import fr.boitakub.common.ui.Filter
+
+data class ApplicationState(val collection: String = "all", val viewType: Int = 1, val filters: Filter = Filter())

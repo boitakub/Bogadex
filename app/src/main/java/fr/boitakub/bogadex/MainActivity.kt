@@ -35,18 +35,24 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import androidx.customview.widget.Openable
 import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.slider.RangeSlider
 import dagger.hilt.android.AndroidEntryPoint
 import fr.boitakub.bogadex.databinding.ActivityMainBinding
+import fr.boitakub.common.ui.Filter
 import fr.boitakub.common.ui.application.AppViewModel
+import fr.boitakub.common.ui.application.ApplicationState
+import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    val appViewModel: AppViewModel by viewModels()
+    private val appViewModel: AppViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,7 +61,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
-        val drawer = FakeDrawer(supportFragmentManager, BottomNavigationDrawerFragment(appViewModel, navController))
+        val drawer = FakeDrawer(supportFragmentManager, BottomNavigationDrawerFragment(navController))
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         val appBarConfiguration = AppBarConfiguration(
@@ -68,17 +74,41 @@ class MainActivity : AppCompatActivity() {
             // Handle navigation icon press
         }
 
-        binding.appBar.setOnMenuItemClickListener { menuItem ->
-            when (menuItem.itemId) {
-                R.id.menu_switch_layout -> {
-                    appViewModel.switchLayout()
-                    switchIcon(appViewModel.applicationState.value.viewType, menuItem)
-                    true
+        binding.appBar.setupWithNavController(navController, appBarConfiguration)
+        observeFilters()
+    }
+
+    // https://www.section.io/engineering-education/bottom-sheet-dialogs-using-android-studio/
+    private fun showFilterBottomSheetDialog(state: ApplicationState) {
+        val bottomSheetDialog = BottomSheetDialog(this)
+        bottomSheetDialog.setContentView(R.layout.mbs_filters)
+        bottomSheetDialog.findViewById<RangeSlider>(R.id.rs_min_rating)
+            ?.addOnChangeListener { slider, _, _ ->
+                appViewModel.applyFilter(state, Filter(slider.values[0], slider.values[1]))
+            }
+
+        bottomSheetDialog.show()
+    }
+
+    private fun observeFilters() {
+        lifecycleScope.launchWhenStarted {
+            appViewModel.applicationState.collect { state ->
+                binding.appBar.setOnMenuItemClickListener { menuItem ->
+                    when (menuItem.itemId) {
+                        R.id.menu_switch_layout -> {
+                            appViewModel.switchLayout(state)
+                            switchIcon(state.viewType, menuItem)
+                            true
+                        }
+                        else -> false
+                    }
                 }
-                else -> false
+
+                binding.fabFilters.setOnClickListener {
+                    showFilterBottomSheetDialog(state)
+                }
             }
         }
-        binding.appBar.setupWithNavController(navController, appBarConfiguration)
     }
 
     private fun switchIcon(currentState: Number, item: MenuItem) {

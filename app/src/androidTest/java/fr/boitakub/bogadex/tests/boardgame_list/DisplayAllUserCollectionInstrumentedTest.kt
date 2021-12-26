@@ -52,8 +52,11 @@ import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import fr.boitakub.bogadex.MainActivity
 import fr.boitakub.bogadex.R
+import fr.boitakub.bogadex.boardgame.BoardGameDao
+import fr.boitakub.bogadex.boardgame.model.BoardGame
 import fr.boitakub.bogadex.tests.OkHttp3IdlingResource
 import fr.boitakub.bogadex.tests.tools.FileReader.readStringFromFile
+import kotlinx.coroutines.runBlocking
 import okhttp3.mockwebserver.Dispatcher
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
@@ -74,6 +77,9 @@ class DisplayAllUserCollectionInstrumentedTest {
 
     @Inject
     lateinit var okHttp3IdlingResource: OkHttp3IdlingResource
+
+    @Inject
+    lateinit var boardGameDao: BoardGameDao
 
     @get:Rule(order = 0)
     var hiltRule = HiltAndroidRule(this)
@@ -160,7 +166,7 @@ class DisplayAllUserCollectionInstrumentedTest {
     }
 
     @Test
-    fun has_wishLit_displayed() {
+    fun has_wishList_displayed() {
         mockWebServer.dispatcher = object : Dispatcher() {
             override fun dispatch(request: RecordedRequest): MockResponse {
                 if (request.path!!.contains("/xmlapi2/collection")) {
@@ -216,5 +222,47 @@ class DisplayAllUserCollectionInstrumentedTest {
         onView(withId(R.id.recycler_view))
             .perform(scrollToPosition<RecyclerView.ViewHolder>(0))
         onView(withText("7 Wonders Duel")).check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun has_soloList_displayed() {
+        mockWebServer.dispatcher = object : Dispatcher() {
+            override fun dispatch(request: RecordedRequest): MockResponse {
+                if (request.path!!.contains("/xmlapi2/collection")) {
+                    return MockResponse()
+                        .setResponseCode(200)
+                        .setBody(readStringFromFile("Cubenbois.xml"))
+                        .setBodyDelay(1, TimeUnit.SECONDS)
+                } else if (request.path!!.contains("/xmlapi2/thing")) {
+                    return MockResponse()
+                        .setResponseCode(200)
+                        .setBody(readStringFromFile("86246.xml"))
+                        .setBodyDelay(1, TimeUnit.SECONDS)
+                }
+                return MockResponse().setResponseCode(404)
+            }
+        }
+
+        runBlocking {
+            boardGameDao.insertAllBoardGame(
+                listOf(
+                    BoardGame(
+                        bggId = "180263",
+                        minPlayer = 1,
+                        title = "The 7th Continent"
+                    )
+                )
+            )
+        }
+
+        val intent = Intent(ApplicationProvider.getApplicationContext(), MainActivity::class.java)
+        scenario = launchActivity(intent)
+
+        onView(withContentDescription("Open navigation drawer")).perform(click())
+        onView(withId(R.id.display_solo)).perform(click())
+
+        onView(withId(R.id.recycler_view))
+            .perform(scrollToPosition<RecyclerView.ViewHolder>(0))
+        onView(withText("The 7th Continent")).check(matches(isDisplayed()))
     }
 }

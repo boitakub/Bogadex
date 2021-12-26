@@ -1,0 +1,8 @@
+<resources>
+    <integer name="rating_min_value">0</integer>
+    <integer name="rating_max_value">10</integer>
+    <array name="rating_initial_slider_values">
+        <item>0.0</item>
+        <item>10.0</item>
+    </array>
+</resources>

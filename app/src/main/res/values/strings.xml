@@ -7,6 +7,10 @@
     <string name="display_wishlist">My wishlist</string>
     <string name="display_solo">Single player playable</string>
 
+    <string name="filters">Filter games</string>
+    <string name="filters_desc">Display filter screen with different parameters</string>
+    <string name="rs_min_rating">Rate between</string>
+
     <string name="change_display">Toggle view</string>
     <string name="content_change_display">Switch display of your collection</string>
 </resources>

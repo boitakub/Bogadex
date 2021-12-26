@@ -31,6 +31,7 @@ package fr.boitakub.common.ui.application
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fr.boitakub.architecture.Presenter
+import fr.boitakub.common.ui.Filter
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject
@@ -40,15 +41,20 @@ class AppViewModel @Inject constructor() : ViewModel(), Presenter {
     private val _applicationState = MutableStateFlow(ApplicationState())
     val applicationState: StateFlow<ApplicationState> = _applicationState
 
-    fun switchLayout() {
-        if (_applicationState.value.viewType == 1) {
-            _applicationState.value = ApplicationState(_applicationState.value.collection, 2)
+    fun switchLayout(state: ApplicationState) {
+        if (state.viewType == 1) {
+            _applicationState.value = ApplicationState(state.collection, 2)
         } else {
-            _applicationState.value = ApplicationState(_applicationState.value.collection, 1)
+            _applicationState.value = ApplicationState(state.collection, 1)
         }
     }
 
-    fun filterCollectionWith(filter: String) {
-        _applicationState.value = ApplicationState(filter, _applicationState.value.viewType)
+    fun filterCollectionWith(state: ApplicationState, filter: String) {
+        _applicationState.value = ApplicationState(filter, state.viewType)
+    }
+
+    fun applyFilter(state: ApplicationState, filter: Filter) {
+        _applicationState.value =
+            ApplicationState(state.collection, state.viewType, filter)
     }
 }

@@ -33,34 +33,55 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.google.android.material.navigation.NavigationView
+import fr.boitakub.bogadex.databinding.FragmentBottomsheetBinding
 import fr.boitakub.common.ui.application.AppViewModel
+import kotlinx.coroutines.flow.collect
 
-class BottomNavigationDrawerFragment(
-    private val applicationViewModel: AppViewModel,
-    private val navController: NavController
-) : BottomSheetDialogFragment() {
+class BottomNavigationDrawerFragment(private val navController: NavController) : BottomSheetDialogFragment() {
 
-    lateinit var navigationView: NavigationView
+    private var _binding: FragmentBottomsheetBinding? = null
+    private val binding get() = _binding!!
+    private val applicationViewModel: AppViewModel by viewModels()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.fragment_bottomsheet, container, false)
-        navigationView = view.findViewById(R.id.navigation_view)
-        navigationView.setNavigationItemSelectedListener { menuItem ->
-            when (menuItem.itemId) {
-                R.id.display_all -> applicationViewModel.filterCollectionWith("all")
-                R.id.display_collection -> applicationViewModel.filterCollectionWith("collection")
-                R.id.display_wishlist -> applicationViewModel.filterCollectionWith("wishlist")
-                R.id.display_solo -> applicationViewModel.filterCollectionWith("solo")
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentBottomsheetBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        observeApplicationState()
+    }
+
+    private fun observeApplicationState() {
+        lifecycleScope.launchWhenCreated {
+            applicationViewModel.applicationState.collect { state ->
+                binding.navigationView.setNavigationItemSelectedListener { menuItem ->
+                    var dest = state.collection
+                    when (menuItem.itemId) {
+                        R.id.display_all -> dest = "all"
+                        R.id.display_collection -> dest = "collection"
+                        R.id.display_wishlist -> dest = "wishlist"
+                        R.id.display_solo -> dest = "solo"
+                    }
+                    applicationViewModel.filterCollectionWith(state, dest)
+
+                    val bundle = bundleOf("filter" to dest)
+                    navController
+                        .navigate(fr.boitakub.boardgame_list.R.id.navigation_boardgame_list, bundle)
+
+                    dismiss()
+                    true
+                }
             }
-            val bundle = bundleOf("filter" to applicationViewModel.applicationState.value.collection)
-            navController
-                .navigate(fr.boitakub.boardgame_list.R.id.navigation_boardgame_list, bundle)
-            dismiss()
-            true
         }
-        return view
     }
 }

@@ -44,4 +44,6 @@ abstract class CommonListAdapter<T : CommonListViewHolder, E>(val layoutManager:
     override fun getItemCount(): Int {
         return itemList.size
     }
+
+    abstract fun applyFilter(fullList: List<E>?, filters: Filter)
 }

@@ -26,4 +26,14 @@
         app:hideOnScroll="true"
         />
 
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/fab_filters"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_anchor="@id/app_bar"
+        android:layout_margin="18dp"
+        android:contentDescription="@string/filters_desc"
+        android:text="@string/filters"
+        app:icon="@drawable/ic_filter_solid"/>
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

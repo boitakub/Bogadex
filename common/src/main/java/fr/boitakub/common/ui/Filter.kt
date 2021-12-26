@@ -26,20 +26,6 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package fr.boitakub.bogadex.boardgame.model
+package fr.boitakub.common.ui
 
-import androidx.room.Embedded
-import androidx.room.Relation
-
-data class CollectionItemWithDetails(
-    @Embedded val item: CollectionItem,
-    @Relation(
-        entity = BoardGame::class,
-        parentColumn = "bgg_id",
-        entityColumn = "bgg_id"
-    ) var details: BoardGame?
-) {
-    fun averageRating(): Float {
-        return details?.statistic?.average ?: 0.0f
-    }
-}
+data class Filter(val minRatingValue: Float = 0.0f, val maxRatingValue: Float = 10.0f)
