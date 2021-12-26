@@ -156,3 +156,13 @@ jobs:
           SIGNING_KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
           SIGNING_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
           SIGNING_STORE_PASSWORD: ${{ secrets.SIGNING_STORE_PASSWORD }}
+
+      # Upload unsigned release APK
+      - name: Upload apks
+        uses: actions/upload-artifact@v2
+        with:
+          name: apk
+          path: |
+            **/release/*.apk
+            **/release/*.aab
+          retention-days: 5

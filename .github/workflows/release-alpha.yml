@@ -1,12 +1,12 @@
-name: Build Release
+name: Publish Alpha
 
 on:
   push:
+    branches-ignore:
+      - 'develop'
+      - 'main'
     tags:
-      - 'v*'
-  pull_request:
-    branches:
-      - main
+      - 'v*-alpha'
 
 jobs:
   generate-release-apk:
@@ -52,11 +52,24 @@ jobs:
           SIGNING_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
           SIGNING_STORE_PASSWORD: ${{ secrets.SIGNING_STORE_PASSWORD }}
 
-      - name: Upload APK
+      # Upload signed release APK
+      - name: Upload apks
         uses: actions/upload-artifact@v2
         with:
-          name: Build Artifacts
-          path: app/build/outputs/
+          name: apk
+          path: |
+            **/release/*.apk
+            **/release/*.aab
+
+      - uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          draft: true
+          prerelease: true
+          title: "Development Build"
+          files: |
+            LICENSE.txt
+            **/release/*.apk
 
       - name: Upload artifact to Firebase App Distribution
         uses: wzieba/Firebase-Distribution-Github-Action@v1
