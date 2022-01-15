@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021-2022, Boitakub
+ * Copyright (c) 2022, Boitakub
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,21 +26,22 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package fr.boitakub.bogadex.boardgame.model
+package fr.boitakub.bgg.client
 
-import androidx.room.ColumnInfo
-import androidx.room.Embedded
-import androidx.room.Entity
-import androidx.room.PrimaryKey
-import fr.boitakub.architecture.BusinessModel
-import java.util.Date
+import okhttp3.Interceptor
+import okhttp3.Request
+import okhttp3.Response
+import java.io.IOException
+import kotlin.Throws
 
-@Entity(tableName = "collection_item")
-data class CollectionItem(
-    @PrimaryKey @ColumnInfo(name = "bgg_id") var bggId: String = "",
-    @ColumnInfo(name = "title") var title: String? = "",
-    @ColumnInfo(name = "year_published") var yearPublished: Int = 0,
-    @ColumnInfo(name = "cover_url") var coverUrl: String? = "",
-    @ColumnInfo(name = "update_date") var updateDate: Date = Date(),
-    @Embedded var status: CollectionStatus = CollectionStatus()
-) : BusinessModel
+class CollectionRequestQueuedInterceptor : Interceptor {
+    @Throws(IOException::class)
+    override fun intercept(chain: Interceptor.Chain): Response {
+        val request: Request = chain.request()
+        val response: Response = chain.proceed(request)
+        if (response.code == 202) {
+            throw CollectionRequestQueuedException()
+        }
+        return response
+    }
+}

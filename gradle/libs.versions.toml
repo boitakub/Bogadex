@@ -76,6 +76,7 @@ tikxml-annotation = { module = "com.tickaroo.tikxml:annotation", version.ref = "
 tikxml-core = { module = "com.tickaroo.tikxml:core", version.ref = "tikxml"}
 tikxml-retrofitConverter = { module = "com.tickaroo.tikxml:retrofit-converter", version.ref = "tikxml"}
 tikxml-processor = { module = "com.tickaroo.tikxml:processor", version.ref = "tikxml"}
+tikxml-htmlescape = { module = "com.tickaroo.tikxml:converter-htmlescape", version.ref = "tikxml"}
 
 coil-core = { module = "io.coil-kt:coil", version.ref = "coil"}
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil"}

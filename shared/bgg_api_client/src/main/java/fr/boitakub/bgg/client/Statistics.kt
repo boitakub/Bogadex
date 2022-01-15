@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021-2022, Boitakub
+ * Copyright (c) 2022, Boitakub
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,21 +26,67 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package fr.boitakub.bogadex.boardgame.model
+package fr.boitakub.bgg.client
 
-import androidx.room.ColumnInfo
-import androidx.room.Embedded
-import androidx.room.Entity
-import androidx.room.PrimaryKey
-import fr.boitakub.architecture.BusinessModel
-import java.util.Date
+import com.tickaroo.tikxml.annotation.Attribute
+import com.tickaroo.tikxml.annotation.Element
+import com.tickaroo.tikxml.annotation.Path
+import com.tickaroo.tikxml.annotation.Xml
 
-@Entity(tableName = "collection_item")
-data class CollectionItem(
-    @PrimaryKey @ColumnInfo(name = "bgg_id") var bggId: String = "",
-    @ColumnInfo(name = "title") var title: String? = "",
-    @ColumnInfo(name = "year_published") var yearPublished: Int = 0,
-    @ColumnInfo(name = "cover_url") var coverUrl: String? = "",
-    @ColumnInfo(name = "update_date") var updateDate: Date = Date(),
-    @Embedded var status: CollectionStatus = CollectionStatus()
-) : BusinessModel
+@Xml
+class Statistics {
+    @Attribute
+    var page = 0
+
+    @Path("ratings/usersrated")
+    @Attribute(name = "value")
+    var usersrated: String? = null
+
+    @Path("ratings/average")
+    @Attribute(name = "value")
+    var average: String? = null
+
+    @Path("ratings/bayesaverage")
+    @Attribute(name = "value")
+    var bayesaverage: String? = null
+
+    @Path("ratings/stddev")
+    @Attribute(name = "value")
+    var stddev: String? = null
+
+    @Path("ratings/median")
+    @Attribute(name = "value")
+    var median: String? = null
+
+    @Path("ratings/owned")
+    @Attribute(name = "value")
+    var owned = 0
+
+    @Path("ratings/trading")
+    @Attribute(name = "value")
+    var trading = 0
+
+    @Path("ratings/wanting")
+    @Attribute(name = "value")
+    var wanting = 0
+
+    @Path("ratings/wishing")
+    @Attribute(name = "value")
+    var wishing = 0
+
+    @Path("ratings/numcomments")
+    @Attribute(name = "value")
+    var numcomments = 0
+
+    @Path("ratings/numweights")
+    @Attribute(name = "value")
+    var numweights = 0
+
+    @Path("ratings/averageweight")
+    @Attribute(name = "value")
+    var averageweight = 0.0
+
+    @Path("ratings/ranks")
+    @Element
+    var ranks: List<Rank>? = null
+}

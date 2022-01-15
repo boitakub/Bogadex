@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021-2022, Boitakub
+ * Copyright (c) 2022, Boitakub
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,21 +26,57 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package fr.boitakub.bogadex.boardgame.model
+package fr.boitakub.bgg.client
 
-import androidx.room.ColumnInfo
-import androidx.room.Embedded
-import androidx.room.Entity
-import androidx.room.PrimaryKey
-import fr.boitakub.architecture.BusinessModel
-import java.util.Date
+import com.tickaroo.tikxml.annotation.Attribute
+import com.tickaroo.tikxml.annotation.Element
+import com.tickaroo.tikxml.annotation.PropertyElement
+import com.tickaroo.tikxml.annotation.Xml
+import com.tickaroo.tikxml.converter.htmlescape.HtmlEscapeStringConverter
 
-@Entity(tableName = "collection_item")
-data class CollectionItem(
-    @PrimaryKey @ColumnInfo(name = "bgg_id") var bggId: String = "",
-    @ColumnInfo(name = "title") var title: String? = "",
-    @ColumnInfo(name = "year_published") var yearPublished: Int = 0,
-    @ColumnInfo(name = "cover_url") var coverUrl: String? = "",
-    @ColumnInfo(name = "update_date") var updateDate: Date = Date(),
-    @Embedded var status: CollectionStatus = CollectionStatus()
-) : BusinessModel
+@Xml
+class UserBoardGame {
+    @JvmField
+    @Attribute
+    var objecttype: String? = null
+
+    @JvmField
+    @Attribute
+    var objectid: String = ""
+
+    @JvmField
+    @Attribute
+    var subtype: String? = null
+
+    @JvmField
+    @Attribute
+    var collid: String? = null
+
+    @JvmField
+    @PropertyElement(converter = HtmlEscapeStringConverter::class)
+    var name: String? = null
+
+    @JvmField
+    @PropertyElement
+    var yearpublished = 0
+
+    @JvmField
+    @PropertyElement
+    var image: String? = null
+
+    @JvmField
+    @PropertyElement
+    var thumbnail: String? = null
+
+    @JvmField
+    @PropertyElement
+    var numplays = 0
+
+    @JvmField
+    @Element(name = "status")
+    var status: UserBoardGameStatus = UserBoardGameStatus()
+
+    @JvmField
+    @Element(name = "stats")
+    var stats: UserBoardGameStatistics? = null
+}

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021, Boitakub
+ * Copyright (c) 2021-2022, Boitakub
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -41,7 +41,7 @@ import kotlin.math.abs
 data class BoardGame(
     @PrimaryKey @ColumnInfo(name = "bgg_id") var bggId: String = "",
     @ColumnInfo(name = "title") var title: String = "",
-    @ColumnInfo(name = "description") var description: String = "",
+    @ColumnInfo(name = "description") var description: String? = "",
     @ColumnInfo(name = "year_published") var yearPublished: Int = 0,
     @ColumnInfo(name = "min_player") var minPlayer: Int = 0,
     @ColumnInfo(name = "max_player") var maxPlayer: Int = 0,

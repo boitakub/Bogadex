@@ -1,6 +1,7 @@
 plugins {
     id("com.android.library")
     kotlin("android")
+    kotlin("kapt")
 }
 
 apply(rootProject.file("./gradle/jacoco.gradle"))
@@ -50,12 +51,14 @@ dependencies {
         exclude(group = "com.squareup.okhttp3")
         exclude(group = "com.squareup.retrofit2")
     }
-    annotationProcessor(libs.tikxml.processor)
+    implementation(libs.tikxml.htmlescape)
+    kapt(libs.tikxml.processor)
     //endregion
 
     //region Networking
 
     implementation(libs.okhttp.core)
+    implementation(libs.okhttp.loggingInterceptor)
     implementation(libs.retrofit.core)
 
     //endregion

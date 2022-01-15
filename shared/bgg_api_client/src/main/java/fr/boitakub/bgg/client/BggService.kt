@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021, Boitakub
+ * Copyright (c) 2021-2022, Boitakub
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,10 +29,12 @@
 package fr.boitakub.bgg.client
 
 import com.tickaroo.tikxml.TikXml
+import com.tickaroo.tikxml.converter.htmlescape.HtmlEscapeStringConverter
 import com.tickaroo.tikxml.retrofit.TikXmlConverterFactory
 import okhttp3.HttpUrl
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.http.GET
 import retrofit2.http.Headers
@@ -40,9 +42,6 @@ import retrofit2.http.Query
 import java.util.concurrent.TimeUnit
 
 interface BggService {
-    @GET("/xmlapi2/search?type=boardgame")
-    @Headers("Cache-Control: max-age=1800")
-    suspend fun boardGames(@Query("query") query: String?): BggSearchResult?
 
     @GET("/xmlapi2/thing?versions=1&stats=1")
     @Headers("Cache-Control: max-age=1800")
@@ -55,6 +54,9 @@ interface BggService {
     companion object {
         private const val DEFAULT_API_CONNECTION_TIMEOUT_IN_SECONDS: Long = 30
         private const val DEFAULT_API_READ_WRITE_TIMEOUT_IN_SECONDS: Long = 30
+
+        private val httpLoggingInterceptor =
+            HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
 
         fun getDefaultRetrofitClient(
             baseUrl: HttpUrl,
@@ -84,6 +86,7 @@ interface BggService {
                     TimeUnit.SECONDS
                 )
                 .addInterceptor(CollectionRequestQueuedInterceptor())
+                .addInterceptor(httpLoggingInterceptor)
             if (networkInterceptors != null) {
                 for (networkInterceptor in networkInterceptors) {
                     okHttpClientBuild.addNetworkInterceptor(networkInterceptor)
@@ -95,6 +98,7 @@ interface BggService {
         private fun buildXmlParser(): TikXml {
             return TikXml.Builder()
                 .exceptionOnUnreadXml(false)
+                .addTypeConverter(String::class.java, HtmlEscapeStringConverter())
                 .build()
         }
     }

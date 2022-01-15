@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021-2022, Boitakub
+ * Copyright (c) 2022, Boitakub
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,21 +26,52 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package fr.boitakub.bogadex.boardgame.model
+package fr.boitakub.bgg.client
 
-import androidx.room.ColumnInfo
-import androidx.room.Embedded
-import androidx.room.Entity
-import androidx.room.PrimaryKey
-import fr.boitakub.architecture.BusinessModel
-import java.util.Date
+import com.tickaroo.tikxml.annotation.Attribute
+import com.tickaroo.tikxml.annotation.Element
+import com.tickaroo.tikxml.annotation.Path
+import com.tickaroo.tikxml.annotation.PropertyElement
+import com.tickaroo.tikxml.annotation.Xml
 
-@Entity(tableName = "collection_item")
-data class CollectionItem(
-    @PrimaryKey @ColumnInfo(name = "bgg_id") var bggId: String = "",
-    @ColumnInfo(name = "title") var title: String? = "",
-    @ColumnInfo(name = "year_published") var yearPublished: Int = 0,
-    @ColumnInfo(name = "cover_url") var coverUrl: String? = "",
-    @ColumnInfo(name = "update_date") var updateDate: Date = Date(),
-    @Embedded var status: CollectionStatus = CollectionStatus()
-) : BusinessModel
+@Xml(name = "item")
+class Version {
+    @Attribute
+    var id = 0
+
+    @Attribute
+    var type: String? = null
+
+    @PropertyElement
+    var thumbnail: String? = null
+
+    @PropertyElement
+    var image: String? = null
+
+    @Path("name")
+    @Attribute(name = "value")
+    var name: String? = null
+
+    @Path("yearpublished")
+    @Attribute(name = "value")
+    var yearPublished = 0
+
+    @Element(name = "link")
+    var links: List<Link>? = null
+
+    @Path("width")
+    @Attribute(name = "value")
+    var width = 0.0
+
+    @Path("length")
+    @Attribute(name = "value")
+    var length = 0.0
+
+    @Path("depth")
+    @Attribute(name = "value")
+    var depth = 0.0
+
+    @Path("weight")
+    @Attribute(name = "value")
+    var weight = 0.0
+}

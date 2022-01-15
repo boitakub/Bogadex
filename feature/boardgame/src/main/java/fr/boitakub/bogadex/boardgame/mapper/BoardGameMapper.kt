@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021, Boitakub
+ * Copyright (c) 2021-2022, Boitakub
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -62,9 +62,9 @@ class BoardGameMapper @Inject constructor() :
 
     private fun map(source: Statistics): BoardGameBggStatistic {
         return BoardGameBggStatistic(
-            source.usersrated.toIntOrNull() ?: 0,
-            source.average.toFloatOrNull() ?: 0f,
-            source.bayesaverage.toFloatOrNull() ?: 0f,
+            source.usersrated?.toIntOrNull() ?: 0,
+            source.average?.toFloatOrNull() ?: 0f,
+            source.bayesaverage?.toFloatOrNull() ?: 0f,
             source.numweights,
             source.averageweight.toFloat(),
             source.owned,
