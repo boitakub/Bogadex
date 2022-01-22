@@ -9,7 +9,7 @@
 <a href="https://github.com/marketplace/actions/super-linter"><img alt="Super-Linter" src="https://github.com/boitakub/Bogadex/workflows/Lint%20Code%20Base/badge.svg"/></a>
 <a href="https://www.codacy.com/gh/boitakub/Bogadex/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=boitakub/Bogadex&amp;utm_campaign=Badge_Grade"><img src="https://app.codacy.com/project/badge/Grade/92ff47411c2a4d65b4389f4924ea8f0d"/></a>
 <a href="https://www.codacy.com/gh/boitakub/Bogadex/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=boitakub/Bogadex&amp;utm_campaign=Badge_Coverage"><img src="https://app.codacy.com/project/badge/Coverage/92ff47411c2a4d65b4389f4924ea8f0d"/></a>
-<a href="https://kotlinlang.org"><img alt="API" src="https://img.shields.io/badge/Kotlin-1.5.30-blue.svg?style=flat"/></a>
+<a href="https://kotlinlang.org"><img alt="API" src="https://img.shields.io/badge/Kotlin-1.5.31-blue.svg?style=flat"/></a>
 <a href="https://android-arsenal.com/api?level=23"><img alt="API" src="https://img.shields.io/badge/API-23%2B-brightgreen.svg?style=flat"/></a>
 <a href="LICENSE.md"><img alt="License" src="https://img.shields.io/github/license/boitakub/bogadex"/></a>
 <a href="https://github.com/carloscuesta/gitmoji"><img alt="gitmoji badge" src="https://img.shields.io/badge/gitmoji-%20😜%20😍-FFDD67.svg"/></a>
@@ -55,7 +55,6 @@ Go to the [Releases](https://github.com/boitakub/Bogadex/releases) to download t
 * [Coil](https://github.com/coil-kt/coil) - loading images.
 * [Material-Components](https://github.com/material-components/material-components-android) - Material design components like ripple animation, cardView.
 * [Codacy](https://codacy.com/) - Code quality and coverage analysis
-* [Version Catalogs](https://docs.gradle.org/current/userguide/platforms.html) - Group dependencies for multi-modules using Gradle 7 VersionCatalogs and [centralized in one file](/gradle/libs.versions.toml) - [Guide](https://blog.stylingandroid.com/gradle-version-catalogs/)
 * [refreshVersion](https://jmfayard.github.io/refreshVersions) - Bump dependencies version on all modules using one command and [centralized in one file](versions.properties)
 * [Gradle optimizations](https://proandroiddev.com/how-we-reduced-our-gradle-build-times-by-over-80-51f2b6d6b05b) - Some gradle tips to optimize build time
 

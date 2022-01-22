@@ -34,6 +34,10 @@ android {
         exclude("META-INF/LGPL2.1")
         exclude("META-INF/AL2.0")
     }
+    buildFeatures {
+        compose = true
+        viewBinding = true
+    }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
@@ -41,12 +45,8 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
-    buildFeatures {
-        viewBinding = true
-        compose = true
-    }
     composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.compose.get()
+        kotlinCompilerExtensionVersion = "1.0.5"
     }
     sourceSets {
         getByName("androidTest").assets.srcDirs("src/androidTest/assets")
@@ -60,72 +60,72 @@ dependencies {
 
     //region Core & Lifecycle
 
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.appcompat)
+    implementation(AndroidX.core.ktx)
+    implementation(AndroidX.appCompat)
+    implementation(AndroidX.fragment.ktx)
 
-    implementation(libs.androidx.fragment.ktx)
-
-    implementation(libs.androidx.lifecycle.runtime)
-    implementation(libs.androidx.lifecycle.viewModel)
-    implementation(libs.androidx.lifecycle.liveData)
+    implementation(AndroidX.lifecycle.runtimeKtx)
+    implementation(AndroidX.lifecycle.viewModelKtx)
+    implementation(AndroidX.lifecycle.liveDataKtx)
 
     //endregion
 
     //region Dependency Injection
 
-    implementation(libs.hilt.android)
-    kapt(libs.hilt.androidCompiler)
-    implementation(libs.hilt.work)
-    kapt(libs.hilt.compiler)
+    implementation(Google.dagger.hilt.android)
+    kapt(Google.dagger.hilt.compiler)
+    implementation(AndroidX.hilt.work)
+    kapt(AndroidX.hilt.compiler)
 
     //endregion
 
     //region UI
 
-    implementation(libs.androidx.composeUi)
-    implementation(libs.androidx.composeUiTooling)
-    implementation(libs.androidx.composeMaterial)
-    implementation(libs.androidx.foundation)
+    implementation(AndroidX.compose.ui)
+    implementation(AndroidX.compose.ui.tooling)
+    implementation(AndroidX.compose.material)
+    implementation(AndroidX.compose.foundation)
+    implementation("androidx.compose.runtime:runtime:1.0.0")
 
     //endregion
 
     //region UI
 
-    implementation(libs.coil.compose)
+    implementation(COIL.compose)
 
     //endregion
 
     //region Service & Worker
 
-    implementation(libs.work.runtime)
-    implementation(libs.work.ktx)
+    implementation(AndroidX.work.runtime)
+    implementation(AndroidX.work.runtimeKtx)
 
     //endregion
 
     //region Database
 
-    implementation(libs.room.runtime)
+    implementation(AndroidX.room.runtime)
 
     //endregion
 
     //region Test
 
-    testImplementation(libs.testing.junit)
-    testImplementation(libs.testing.core.ktx)
+    testImplementation(Testing.junit4)
+    testImplementation(AndroidX.test.coreKtx)
 
     //endregion
 
     //region AndroidTest
 
     androidTestImplementation(project(":shared:tests_tools"))
-    androidTestImplementation(libs.testing.androidx.junit)
-    androidTestImplementation(libs.testing.espresso.core)
-    androidTestImplementation(libs.testing.mockk.android)
-    androidTestImplementation(libs.testing.work)
+    androidTestImplementation(AndroidX.test.ext.junit)
+    androidTestImplementation(AndroidX.test.espresso.core)
+    androidTestImplementation(Testing.mockK.android)
+    androidTestImplementation(AndroidX.work.testing)
 
     // -- Compose Tests
-    androidTestImplementation(libs.testing.compose.ui)
-    debugImplementation(libs.testing.compose.manifest)
+    androidTestImplementation(AndroidX.compose.ui.testJunit4)
+    debugImplementation(AndroidX.compose.ui.testManifest)
 
     //endregion
 }

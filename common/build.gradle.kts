@@ -30,6 +30,10 @@ android {
             )
         }
     }
+    buildFeatures {
+        compose = true
+        viewBinding = true
+    }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
@@ -37,12 +41,8 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
-    buildFeatures {
-        viewBinding = true
-        compose = true
-    }
     composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.compose.get()
+        kotlinCompilerExtensionVersion = "1.0.5"
     }
 }
 
@@ -51,32 +51,33 @@ dependencies {
 
     //region UI
 
-    implementation(libs.material)
-    implementation(libs.androidx.composeUi)
-    implementation(libs.androidx.composeUiTooling)
-    implementation(libs.androidx.foundation)
+    implementation(Google.android.material)
+    implementation(AndroidX.compose.ui)
+    implementation(AndroidX.compose.ui.tooling)
+    implementation(AndroidX.compose.foundation)
+    implementation("androidx.compose.runtime:runtime:1.0.0")
 
     //endregion
 
     //region Dependency Injection
 
-    implementation(libs.hilt.android)
-    kapt(libs.hilt.androidCompiler)
-    implementation(libs.hilt.work)
-    kapt(libs.hilt.compiler)
+    implementation(Google.dagger.hilt.android)
+    kapt(Google.dagger.hilt.compiler)
+    implementation(AndroidX.hilt.work)
+    kapt(AndroidX.hilt.compiler)
 
     //endregion
 
     //region Test
 
-    testImplementation(libs.testing.junit)
+    testImplementation(Testing.junit4)
 
     //endregion
 
     //region AndroidTest
 
-    androidTestImplementation(libs.testing.androidx.junit)
-    androidTestImplementation(libs.testing.espresso.core)
+    androidTestImplementation(AndroidX.test.ext.junit)
+    androidTestImplementation(AndroidX.test.espresso.core)
 
     //endregion
 }

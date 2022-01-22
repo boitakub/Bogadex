@@ -11,23 +11,20 @@ buildscript {
         maven(url = "https://plugins.gradle.org/m2/")
     }
     dependencies {
-        val libs = project.extensions.getByType<VersionCatalogsExtension>()
-            .named("libs") as org.gradle.accessors.dm.LibrariesForLibs
-
         // -- Core plugins
-        classpath(libs.android.gradlePlugin)
-        classpath(libs.kotlin.gradlePlugin)
+        classpath(Android.tools.build.gradlePlugin)
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:_")
 
         // -- Utility plugins
-        classpath(libs.jacocoPlugin)
+        classpath("org.jacoco:org.jacoco.core:_")
 
         // -- Application plugins
-        classpath(libs.hiltAndroidPlugin)
+        classpath(Google.dagger.hilt.android.gradlePlugin)
 
         // -- Services & Monitoring
-        classpath("com.google.gms:google-services:4.3.10")
-        classpath("com.google.firebase:firebase-crashlytics-gradle:2.8.1")
-        classpath("com.google.firebase:perf-plugin:1.4.0")
+        classpath(Google.playServicesGradlePlugin)
+        classpath(Firebase.crashlyticsGradlePlugin)
+        classpath(Firebase.performanceMonitoringGradlePlugin)
     }
 }
 
@@ -76,7 +73,7 @@ subprojects {
         resolutionStrategy {
             eachDependency {
                 when (requested.group) {
-                    "org.jacoco" -> useVersion(libs.versions.jacoco.get())
+                    "org.jacoco" -> useVersion("0.8.7")
                 }
             }
         }

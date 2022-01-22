@@ -32,23 +32,20 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
 }
 
 dependencies {
 
     //region Test
 
-    testImplementation(libs.testing.junit)
+    testImplementation(Testing.junit4)
 
     //endregion
 
     //region AndroidTest
 
-    androidTestImplementation(libs.testing.androidx.junit)
-    androidTestImplementation(libs.testing.espresso.core)
+    androidTestImplementation(AndroidX.test.ext.junit)
+    androidTestImplementation(AndroidX.test.espresso.core)
 
     //endregion
 }

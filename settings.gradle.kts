@@ -1,6 +1,6 @@
 plugins {
     // See https://jmfayard.github.io/refreshVersions
-    id("de.fayard.refreshVersions") version "0.30.1"
+    id("de.fayard.refreshVersions") version "0.30.2"
 }
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
@@ -17,5 +17,3 @@ include(":common")
 include(":shared:architecture")
 include(":shared:bgg_api_client")
 include(":shared:tests_tools")
-
-enableFeaturePreview("VERSION_CATALOGS") // Gradle 7 new dependency management tool

@@ -34,9 +34,6 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
     buildFeatures {
         viewBinding = true
     }
@@ -50,58 +47,57 @@ dependencies {
 
     //region Core & Lifecycle
 
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.appcompat)
+    implementation(AndroidX.core.ktx)
+    implementation(AndroidX.appCompat)
+    implementation(AndroidX.fragment.ktx)
 
-    implementation(libs.androidx.fragment.ktx)
-
-    implementation(libs.androidx.lifecycle.viewModel)
-    implementation(libs.androidx.lifecycle.liveData)
+    implementation(AndroidX.lifecycle.viewModelKtx)
+    implementation(AndroidX.lifecycle.liveDataKtx)
 
     //endregion
 
     //region Dependency Injection
 
-    implementation(libs.hilt.android)
-    kapt(libs.hilt.androidCompiler)
-    implementation(libs.hilt.work)
-    kapt(libs.hilt.compiler)
+    implementation(Google.dagger.hilt.android)
+    kapt(Google.dagger.hilt.compiler)
+    implementation(AndroidX.hilt.work)
+    kapt(AndroidX.hilt.compiler)
 
     //endregion
 
     //region UI
 
-    implementation(libs.material)
-    implementation(libs.androidx.navigation.fragment.ktx)
-    implementation(libs.coil.core)
+    implementation(Google.android.material)
+    implementation(AndroidX.navigation.fragmentKtx)
+    implementation(COIL)
 
-    implementation(libs.shapeOfView)
+    implementation("io.github.florent37:shapeofview:_")
 
     //endregion
 
     //region Service & Worker
 
-    implementation(libs.work.runtime)
-    implementation(libs.work.ktx)
+    implementation(AndroidX.work.runtime)
+    implementation(AndroidX.work.runtimeKtx)
 
     //endregion
 
     //region Database
 
-    implementation(libs.room.runtime)
+    implementation(AndroidX.room.runtime)
 
     //endregion
 
     //region Test
 
-    testImplementation(libs.testing.junit)
+    testImplementation(Testing.junit4)
 
     //endregion
 
     //region AndroidTest
 
-    androidTestImplementation(libs.testing.androidx.junit)
-    androidTestImplementation(libs.testing.espresso.core)
+    androidTestImplementation(AndroidX.test.ext.junit)
+    androidTestImplementation(AndroidX.test.espresso.core)
 
     //endregion
 }

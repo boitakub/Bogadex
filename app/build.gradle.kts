@@ -66,6 +66,10 @@ android {
             signingConfig = signingConfigs.getByName("release")
         }
     }
+    buildFeatures {
+        compose = true
+        viewBinding = true
+    }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
@@ -73,8 +77,8 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
-    buildFeatures {
-        viewBinding = true
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.0.5"
     }
     sourceSets {
         getByName("androidTest").assets.srcDirs("src/androidTest/assets")
@@ -96,79 +100,80 @@ dependencies {
 
     //region Core & Lifecycle
 
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.appcompat)
+    implementation(AndroidX.core.ktx)
+    implementation(AndroidX.appCompat)
 
     //endregion
 
     //region Dependency Injection
 
-    implementation(libs.hilt.android)
-    kapt(libs.hilt.androidCompiler)
-    implementation(libs.hilt.work)
-    kapt(libs.hilt.compiler)
+    implementation(Google.dagger.hilt.android)
+    kapt(Google.dagger.hilt.compiler)
+    implementation(AndroidX.hilt.work)
+    kapt(AndroidX.hilt.compiler)
 
     //endregion
 
     //region UI
 
-    implementation(libs.material)
-    implementation(libs.androidx.navigation.ui.ktx)
-    implementation(libs.androidx.navigation.fragment.ktx)
+    implementation(Google.android.material)
+    implementation(AndroidX.navigation.uiKtx)
+    implementation(AndroidX.navigation.fragmentKtx)
+    implementation("androidx.compose.runtime:runtime:1.0.0")
 
     //endregion
 
     //region Networking
 
-    implementation(libs.okhttp.core)
-    implementation(libs.okhttp.loggingInterceptor)
-    implementation(libs.retrofit.core)
+    implementation(Square.okHttp3)
+    implementation(Square.okHttp3.loggingInterceptor)
+    implementation(Square.retrofit2)
 
     //endregion
 
     //region Service & Worker
 
-    implementation(libs.work.runtime)
-    implementation(libs.work.ktx)
+    implementation(AndroidX.work.runtime)
+    implementation(AndroidX.work.runtimeKtx)
 
     //endregion
 
     //region Database
 
-    implementation(libs.room.runtime)
-    kapt(libs.room.compiler)
-    implementation(libs.room.ktx)
-
-    //endregion
-
-    //region Test
-
-    testImplementation(libs.testing.junit)
+    implementation(AndroidX.room.runtime)
+    kapt(AndroidX.room.compiler)
+    implementation(AndroidX.room.ktx)
 
     //endregion
 
     //region Monitoring
 
-    implementation(platform("com.google.firebase:firebase-bom:29.0.3"))
+    implementation(platform(Firebase.bom))
     implementation("com.google.firebase:firebase-crashlytics-ktx")
     implementation("com.google.firebase:firebase-analytics-ktx")
     implementation("com.google.firebase:firebase-perf-ktx")
 
     //endregion
 
+    //region Test
+
+    testImplementation(Testing.junit4)
+
+    //endregion
+
     //region AndroidTest
 
     androidTestImplementation(project(":shared:tests_tools"))
-    androidTestImplementation(libs.testing.androidx.junit)
-    androidTestImplementation(libs.testing.espresso.core)
-    androidTestImplementation(libs.testing.espresso.contrib) {
+    androidTestImplementation(AndroidX.test.ext.junit)
+    androidTestImplementation(AndroidX.test.espresso.core)
+    androidTestImplementation("androidx.test.espresso:espresso-contrib:_") {
         exclude(module = "protobuf-lite")
     }
-    androidTestImplementation(libs.testing.core.ktx)
-    androidTestImplementation(libs.testing.hilt.android)
-    kaptAndroidTest(libs.hilt.androidCompiler)
-    androidTestImplementation(libs.testing.work)
-    androidTestImplementation(libs.testing.okhttp.mockwebserver)
+    androidTestImplementation(AndroidX.test.coreKtx)
+    androidTestImplementation(Google.dagger.hilt.android.testing)
+    kaptAndroidTest(Google.dagger.hilt.compiler)
+    androidTestImplementation(AndroidX.work.testing)
+    androidTestImplementation(Square.okHttp3.mockWebServer)
 
     //endregion
 }

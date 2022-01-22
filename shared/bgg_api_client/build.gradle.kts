@@ -33,46 +33,43 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
 }
 
 dependencies {
 
     //region Parsing
-    api(libs.tikxml.annotation) {
+    api("com.tickaroo.tikxml:annotation:_") {
         exclude(group = "com.squareup.okio")
     }
-    implementation(libs.tikxml.core) {
+    implementation("com.tickaroo.tikxml:core:_") {
         exclude(group = "com.squareup.okio")
     }
-    implementation(libs.tikxml.retrofitConverter) {
+    implementation("com.tickaroo.tikxml:retrofit-converter:_") {
         exclude(group = "com.squareup.okhttp3")
         exclude(group = "com.squareup.retrofit2")
     }
-    implementation(libs.tikxml.htmlescape)
-    kapt(libs.tikxml.processor)
+    implementation("com.tickaroo.tikxml:converter-htmlescape:_")
+    kapt("com.tickaroo.tikxml:processor:_")
     //endregion
 
     //region Networking
 
-    implementation(libs.okhttp.core)
-    implementation(libs.okhttp.loggingInterceptor)
-    implementation(libs.retrofit.core)
+    implementation(Square.okHttp3)
+    implementation(Square.okHttp3.loggingInterceptor)
+    implementation(Square.retrofit2)
 
     //endregion
 
     //region Test
 
-    testImplementation(libs.testing.junit)
+    testImplementation(Testing.junit4)
 
     //endregion
 
     //region AndroidTest
 
-    androidTestImplementation(libs.testing.androidx.junit)
-    androidTestImplementation(libs.testing.espresso.core)
+    androidTestImplementation(AndroidX.test.ext.junit)
+    androidTestImplementation(AndroidX.test.espresso.core)
 
     //endregion
 }
