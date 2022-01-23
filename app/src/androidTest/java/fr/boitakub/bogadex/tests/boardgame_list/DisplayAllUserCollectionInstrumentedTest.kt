@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021, Boitakub
+ * Copyright (c) 2021-2022, Boitakub
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -112,18 +112,19 @@ class DisplayAllUserCollectionInstrumentedTest {
     fun has_homeList_displayed() {
         mockWebServer.dispatcher = object : Dispatcher() {
             override fun dispatch(request: RecordedRequest): MockResponse {
+                var response: MockResponse = MockResponse().setResponseCode(404)
                 if (request.path!!.contains("/xmlapi2/collection")) {
-                    return MockResponse()
+                    response = MockResponse()
                         .setResponseCode(200)
                         .setBody(readStringFromFile("Cubenbois.xml"))
                         .setBodyDelay(1, TimeUnit.SECONDS)
                 } else if (request.path!!.contains("/xmlapi2/thing")) {
-                    return MockResponse()
+                    response = MockResponse()
                         .setResponseCode(200)
                         .setBody(readStringFromFile("86246.xml"))
                         .setBodyDelay(1, TimeUnit.SECONDS)
                 }
-                return MockResponse().setResponseCode(404)
+                return response
             }
         }
 
@@ -139,18 +140,19 @@ class DisplayAllUserCollectionInstrumentedTest {
     fun has_collectionList_displayed() {
         mockWebServer.dispatcher = object : Dispatcher() {
             override fun dispatch(request: RecordedRequest): MockResponse {
+                var response: MockResponse = MockResponse().setResponseCode(404)
                 if (request.path!!.contains("/xmlapi2/collection")) {
-                    return MockResponse()
+                    response = MockResponse()
                         .setResponseCode(200)
                         .setBody(readStringFromFile("Cubenbois.xml"))
                         .setBodyDelay(1, TimeUnit.SECONDS)
                 } else if (request.path!!.contains("/xmlapi2/thing")) {
-                    return MockResponse()
+                    response = MockResponse()
                         .setResponseCode(200)
                         .setBody(readStringFromFile("86246.xml"))
                         .setBodyDelay(1, TimeUnit.SECONDS)
                 }
-                return MockResponse().setResponseCode(404)
+                return response
             }
         }
 
@@ -169,18 +171,19 @@ class DisplayAllUserCollectionInstrumentedTest {
     fun has_wishList_displayed() {
         mockWebServer.dispatcher = object : Dispatcher() {
             override fun dispatch(request: RecordedRequest): MockResponse {
+                var response: MockResponse = MockResponse().setResponseCode(404)
                 if (request.path!!.contains("/xmlapi2/collection")) {
-                    return MockResponse()
+                    response = MockResponse()
                         .setResponseCode(200)
                         .setBody(readStringFromFile("Cubenbois.xml"))
                         .setBodyDelay(1, TimeUnit.SECONDS)
                 } else if (request.path!!.contains("/xmlapi2/thing")) {
-                    return MockResponse()
+                    response = MockResponse()
                         .setResponseCode(200)
                         .setBody(readStringFromFile("86246.xml"))
                         .setBodyDelay(1, TimeUnit.SECONDS)
                 }
-                return MockResponse().setResponseCode(404)
+                return response
             }
         }
 
@@ -199,18 +202,19 @@ class DisplayAllUserCollectionInstrumentedTest {
     fun has_collectionList_displayedOnGrid() {
         mockWebServer.dispatcher = object : Dispatcher() {
             override fun dispatch(request: RecordedRequest): MockResponse {
+                var response: MockResponse = MockResponse().setResponseCode(404)
                 if (request.path!!.contains("/xmlapi2/collection")) {
-                    return MockResponse()
+                    response = MockResponse()
                         .setResponseCode(200)
                         .setBody(readStringFromFile("Cubenbois.xml"))
                         .setBodyDelay(1, TimeUnit.SECONDS)
                 } else if (request.path!!.contains("/xmlapi2/thing")) {
-                    return MockResponse()
+                    response = MockResponse()
                         .setResponseCode(200)
                         .setBody(readStringFromFile("86246.xml"))
                         .setBodyDelay(1, TimeUnit.SECONDS)
                 }
-                return MockResponse().setResponseCode(404)
+                return response
             }
         }
 
@@ -228,18 +232,19 @@ class DisplayAllUserCollectionInstrumentedTest {
     fun has_soloList_displayed() {
         mockWebServer.dispatcher = object : Dispatcher() {
             override fun dispatch(request: RecordedRequest): MockResponse {
+                var response: MockResponse = MockResponse().setResponseCode(404)
                 if (request.path!!.contains("/xmlapi2/collection")) {
-                    return MockResponse()
+                    response = MockResponse()
                         .setResponseCode(200)
                         .setBody(readStringFromFile("Cubenbois.xml"))
                         .setBodyDelay(1, TimeUnit.SECONDS)
                 } else if (request.path!!.contains("/xmlapi2/thing")) {
-                    return MockResponse()
+                    response = MockResponse()
                         .setResponseCode(200)
                         .setBody(readStringFromFile("86246.xml"))
                         .setBodyDelay(1, TimeUnit.SECONDS)
                 }
-                return MockResponse().setResponseCode(404)
+                return response
             }
         }
 

@@ -45,8 +45,13 @@ class CoilFakeImageLoader(val context: Context) : ImageLoader {
 
     private val disposable = object : Disposable {
         override val isDisposed get() = true
-        override fun dispose() {}
-        override suspend fun await() {}
+        override fun dispose() {
+            // Nothing to do
+        }
+
+        override suspend fun await() {
+            // Nothing to do
+        }
     }
 
     override val defaults = DefaultRequestOptions()
@@ -76,7 +81,9 @@ class CoilFakeImageLoader(val context: Context) : ImageLoader {
         )
     }
 
-    override fun shutdown() {}
+    override fun shutdown() {
+        // Nothing to do
+    }
 
     override fun newBuilder() = ImageLoader.Builder(context)
 }
