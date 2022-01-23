@@ -66,7 +66,6 @@ dependencies {
 
     implementation(AndroidX.lifecycle.runtimeKtx)
     implementation(AndroidX.lifecycle.viewModelKtx)
-    implementation(AndroidX.lifecycle.liveDataKtx)
 
     //endregion
 

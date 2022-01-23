@@ -40,8 +40,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -50,25 +48,24 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import coil.compose.rememberImagePainter
+import coil.compose.rememberAsyncImagePainter
 import fr.boitakub.bogadex.boardgame.R
 import fr.boitakub.bogadex.boardgame.model.BoardGame
 import fr.boitakub.common.ui.navigation.RatingBar
 
 @Composable
 fun BoardGameDetailScreen(
-    viewModel: BoardGameDetailViewModel
+    boardGame: BoardGame?
 ) {
-
     Column(
         modifier = Modifier
             .verticalScroll(rememberScrollState())
             .fillMaxSize(),
     ) {
 
-        MovieDetailHeader(viewModel)
+        MovieDetailHeader(boardGame)
 
-        MovieDetailSummary(viewModel)
+        MovieDetailSummary(boardGame)
 
         Spacer(modifier = Modifier.height(24.dp))
     }
@@ -76,14 +73,12 @@ fun BoardGameDetailScreen(
 
 @Composable
 private fun MovieDetailHeader(
-    viewModel: BoardGameDetailViewModel
+    boardGame: BoardGame?
 ) {
-    val boardGame: BoardGame? by viewModel.boardgame.collectAsState(initial = null)
-
     Column {
 
         Image(
-            painter = rememberImagePainter(boardGame?.image),
+            painter = rememberAsyncImagePainter(boardGame?.image),
             contentDescription = "",
             modifier = Modifier
                 .fillMaxSize()
@@ -132,10 +127,8 @@ private fun MovieDetailHeader(
 
 @Composable
 private fun MovieDetailSummary(
-    viewModel: BoardGameDetailViewModel
+    boardGame: BoardGame?
 ) {
-    val boardGame: BoardGame? by viewModel.boardgame.collectAsState(initial = null)
-
     Column {
 
         Spacer(modifier = Modifier.height(23.dp))

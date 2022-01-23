@@ -45,5 +45,5 @@ interface BoardGameDao {
     fun getBoardGameWithStatistics(): Flow<List<BoardGame>>
 
     @Query("SELECT * FROM boardgame WHERE bgg_id LIKE :bggId")
-    fun getBoardGameWithId(bggId: String): BoardGame
+    fun getBoardGameWithId(bggId: String): Flow<BoardGame>
 }

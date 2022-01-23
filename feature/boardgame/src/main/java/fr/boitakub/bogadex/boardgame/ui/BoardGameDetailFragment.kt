@@ -34,6 +34,7 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -56,13 +57,10 @@ class BoardGameDetailFragment :
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        arguments?.getString("bggId")?.let {
-            presenter.load(it)
-        }
-
         return ComposeView(requireContext()).apply {
             setContent {
-                BoardGameDetailScreen(viewModel = presenter)
+                arguments?.getString("bggId")
+                    ?.let { BoardGameDetailScreen(presenter.load(it).collectAsState(initial = null).value) }
             }
         }
     }
