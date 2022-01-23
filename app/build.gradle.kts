@@ -128,6 +128,7 @@ dependencies {
     implementation(Square.okHttp3)
     implementation(Square.okHttp3.loggingInterceptor)
     implementation(Square.retrofit2)
+    implementation(COIL)
 
     //endregion
 

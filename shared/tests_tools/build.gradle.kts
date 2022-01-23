@@ -37,6 +37,7 @@ dependencies {
     //region AndroidTest
 
     implementation(AndroidX.test.espresso.core)
+    implementation(COIL)
 
     //endregion
 }

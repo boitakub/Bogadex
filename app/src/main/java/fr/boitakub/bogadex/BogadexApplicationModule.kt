@@ -28,9 +28,12 @@
  */
 package fr.boitakub.bogadex
 
+import android.content.Context
+import coil.ImageLoader
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrl
@@ -41,9 +44,16 @@ open class BogadexApplicationModule {
 
     open fun baseUrl() = "https://www.boardgamegeek.com/".toHttpUrl()
 
+    open fun imageLoader(context: Context): ImageLoader {
+        return ImageLoader.invoke(context)
+    }
+
     @Provides
     fun provideBaseUrl(): HttpUrl = baseUrl()
 
     @Provides
-    fun provideExampleBggAccount(): String = "Cubenbois"
+    fun provideImageLoader(@ApplicationContext context: Context): ImageLoader = imageLoader(context)
+
+    @Provides
+    fun provideExampleBggAccount(): String = "baallrog"
 }

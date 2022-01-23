@@ -48,7 +48,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import coil.compose.rememberAsyncImagePainter
+import coil.compose.rememberImagePainter
 import fr.boitakub.bogadex.boardgame.R
 import fr.boitakub.bogadex.boardgame.model.BoardGame
 import fr.boitakub.common.ui.navigation.RatingBar
@@ -78,7 +78,7 @@ private fun MovieDetailHeader(
     Column {
 
         Image(
-            painter = rememberAsyncImagePainter(boardGame?.image),
+            painter = rememberImagePainter(boardGame?.image),
             contentDescription = "",
             modifier = Modifier
                 .fillMaxSize()

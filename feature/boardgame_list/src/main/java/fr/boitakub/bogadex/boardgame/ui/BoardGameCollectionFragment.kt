@@ -51,6 +51,7 @@ import fr.boitakub.common.ui.application.AppViewModel
 import fr.boitakub.common.ui.application.ApplicationState
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class BoardGameCollectionFragment :

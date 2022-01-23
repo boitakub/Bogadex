@@ -28,11 +28,14 @@
  */
 package fr.boitakub.bogadex.tests
 
+import android.content.Context
+import coil.ImageLoader
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.components.SingletonComponent
 import dagger.hilt.testing.TestInstallIn
 import fr.boitakub.bogadex.BogadexApplicationModule
+import fr.boitakub.bogadex.tests.tools.CoilFakeImageLoader
 import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.OkHttpClient
@@ -47,6 +50,10 @@ class FakeDataServiceModule : BogadexApplicationModule() {
 
     override fun baseUrl(): HttpUrl {
         return "http://localhost:8080/".toHttpUrl()
+    }
+
+    override fun imageLoader(context: Context): ImageLoader {
+        return CoilFakeImageLoader(context)
     }
 
     @Provides
