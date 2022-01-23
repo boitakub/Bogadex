@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021, Boitakub
+ * Copyright (c) 2021-2022, Boitakub
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -98,6 +98,10 @@ class MainActivity : AppCompatActivity() {
                         R.id.menu_switch_layout -> {
                             appViewModel.switchLayout(state)
                             switchIcon(state.viewType, menuItem)
+                            true
+                        }
+                        R.id.menu_settings -> {
+                            findNavController(R.id.nav_host_fragment_activity_main).navigate(R.id.navigation_settings)
                             true
                         }
                         else -> false

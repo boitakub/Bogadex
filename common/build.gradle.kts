@@ -56,6 +56,7 @@ dependencies {
     implementation(AndroidX.compose.ui.tooling)
     implementation(AndroidX.compose.foundation)
     implementation("androidx.compose.runtime:runtime:1.0.0")
+    implementation("androidx.preference:preference-ktx:1.1.1")
 
     //endregion
 

@@ -11,4 +11,6 @@
     <string name="change_display">Changer la vue</string>
     <string name="content_change_display">Changer la vue d\'affichage de la collection</string>
     <string name="display_solo">Jouable en solo</string>
+    <string name="settings">Paramétres</string>
+    <string name="content_settings">Personaliser votre expérience</string>
 </resources>

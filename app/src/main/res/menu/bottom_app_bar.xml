@@ -9,4 +9,11 @@
         android:title="@string/change_display"
         app:showAsAction="always" />
 
+    <item
+        android:id="@+id/menu_settings"
+        android:contentDescription="@string/content_settings"
+        android:icon="@drawable/ic_baseline_settings_24"
+        android:title="@string/settings"
+        app:showAsAction="always" />
+
 </menu>

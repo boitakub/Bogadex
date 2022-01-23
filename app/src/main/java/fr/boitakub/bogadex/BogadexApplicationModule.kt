@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021, Boitakub
+ * Copyright (c) 2021-2022, Boitakub
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,6 +29,7 @@
 package fr.boitakub.bogadex
 
 import android.content.Context
+import android.preference.PreferenceManager
 import coil.ImageLoader
 import dagger.Module
 import dagger.Provides
@@ -49,11 +50,13 @@ open class BogadexApplicationModule {
     }
 
     @Provides
+    open fun provideExampleBggAccount(@ApplicationContext context: Context): String {
+        return PreferenceManager.getDefaultSharedPreferences(context).getString("bgg_username", "cubenbois").orEmpty()
+    }
+
+    @Provides
     fun provideBaseUrl(): HttpUrl = baseUrl()
 
     @Provides
     fun provideImageLoader(@ApplicationContext context: Context): ImageLoader = imageLoader(context)
-
-    @Provides
-    fun provideExampleBggAccount(): String = "baallrog"
 }

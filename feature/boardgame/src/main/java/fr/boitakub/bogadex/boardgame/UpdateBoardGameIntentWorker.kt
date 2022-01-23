@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021, Boitakub
+ * Copyright (c) 2021-2022, Boitakub
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -60,7 +60,7 @@ class UpdateBoardGameIntentWorker @AssistedInject constructor(
         val result = try {
             val bggId = inputData.getString("bggId")
             val networkResult = service.boardGame(bggId)
-            if(BuildConfig.DEBUG) writeMockData(bggId, networkResult)
+            if (BuildConfig.DEBUG) writeMockData(bggId, networkResult)
             val mappedValues = networkResult?.let { mapper.map(it.games) }
             mappedValues?.let { database.insertAllBoardGame(listOf(it)) }
             Result.success()

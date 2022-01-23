@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <EditTextPreference
+        android:defaultValue="Cubenbois"
+        android:icon="@drawable/ic_baseline_account_circle_24"
+        android:key="bgg_username"
+        android:selectAllOnFocus="true"
+        android:singleLine="true"
+        android:summary="@string/bgg_username_summary"
+        android:title="@string/bgg_username"
+        app:singleLineTitle="true" />
+
+</PreferenceScreen>

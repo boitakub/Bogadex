@@ -2,4 +2,5 @@
 <resources>
     <item name="navigation_boardgame_list" type="id"/>
     <item name="navigation_boardgame_details" type="id"/>
+    <item name="navigation_settings" type="id"/>
 </resources>

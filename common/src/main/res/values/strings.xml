@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="bgg_username">BoardGameGeek Username</string>
+    <string name="bgg_username_summary">Your BoardGameGeek account or pseudo to retrieve your games</string>
+</resources>
