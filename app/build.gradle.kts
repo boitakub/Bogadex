@@ -46,7 +46,7 @@ android {
         }
     }
     buildTypes {
-        debug {
+        getByName("debug") {
             isDebuggable = true
             isTestCoverageEnabled = true
             configure<com.google.firebase.perf.plugin.FirebasePerfExtension> {
@@ -54,6 +54,9 @@ android {
                 // automatic monitoring of HTTP/S network requests
                 // for a specific build variant at compile time.
                 setInstrumentationEnabled(false)
+            }
+            configure<com.google.firebase.crashlytics.buildtools.gradle.CrashlyticsExtension> {
+                mappingFileUploadEnabled = false
             }
         }
         getByName("release") {
