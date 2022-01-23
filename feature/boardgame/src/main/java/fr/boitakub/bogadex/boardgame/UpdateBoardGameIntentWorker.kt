@@ -60,7 +60,7 @@ class UpdateBoardGameIntentWorker @AssistedInject constructor(
         val result = try {
             val bggId = inputData.getString("bggId")
             val networkResult = service.boardGame(bggId)
-            writeMockData(bggId, networkResult)
+            if(BuildConfig.DEBUG) writeMockData(bggId, networkResult)
             val mappedValues = networkResult?.let { mapper.map(it.games) }
             mappedValues?.let { database.insertAllBoardGame(listOf(it)) }
             Result.success()

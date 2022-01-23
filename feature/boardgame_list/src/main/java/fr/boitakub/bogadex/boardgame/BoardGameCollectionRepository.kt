@@ -66,7 +66,7 @@ class BoardGameCollectionRepository @Inject constructor(
         val result: List<CollectionItem> = mapper.map(networkResult).boardgames
         emit(result)
         local.updateCollection(result)
-        writeMockData(user, networkResult)
+        if (BuildConfig.DEBUG) writeMockData(user, networkResult)
     }
 
     private fun toUiModel(
