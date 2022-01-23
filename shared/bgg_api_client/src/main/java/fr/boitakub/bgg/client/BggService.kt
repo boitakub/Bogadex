@@ -34,7 +34,6 @@ import com.tickaroo.tikxml.retrofit.TikXmlConverterFactory
 import okhttp3.HttpUrl
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.http.GET
 import retrofit2.http.Headers
@@ -54,9 +53,6 @@ interface BggService {
     companion object {
         private const val DEFAULT_API_CONNECTION_TIMEOUT_IN_SECONDS: Long = 30
         private const val DEFAULT_API_READ_WRITE_TIMEOUT_IN_SECONDS: Long = 30
-
-        private val httpLoggingInterceptor =
-            HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
 
         fun getDefaultRetrofitClient(
             baseUrl: HttpUrl,
@@ -86,7 +82,6 @@ interface BggService {
                     TimeUnit.SECONDS
                 )
                 .addInterceptor(CollectionRequestQueuedInterceptor())
-                .addInterceptor(httpLoggingInterceptor)
             if (networkInterceptors != null) {
                 for (networkInterceptor in networkInterceptors) {
                     okHttpClientBuild.addNetworkInterceptor(networkInterceptor)

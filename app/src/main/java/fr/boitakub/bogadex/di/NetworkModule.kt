@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021, Boitakub
+ * Copyright (c) 2021-2022, Boitakub
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -33,10 +33,8 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import fr.boitakub.bgg.client.BggService
-import fr.boitakub.bogadex.BuildConfig
 import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import javax.inject.Singleton
 
@@ -46,11 +44,7 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideOkHttpClient() = if (BuildConfig.DEBUG) {
-        val loggingInterceptor = HttpLoggingInterceptor()
-        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
-        BggService.getDefaultOkHttpClient(null)
-    } else BggService.getDefaultOkHttpClient(null)
+    fun provideOkHttpClient() = BggService.getDefaultOkHttpClient(null)
 
     @Provides
     @Singleton

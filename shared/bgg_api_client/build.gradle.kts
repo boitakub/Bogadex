@@ -55,7 +55,6 @@ dependencies {
     //region Networking
 
     implementation(Square.okHttp3)
-    implementation(Square.okHttp3.loggingInterceptor)
     implementation(Square.retrofit2)
 
     //endregion
