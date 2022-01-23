@@ -28,18 +28,16 @@
  */
 package fr.boitakub.bogadex.boardgame.ui
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.asLiveData
-import androidx.lifecycle.viewModelScope
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import fr.boitakub.architecture.Presenter
 import fr.boitakub.bogadex.boardgame.model.CollectionItemWithDetails
 import fr.boitakub.bogadex.boardgame.usecase.ListCollection
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onCompletion
 
@@ -54,7 +52,7 @@ class BoardGameCollectionViewModel @AssistedInject constructor(
         fun create(repository: ListCollection): BoardGameCollectionViewModel
     }
 
-    val gameList: LiveData<List<CollectionItemWithDetails>> =
+    val gameList: Flow<List<CollectionItemWithDetails>> =
         repository.apply(provideExampleBggAccount)
             .catch { e ->
                 e.message?.let { onError(it) }
@@ -62,7 +60,6 @@ class BoardGameCollectionViewModel @AssistedInject constructor(
             .onCompletion {
                 loading.value = false
             }
-            .asLiveData(viewModelScope.coroutineContext)
 
     val loading = MutableLiveData<Boolean>()
     val errorMessage = MutableLiveData<String>()

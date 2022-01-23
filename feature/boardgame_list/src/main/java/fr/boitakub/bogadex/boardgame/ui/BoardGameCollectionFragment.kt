@@ -40,6 +40,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import fr.boitakub.bogadex.boardgame.BoardGameCollectionRepository
+import fr.boitakub.bogadex.boardgame.model.CollectionItemWithDetails
 import fr.boitakub.bogadex.boardgame.ui.BoardGameCollectionViewModel.Companion.provideFactory
 import fr.boitakub.bogadex.boardgame.usecase.ListCollection
 import fr.boitakub.bogadex.boardgame.usecase.ListCollectionItemOwned
@@ -48,7 +49,7 @@ import fr.boitakub.bogadex.boardgame.usecase.ListCollectionItemWanted
 import fr.boitakub.common.databinding.CommonListFragmentBinding
 import fr.boitakub.common.ui.application.AppViewModel
 import fr.boitakub.common.ui.application.ApplicationState
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -71,6 +72,18 @@ class BoardGameCollectionFragment :
         )
     }
     private lateinit var adapter: BoardGameCollectionListAdapter
+    private var boardGameList: List<CollectionItemWithDetails> = listOf()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        lifecycleScope.launch {
+            presenter.gameList.collect {
+                boardGameList = it
+                (binding.recyclerView.adapter as BoardGameCollectionListAdapter).setItems(it)
+            }
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -86,13 +99,6 @@ class BoardGameCollectionFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.recyclerView.adapter = adapter
-
-        presenter.gameList.observe(
-            viewLifecycleOwner,
-            {
-                adapter.setItems(it)
-            }
-        )
 
         presenter.errorMessage.observe(
             viewLifecycleOwner,
@@ -125,12 +131,11 @@ class BoardGameCollectionFragment :
 
     private fun applyApplicationChanges(data: ApplicationState) {
         switchLayout(data.viewType)
-        adapter.applyFilter(presenter.gameList.value, data.filters)
+        adapter.applyFilter(boardGameList, data.filters)
     }
 
     private fun switchLayout(state: Int) {
         (binding.recyclerView.layoutManager as GridLayoutManager).spanCount = state
-        adapter.notifyItemRangeChanged(0, adapter.itemCount)
     }
 
     private fun getCollection(string: String?): ListCollection {
