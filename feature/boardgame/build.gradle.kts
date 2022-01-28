@@ -31,8 +31,9 @@ android {
         }
     }
     packagingOptions {
-        exclude("META-INF/LGPL2.1")
-        exclude("META-INF/AL2.0")
+        resources {
+            excludes += setOf("META-INF/LGPL2.1", "META-INF/AL2.0")
+        }
     }
     buildFeatures {
         compose = true

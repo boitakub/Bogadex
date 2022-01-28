@@ -87,7 +87,6 @@ android {
         getByName("androidTest").assets.srcDirs("src/androidTest/assets")
     }
     lint {
-        isCheckDependencies = true
         xmlReport = true
         htmlReport = true
         htmlOutput = file("${project.rootDir}/build/reports/android-lint.html")
