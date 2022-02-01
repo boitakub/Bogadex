@@ -46,9 +46,10 @@ import fr.boitakub.common.ui.Filter
 internal class BoardGameCollectionListAdapter(layoutManager: GridLayoutManager) :
     CommonListAdapter<BoardGameItemViewHolder, CollectionItemWithDetails>(layoutManager) {
 
+    open var isGridMode: Boolean = false
+
     override fun getItemViewType(position: Int): Int {
-        val spanCount: Int = layoutManager.spanCount
-        return if (spanCount == SPAN_COUNT_ONE) {
+        return if (isGridMode) {
             VIEW_TYPE_BIG
         } else {
             VIEW_TYPE_SMALL
@@ -93,13 +94,13 @@ internal class BoardGameCollectionListAdapter(layoutManager: GridLayoutManager) 
             holder.binding.tvShapeRating.text = "${"%.1f".format(game.details?.statistic?.average)}"
         } else if (holder.binding is BoardgameListItemGridBinding) {
             holder.binding.tvTitle.text = game.item.title
+            holder.binding.tvDescription.text = game.details?.description ?: ""
             holder.binding.ivCover.load(game.details?.image)
         }
     }
 
     companion object {
         const val SPAN_COUNT_ONE = 1
-        const val SPAN_COUNT_THREE = 2
 
         const val VIEW_TYPE_SMALL = 1
         const val VIEW_TYPE_BIG = 2

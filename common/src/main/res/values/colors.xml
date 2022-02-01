@@ -8,4 +8,12 @@
     <color name="light_blue">#D0E8F2</color>
     <color name="blue">#79A3B1</color>
     <color name="dark_blue">#456268</color>
+    <color name="orange">#faa61a</color>
+
+    <!-- Fonts -->
+    <color name="primary_text">#212121</color>
+    <color name="secondary_text">#727272</color>
+    <color name="primary_text_inverse">#deffffff</color>
+    <color name="secondary_text_inverse">#8affffff</color>
+
 </resources>

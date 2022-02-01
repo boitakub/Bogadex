@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Text -->
+    <dimen name="normal_size">12sp</dimen>
+    <dimen name="large_size">16sp</dimen>
+
+    <!-- Padding / Margin -->
+    <dimen name="quarter_padding">2dp</dimen>
+    <dimen name="half_padding">4dp</dimen>
+    <dimen name="normal_padding">8dp</dimen>
+
+    <dimen name="game_item_title_height">45dp</dimen>
+
+    <!-- Columns -->
+    <integer name="game_grid_columns">2</integer>
+</resources>

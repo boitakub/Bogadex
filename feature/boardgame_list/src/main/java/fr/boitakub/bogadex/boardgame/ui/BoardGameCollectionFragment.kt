@@ -39,6 +39,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
+import fr.boitakub.boardgame_list.R
 import fr.boitakub.bogadex.boardgame.BoardGameCollectionRepository
 import fr.boitakub.bogadex.boardgame.model.CollectionItemWithDetails
 import fr.boitakub.bogadex.boardgame.ui.BoardGameCollectionViewModel.Companion.provideFactory
@@ -136,7 +137,14 @@ class BoardGameCollectionFragment :
     }
 
     private fun switchLayout(state: Int) {
-        (binding.recyclerView.layoutManager as GridLayoutManager).spanCount = state
+        if (state == 1) {
+            (binding.recyclerView.layoutManager as GridLayoutManager).spanCount = 1
+            adapter.isGridMode = true
+        } else {
+            adapter.isGridMode = false
+            (binding.recyclerView.layoutManager as GridLayoutManager).spanCount =
+                resources.getInteger(R.integer.game_grid_columns)
+        }
     }
 
     private fun getCollection(string: String?): ListCollection {
