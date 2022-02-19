@@ -20,7 +20,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        style="@style/Widget.MaterialComponents.BottomAppBar.Colored"
+        style="@style/Widget.Material3.BottomAppBar"
         app:navigationIcon="@drawable/ic_menu_24"
         app:menu="@menu/bottom_app_bar"
         app:hideOnScroll="true"

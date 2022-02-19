@@ -9,64 +9,47 @@
     android:clipToPadding="true"
     android:focusable="true"
     android:foreground="?android:attr/selectableItemBackground"
-    app:cardBackgroundColor="@color/white"
     app:cardCornerRadius="12dp"
     app:cardElevation="12dp"
+    app:strokeColor="?attr/colorPrimary"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent"
-    app:rippleColor="@color/orange">
+    app:layout_constraintTop_toTopOf="parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="350dp"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <TextView
             android:id="@+id/tv_title"
             style="@style/Theme.Bogadex.List.Item.Label"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/game_item_title_height"
-            android:ellipsize="end"
-            android:gravity="center"
-            android:maxLines="2"
-            app:layout_constraintBottom_toTopOf="@id/tv_category"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="@string/sample_game_title" />
-
-        <TextView
-            android:id="@+id/tv_category"
-            style="@style/Theme.Bogadex.List.Item.Category"
-            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:gravity="center"
-            android:maxLines="1"
-            app:layout_constraintTop_toBottomOf="@id/tv_title"
-            tools:text="@string/sample_game_category" />
+            android:lines="2"
+            app:layout_constraintBottom_toTopOf="@id/iv_cover"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="@string/sample_game_title" />
 
         <ImageView
             android:id="@+id/iv_cover"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:paddingStart="@dimen/half_padding"
-            android:paddingTop="@dimen/normal_padding"
-            android:paddingEnd="@dimen/half_padding"
-            android:paddingBottom="@dimen/normal_padding"
+            android:layout_height="@dimen/game_item_image_height"
+            android:padding="@dimen/half_padding"
             app:layout_constraintBottom_toTopOf="@id/tv_description"
-            app:layout_constraintTop_toBottomOf="@id/tv_category"
+            app:layout_constraintTop_toBottomOf="@id/tv_title"
             tools:src="@drawable/ic_users" />
 
         <TextView
             android:id="@+id/tv_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:maxLines="5"
-            android:minLines="4"
             android:padding="@dimen/half_padding"
-            android:textSize="@dimen/large_size"
+            android:ellipsize="end"
+            android:lines="5"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/iv_cover"
             tools:text="@string/sample_game_description" />

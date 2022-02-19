@@ -68,6 +68,6 @@ class RefreshGameDetails @Inject constructor(@ApplicationContext val context: Co
 
     companion object {
         const val SCHEDULED_REFRESH_START = 0
-        const val SCHEDULED_REFRESH_MAX = 40
+        const val SCHEDULED_REFRESH_MAX = 20
     }
 }

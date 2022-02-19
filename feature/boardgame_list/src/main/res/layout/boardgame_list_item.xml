@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@android:color/white">
+    android:background="?attr/colorBackgroundFloating">
 
     <ImageView
         android:id="@+id/iv_cover"
@@ -82,9 +82,9 @@
             android:id="@+id/tv_shape_rating"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/dark_blue"
+            android:textColor="?attr/colorOnPrimary"
+            android:background="?attr/colorPrimary"
             android:gravity="center"
-            android:textColor="@android:color/white"
             android:textSize="26sp"
             android:textStyle="bold"
             tools:text="100" />
