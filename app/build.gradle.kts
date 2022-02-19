@@ -104,6 +104,7 @@ dependencies {
 
     implementation(AndroidX.core.ktx)
     implementation(AndroidX.appCompat)
+    implementation("androidx.preference:preference-ktx:1.1.1")
 
     //endregion
 

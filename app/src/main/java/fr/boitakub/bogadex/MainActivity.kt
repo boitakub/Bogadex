@@ -32,6 +32,7 @@ import android.os.Bundle
 import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.res.ResourcesCompat
 import androidx.customview.widget.Openable
 import androidx.fragment.app.FragmentManager
@@ -39,7 +40,9 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
+import androidx.preference.PreferenceManager
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.slider.RangeSlider
 import dagger.hilt.android.AndroidEntryPoint
 import fr.boitakub.bogadex.databinding.ActivityMainBinding
@@ -53,12 +56,23 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private val appViewModel: AppViewModel by viewModels()
+    private var currentTheme = AppCompatDelegate.MODE_NIGHT_NO
+
+    companion object {
+        private const val PREF_THEME_KEY: String = "ui_night_mode"
+        private const val PREF_THEME_DAY_VALUE: String = "LIGHT"
+        private const val PREF_THEME_NIGHT_VALUE: String = "NIGHT"
+        private const val PREF_THEME_AUTO_VALUE: String = "AUTO"
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        currentTheme = PreferenceManager.getDefaultSharedPreferences(this)
+            .getString(PREF_THEME_KEY, PREF_THEME_DAY_VALUE).toNightMode()
 
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
         val drawer = FakeDrawer(supportFragmentManager, BottomNavigationDrawerFragment(navController))
@@ -76,6 +90,35 @@ class MainActivity : AppCompatActivity() {
 
         binding.appBar.setupWithNavController(navController, appBarConfiguration)
         observeFilters()
+        observeLightButton(binding.fabLight)
+    }
+
+    private fun observeLightButton(fabLight: FloatingActionButton) {
+        applyTheme(fabLight)
+        fabLight.setOnClickListener {
+            applyTheme(it as FloatingActionButton)
+            AppCompatDelegate.setDefaultNightMode(currentTheme)
+            PreferenceManager.getDefaultSharedPreferences(this)
+                .edit()
+                .putString(PREF_THEME_KEY, currentTheme.toThemeValue())
+                .apply()
+        }
+    }
+
+    private fun applyTheme(button: FloatingActionButton) {
+        if (currentTheme == AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM) {
+            button.setImageResource(R.drawable.ic_moon_solid)
+            button.contentDescription = getString(R.string.fab_theme_night_desc)
+            currentTheme = AppCompatDelegate.MODE_NIGHT_NO
+        } else if (currentTheme == AppCompatDelegate.MODE_NIGHT_NO) {
+            button.setImageResource(R.drawable.ic_sun_solid)
+            button.contentDescription = getString(R.string.fab_theme_day_desc)
+            currentTheme = AppCompatDelegate.MODE_NIGHT_YES
+        } else {
+            button.setImageResource(R.drawable.ic_eclipse_solid)
+            button.contentDescription = getString(R.string.fab_theme_auto_desc)
+            currentTheme = AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+        }
     }
 
     // https://www.section.io/engineering-education/bottom-sheet-dialogs-using-android-studio/
@@ -141,5 +184,21 @@ class MainActivity : AppCompatActivity() {
         override fun close() {
             isOpen = false
         }
+    }
+
+    private fun Int.toThemeValue(): String {
+        when (this) {
+            AppCompatDelegate.MODE_NIGHT_YES -> PREF_THEME_NIGHT_VALUE
+            AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM -> PREF_THEME_AUTO_VALUE
+        }
+        return PREF_THEME_DAY_VALUE
+    }
+
+    private fun String?.toNightMode(): Int {
+        when (this) {
+            PREF_THEME_NIGHT_VALUE -> AppCompatDelegate.MODE_NIGHT_YES
+            PREF_THEME_AUTO_VALUE -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+        }
+        return AppCompatDelegate.MODE_NIGHT_NO
     }
 }

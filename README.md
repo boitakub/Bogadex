@@ -36,21 +36,22 @@ Go to the [Releases](https://github.com/boitakub/Bogadex/releases) to download t
 
 ## Tech stack & Open-source libraries 🧬
 
-* Minimum SDK level 23
 * [Kotlin](https://kotlinlang.org/) based, [Coroutines](https://github.com/Kotlin/kotlinx.coroutines) + [Flow](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/) for asynchronous.
 * [Hilt](https://dagger.dev/hilt/) for dependency injection.
 * [JetPack](https://developer.android.com/jetpack)
+	+ [DataStore]()
+	+ Room - construct a database using the abstract layer.
+	+ Worker - Updating data periodically when phone is idling
+	+ [Bindables](https://github.com/skydoves/bindables) - Android DataBinding kit for notifying data changes to UI layers.
 + Lifecycle - dispose of observing data when lifecycle state changes.
 + ViewModel - UI related data holder, lifecycle aware.
-+ Room - construct a database using the abstract layer.
-+ Worker -
 * Architecture
-+ MVVM Architecture (View - DataBinding - ViewModel - Model)
-+ [Bindables](https://github.com/skydoves/bindables) - Android DataBinding kit for notifying data changes to UI layers.
-+ Business oriented with UseCases pattern
-+ Repository pattern
-* Design
+	+ MVVM Architecture (View - DataBinding - ViewModel - Model)
+	+ Business oriented with UseCases pattern
+	+ Repository pattern
+* [Material You](https://m3.material.io/) - Using Material Design 3
 	+ [App bars: bottom](https://material.io/components/app-bars-bottom)
+	+ [Dark Mode](https://developer.android.com/guide/topics/ui/look-and-feel/darktheme) - Generate theme trough [Material Theme Builder](https://material-foundation.github.io/material-theme-builder/#/dynamic)
 * [Retrofit2 & OkHttp3](https://github.com/square/retrofit) - construct the REST APIs and paging network data.
 * [Coil](https://github.com/coil-kt/coil) - loading images.
 * [Material-Components](https://github.com/material-components/material-components-android) - Material design components like ripple animation, cardView.

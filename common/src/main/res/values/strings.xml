@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="theme_light">Light Theme</string>
+    <string name="theme_dark">Dark Theme</string>
+    <string name="theme_system">System Theme</string>
+    <string name="settings_theme">Application Theme</string>
+
+    <string name="fab_theme_night_desc">Switch to Night Theme</string>
+    <string name="fab_theme_day_desc">Switch to Day Theme</string>
+    <string name="fab_theme_auto_desc">Switch to Automatic Theme</string>
+
     <string name="bgg_username">BoardGameGeek Username</string>
     <string name="bgg_username_summary">Your BoardGameGeek account or pseudo to retrieve your games</string>
 
