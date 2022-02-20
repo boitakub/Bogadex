@@ -9,4 +9,6 @@
     <string name="fab_theme_auto_desc">Mode jour/nuit automatique</string>
     <string name="bgg_username">Compte BoardGameGeek</string>
     <string name="bgg_username_summary">Votre compte / pseudo Board Game Geek ou récupéré vos jeux</string>
+    <string name="description">Description</string>
+    <string name="scoregrid">Grille de score</string>
 </resources>

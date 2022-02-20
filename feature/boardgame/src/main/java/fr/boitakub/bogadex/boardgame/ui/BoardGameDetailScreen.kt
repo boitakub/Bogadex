@@ -29,25 +29,31 @@
 package fr.boitakub.bogadex.boardgame.ui
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.core.os.bundleOf
+import androidx.navigation.NavController
 import coil.compose.rememberImagePainter
 import fr.boitakub.bogadex.boardgame.R
 import fr.boitakub.bogadex.boardgame.model.BoardGame
@@ -55,7 +61,8 @@ import fr.boitakub.common.ui.navigation.RatingBar
 
 @Composable
 fun BoardGameDetailScreen(
-    boardGame: BoardGame?
+    boardGame: BoardGame?,
+    navController: NavController
 ) {
     Column(
         modifier = Modifier
@@ -63,7 +70,7 @@ fun BoardGameDetailScreen(
             .fillMaxSize(),
     ) {
 
-        MovieDetailHeader(boardGame)
+        MovieDetailHeader(boardGame, navController)
 
         MovieDetailSummary(boardGame)
 
@@ -73,8 +80,11 @@ fun BoardGameDetailScreen(
 
 @Composable
 private fun MovieDetailHeader(
-    boardGame: BoardGame?
+    boardGame: BoardGame?,
+    navController: NavController
 ) {
+    val resources = LocalContext.current.resources
+
     Column {
 
         Image(
@@ -122,6 +132,25 @@ private fun MovieDetailHeader(
                 .height(15.dp)
                 .align(Alignment.CenterHorizontally)
         )
+
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight()
+                .padding(top = 16.dp),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            Button(
+                onClick = {
+                    val bundle = bundleOf("bggId" to boardGame?.bggId, "title" to boardGame?.title)
+                    navController
+                        .navigate(R.id.navigation_boardgame_scoregrid, bundle)
+                }
+            ) {
+                Text(resources.getString(R.string.scoregrid))
+            }
+        }
     }
 }
 

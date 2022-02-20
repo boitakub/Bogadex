@@ -99,6 +99,7 @@ dependencies {
     implementation(project(":shared:bgg_api_client"))
     implementation(project(":feature:boardgame"))
     implementation(project(":feature:boardgame_list"))
+    implementation(project(":feature:scoregrid"))
 
     //region Core & Lifecycle
 

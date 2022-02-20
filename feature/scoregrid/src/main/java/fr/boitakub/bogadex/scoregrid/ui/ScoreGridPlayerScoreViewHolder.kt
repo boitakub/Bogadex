@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021-2022, Boitakub
+ * Copyright (c) 2022, Boitakub
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,53 +26,23 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package fr.boitakub.bogadex.boardgame.ui
+package fr.boitakub.bogadex.scoregrid.ui
 
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.compose.runtime.collectAsState
-import androidx.compose.ui.platform.ComposeView
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
-import androidx.navigation.findNavController
-import dagger.hilt.android.AndroidEntryPoint
+import androidx.annotation.ColorInt
+import fr.boitakub.bogadex.scoregrid.databinding.ScoregridScoringPlayerScoreItemBinding
+import fr.boitakub.bogadex.scoregrid.model.Player
+import fr.boitakub.bogadex.scoregrid.model.Rule
+import fr.boitakub.bogadex.scoregrid.model.Score
 
-@AndroidEntryPoint
-class BoardGameDetailFragment :
-    Fragment(),
-    fr.boitakub.architecture.View<BoardGameDetailViewModel> {
+class ScoreGridPlayerScoreViewHolder(val binding: ScoregridScoringPlayerScoreItemBinding) :
+    ScoreGridViewHolder(binding) {
 
-    override val presenter: BoardGameDetailViewModel by viewModels()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
+    fun update(scores: Map<Rule, Map<Player, Score<*>>>, rule: Rule?, player: Player) {
+        val value = scores[rule]?.get(player)?.value
+        binding.etValue.setText(value.toString())
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        return ComposeView(requireContext()).apply {
-            setContent {
-                arguments?.getString("bggId")
-                    ?.let {
-                        BoardGameDetailScreen(
-                            presenter.load(it).collectAsState(initial = null).value,
-                            findNavController()
-                        )
-                    }
-            }
-        }
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
-        menu.clear()
+    fun seBackgroundColor(@ColorInt color: Int) {
+        binding.etValue.setBackgroundColor(color)
     }
 }

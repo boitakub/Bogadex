@@ -29,7 +29,19 @@
     <fragment
         android:id="@id/navigation_settings"
         android:name="fr.boitakub.common.ui.settings.SettingsFragment"
-        android:label="@string/settings">
+        android:label="@string/settings"/>
+
+    <fragment
+        android:id="@id/navigation_boardgame_scoregrid"
+        android:name="fr.boitakub.bogadex.scoregrid.ScoreGridFragment"
+        android:label="{title}"
+        tools:layout="@layout/common_list_fragment">
+        <argument
+            android:name="bggId"
+            app:argType="string" />
+        <argument
+            android:name="title"
+            app:argType="string" />
     </fragment>
 
 </navigation>

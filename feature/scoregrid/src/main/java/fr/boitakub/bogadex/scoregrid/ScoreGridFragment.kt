@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021-2022, Boitakub
+ * Copyright (c) 2022, Boitakub
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,53 +26,58 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package fr.boitakub.bogadex.boardgame.ui
+package fr.boitakub.bogadex.scoregrid
 
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.compose.runtime.collectAsState
-import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
+import fr.boitakub.bogadex.scoregrid.ui.ScoreGridScoreAdapter
+import fr.boitakub.bogadex.scoregrid.ui.ScoreGridScoringViewHolder
+import fr.boitakub.common.databinding.CommonListFragmentBinding
 
 @AndroidEntryPoint
-class BoardGameDetailFragment :
+class ScoreGridFragment :
     Fragment(),
-    fr.boitakub.architecture.View<BoardGameDetailViewModel> {
+    fr.boitakub.architecture.View<ScoreGridViewModel>,
+    ScoreGridScoringViewHolder.ScoreGridScoringViewHolderCallback {
 
-    override val presenter: BoardGameDetailViewModel by viewModels()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
-    }
+    override val presenter: ScoreGridViewModel by viewModels()
+    lateinit var binding: CommonListFragmentBinding
+    private lateinit var adapter: ScoreGridScoreAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        return ComposeView(requireContext()).apply {
-            setContent {
-                arguments?.getString("bggId")
-                    ?.let {
-                        BoardGameDetailScreen(
-                            presenter.load(it).collectAsState(initial = null).value,
-                            findNavController()
-                        )
-                    }
+        binding = CommonListFragmentBinding.inflate(inflater, container, false)
+        binding.recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        adapter = ScoreGridScoreAdapter(presenter.scoreGrid.value, this)
+        binding.recyclerView.adapter = adapter
+        binding.recyclerView.setHasFixedSize(true)
+        return binding.root
+    }
+
+    private fun scrollAllRecyclerView(dx: Int, dy: Int) {
+        for (i in 0 until binding.recyclerView.childCount) {
+            val child = binding.recyclerView.getChildAt(i) as RecyclerView
+            if (child !== binding.recyclerView) {
+                scroll(child, dx, dy)
             }
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
-        menu.clear()
+    private fun scroll(recyclerView: RecyclerView, dx: Int, dy: Int) {
+        recyclerView.scrollBy(dx, dy)
+    }
+
+    override fun onScroll(dx: Int, dy: Int) {
+        scrollAllRecyclerView(dx, dy)
     }
 }

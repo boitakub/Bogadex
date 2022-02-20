@@ -13,6 +13,7 @@ rootProject.name = "Bogadex"
 include(":app")
 include(":feature:boardgame")
 include(":feature:boardgame_list")
+include(":feature:scoregrid")
 include(":common")
 include(":shared:architecture")
 include(":shared:bgg_api_client")

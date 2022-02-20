@@ -76,8 +76,8 @@ class BoardGameCollectionFragment :
     private lateinit var adapter: BoardGameCollectionListAdapter
     private var boardGameList: List<CollectionItemWithDetails> = listOf()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onResume() {
+        super.onResume()
 
         lifecycleScope.launch {
             presenter.gameList.collect {
