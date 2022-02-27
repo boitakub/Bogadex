@@ -34,15 +34,15 @@ android {
         compose = true
         viewBinding = true
     }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.1.1"
+    }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
     kotlinOptions {
         jvmTarget = "1.8"
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.0.5"
     }
 }
 
@@ -55,8 +55,7 @@ dependencies {
     implementation(AndroidX.compose.ui)
     implementation(AndroidX.compose.ui.tooling)
     implementation(AndroidX.compose.foundation)
-    implementation("androidx.compose.runtime:runtime:1.0.0")
-    implementation("androidx.preference:preference-ktx:1.1.1")
+    implementation(AndroidX.preference.ktx)
 
     //endregion
 

@@ -73,15 +73,15 @@ android {
         compose = true
         viewBinding = true
     }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.1.1"
+    }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
     kotlinOptions {
         jvmTarget = "1.8"
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.0.5"
     }
     sourceSets {
         getByName("androidTest").assets.srcDirs("src/androidTest/assets")
@@ -104,7 +104,7 @@ dependencies {
 
     implementation(AndroidX.core.ktx)
     implementation(AndroidX.appCompat)
-    implementation("androidx.preference:preference-ktx:1.1.1")
+    implementation(AndroidX.preference.ktx)
 
     //endregion
 
@@ -122,7 +122,7 @@ dependencies {
     implementation(Google.android.material)
     implementation(AndroidX.navigation.uiKtx)
     implementation(AndroidX.navigation.fragmentKtx)
-    implementation("androidx.compose.runtime:runtime:1.0.0")
+    implementation(AndroidX.compose.runtime)
 
     //endregion
 

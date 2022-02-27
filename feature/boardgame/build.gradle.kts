@@ -39,15 +39,15 @@ android {
         compose = true
         viewBinding = true
     }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.1.1"
+    }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
     kotlinOptions {
         jvmTarget = "1.8"
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.0.5"
     }
     sourceSets {
         getByName("androidTest").assets.srcDirs("src/androidTest/assets")
@@ -85,7 +85,6 @@ dependencies {
     implementation(AndroidX.compose.ui.tooling)
     implementation(AndroidX.compose.material)
     implementation(AndroidX.compose.foundation)
-    implementation("androidx.compose.runtime:runtime:1.0.0")
 
     //endregion
 
