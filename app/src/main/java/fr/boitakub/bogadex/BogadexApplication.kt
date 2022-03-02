@@ -33,6 +33,7 @@ import androidx.hilt.work.HiltWorkerFactory
 import androidx.work.Configuration
 import coil.ImageLoader
 import coil.ImageLoaderFactory
+import com.boitakub.crashtest.CrashTest
 import dagger.hilt.android.HiltAndroidApp
 import javax.inject.Inject
 
@@ -44,6 +45,12 @@ class BogadexApplication : Application(), Configuration.Provider, ImageLoaderFac
 
     @Inject
     lateinit var imageLoader: ImageLoader
+    
+    @Inject
+    lateinit var crashTest: CrashTest
+
+    @Inject
+    lateinit var crashTest: CrashTest
 
     override fun getWorkManagerConfiguration() =
         Configuration.Builder()

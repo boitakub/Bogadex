@@ -36,6 +36,7 @@ android {
 }
 
 dependencies {
+    implementation(project(":shared:crashtest"))
 
     //region Parsing
     api("com.tickaroo.tikxml:annotation:_") {

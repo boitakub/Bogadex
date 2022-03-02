@@ -28,7 +28,10 @@
  */
 package fr.boitakub.bgg.client
 
-import java.io.IOException
+import com.boitakub.crashtest.NonFatalException
 
-class CollectionRequestQueuedException :
-    IOException("The collection request has been queued you can retry request in a fex minutes.")
+class CollectionRequestQueuedException(throwable: Throwable? = null) :
+    NonFatalException(
+        throwable,
+        "The collection request has been queued you can retry request in a fex minutes."
+    )

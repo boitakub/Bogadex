@@ -31,6 +31,8 @@ package fr.boitakub.bogadex
 import android.content.Context
 import android.preference.PreferenceManager
 import coil.ImageLoader
+import com.boitakub.crashtest.CrashTest
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -59,4 +61,8 @@ open class BogadexApplicationModule {
 
     @Provides
     fun provideImageLoader(@ApplicationContext context: Context): ImageLoader = imageLoader(context)
+
+    @Provides
+    fun provideCrashTest(): CrashTest =
+        CrashTest.Builder(BuildConfig.DEBUG, FirebaseCrashlytics.getInstance()).build()
 }

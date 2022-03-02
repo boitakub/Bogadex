@@ -38,6 +38,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
+import com.boitakub.crashtest.catchLog
 import dagger.hilt.android.AndroidEntryPoint
 import fr.boitakub.boardgame_list.R
 import fr.boitakub.bogadex.boardgame.BoardGameCollectionRepository
@@ -80,7 +81,7 @@ class BoardGameCollectionFragment :
         super.onCreate(savedInstanceState)
 
         lifecycleScope.launch {
-            presenter.gameList.collect {
+            presenter.gameList.catchLog(default = emptyList()).collect {
                 boardGameList = it
                 (binding.recyclerView.adapter as BoardGameCollectionListAdapter).setItems(it)
             }

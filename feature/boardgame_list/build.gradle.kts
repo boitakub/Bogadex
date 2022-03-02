@@ -44,6 +44,7 @@ dependencies {
     implementation(project(":shared:architecture"))
     implementation(project(":shared:bgg_api_client"))
     implementation(project(":feature:boardgame"))
+    implementation(project(":shared:crashtest"))
 
     //region Core & Lifecycle
 

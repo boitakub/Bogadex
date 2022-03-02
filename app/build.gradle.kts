@@ -97,6 +97,7 @@ dependencies {
     implementation(project(":common"))
     implementation(project(":shared:architecture"))
     implementation(project(":shared:bgg_api_client"))
+    implementation(project(":shared:crashtest"))
     implementation(project(":feature:boardgame"))
     implementation(project(":feature:boardgame_list"))
 
