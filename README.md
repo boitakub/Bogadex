@@ -6,7 +6,6 @@
 
 <p align="center">
 <a href="https://github.com/boitakub/Bogadex/actions"><img alt="Build Status" src="https://github.com/boitakub/Bogadex/actions/workflows/main.yml/badge.svg"/></a>
-<a href="https://github.com/marketplace/actions/super-linter"><img alt="Super-Linter" src="https://github.com/boitakub/Bogadex/workflows/Lint%20Code%20Base/badge.svg"/></a>
 <a href="https://www.codacy.com/gh/boitakub/Bogadex/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=boitakub/Bogadex&amp;utm_campaign=Badge_Grade"><img src="https://app.codacy.com/project/badge/Grade/92ff47411c2a4d65b4389f4924ea8f0d"/></a>
 <a href="https://www.codacy.com/gh/boitakub/Bogadex/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=boitakub/Bogadex&amp;utm_campaign=Badge_Coverage"><img src="https://app.codacy.com/project/badge/Coverage/92ff47411c2a4d65b4389f4924ea8f0d"/></a>
 <a href="https://kotlinlang.org"><img alt="API" src="https://img.shields.io/badge/Kotlin-1.6.10-blue.svg?style=flat"/></a>
