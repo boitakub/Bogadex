@@ -2,65 +2,75 @@ name: Build
 
 on:
   push:
-    branches: [ main ] # Just in case main was not up to date while merging PR
+    branches: [ main ] # Build on merge or push on main branch
   pull_request:
-    types: [ opened, synchronize ]
+    types: [ opened, synchronize, reopened ] # Check on Pull Request interactions
 
 jobs:
   build-and-test:
-    name: Build, Lint and Test
+    name: ⚙️ Build, Lint and Test
     runs-on: macos-latest
+    if: ${{ !github.event.pull_request.draft }}
     timeout-minutes: 30
 
     steps:
-      - name: Checkout
+      - name: ❌ Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.9.1
+        with:
+          access_token: ${{ github.token }}
+
+      - name: 🛎️ Checkout
         uses: actions/checkout@v2
 
-      - name: Set up our JDK environment
+      - name: 🏭 Set up our JDK environment
         uses: actions/setup-java@v2
         with:
           distribution: 'adopt'
           java-version: '11'
 
       # Decode Google services configuration file from secrets
-      - name: Decode google-services.json
+      - name: 🔐 Decode google-services.json
         env:
           FIREBASE_CONFIG: ${{ secrets.FIREBASE_CONFIG }}
         run: echo $FIREBASE_CONFIG > app/google-services.json
 
-      - name: Cache Gradle and wrapper
-        uses: actions/cache@v2
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
+      - name: 🏭 Setup Gradle
+        uses: gradle/gradle-build-action@v2
 
       # Run emulator
-      - name: Run integration test on emulator
+      - name: 🧪 Run integration test on emulator
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 29
           script: ./gradlew createDebugCoverageReport --stacktrace
 
       # Generate jacoco report
-      - name: Generate report
+      - name: 📜 Generate report
         run: ./gradlew jacocoTestReport
 
-      # Upload report
-      - name: Upload Reports
-        uses: actions/upload-artifact@v2
+      - name: 🗜️ Zip build reports
+        id: zipBuildReports
         if: always()
+        run: cd build/coverage-report && zip -r ../../build-reports.zip ./* && cd -
+
+      - name: 📜 Upload build reports
+        if: always() && steps.zipBuildReports.outcome == 'success'
+        uses: actions/upload-artifact@v2
         with:
-          name: reports
-          path: |
-            /build/coverage-report
-            app/build/reports
+          name: build-reports
+          path: build-reports.zip
+          retention-days: 3
+
+      - name: 📋 Test Report
+        uses: dorny/test-reporter@v1
+        if: success() || failure()    # run this step even if previous step failed
+        with:
+          name: 🧪 Tests results
+          path: '**/TEST-*.xml'
+          reporter: java-junit
 
       # Upload coverage report to Codacy
-      - name: Run codacy-coverage-reporter
+      - name: 📋 Run codacy-coverage-reporter
         uses: codacy/codacy-coverage-reporter-action@v1
         with:
           project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
@@ -69,82 +79,76 @@ jobs:
     name: Execute analyse on code
     continue-on-error: true
     runs-on: ubuntu-latest
+    if: ${{ !github.event.pull_request.draft }}
     timeout-minutes: 30
 
     steps:
-      - name: Checkout
+      - name: ❌ Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.9.1
+        with:
+          access_token: ${{ github.token }}
+
+      - name: 🛎️ Checkout
         uses: actions/checkout@v2
 
-      - name: Set up our JDK environment
+      - name: 🏭 Set up our JDK environment
         uses: actions/setup-java@v2
         with:
           distribution: 'adopt'
           java-version: '11'
 
       # Decode Google services configuration file from secrets
-      - name: Decode google-services.json
+      - name: 🔐 Decode google-services.json
         env:
           FIREBASE_CONFIG: ${{ secrets.FIREBASE_CONFIG }}
         run: echo $FIREBASE_CONFIG > app/google-services.json
 
-      - name: Cache Gradle and wrapper
-        uses: actions/cache@v2
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
+      - name: 🏭 Setup Gradle
+        uses: gradle/gradle-build-action@v2
 
       # Check the code with detekt, you can remove this job if you don't use detekt
-      - name: Run detekt Linter
+      - name: 👀 Run detekt Linter
         run: ./gradlew detekt
 
       # Check the code with Android linter (need assemble)
-      - name: Run Android Linter
+      - name: 👀 Run Android Linter
         run: ./gradlew lint
 
       # Check the code with Spotless (ktlint included)
-      - name: Run Spotless
+      - name: 👀 Run Spotless
         run: ./gradlew spotlessCheck
-
-      # Upload report
-      - name: Upload lint reports
-        uses: actions/upload-artifact@v2
-        if: always()
-        with:
-          name: reports
-          path: |
-            build/reports
 
   generate-release-apk:
     name: Try generate Releasable
     runs-on: ubuntu-latest
+    if: ${{ !github.event.pull_request.draft }}
     environment: Release
     timeout-minutes: 30
     needs:
       - build-and-test
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
+      - name: ❌ Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.9.1
         with:
-          fetch-depth: 0
+          access_token: ${{ github.token }}
 
-      - name: Set up our JDK environment
+      - name: 🛎️ Checkout
+        uses: actions/checkout@v2
+
+      - name: 🏭 Set up our JDK environment
         uses: actions/setup-java@v2
         with:
           distribution: 'adopt'
           java-version: '11'
 
       # Decode Google services configuration file from secrets
-      - name: Decode google-services.json
+      - name: 🔐 Decode google-services.json
         env:
           FIREBASE_CONFIG: ${{ secrets.FIREBASE_CONFIG }}
         run: echo $FIREBASE_CONFIG > app/google-services.json
 
-      - name: Decode Keystore
+      - name: 🔐 Decode Keystore
         env:
           ENCODED_STRING: ${{ secrets.KEYSTORE }}
         run: |
@@ -152,17 +156,11 @@ jobs:
           mkdir "${TMP_KEYSTORE_FILE_PATH}"
           echo $ENCODED_STRING | base64 -di > "${TMP_KEYSTORE_FILE_PATH}"/keystore_file.jks
 
-      - name: Cache Gradle and wrapper
-        uses: actions/cache@v2
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
+      - name: 🏭 Setup Gradle
+        uses: gradle/gradle-build-action@v2
 
-      - name: Build Release
+
+      - name: 🔨️ Build Release
         run: ./gradlew app:assembleRelease
         env:
           SIGNING_KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
@@ -170,7 +168,7 @@ jobs:
           SIGNING_STORE_PASSWORD: ${{ secrets.SIGNING_STORE_PASSWORD }}
 
       # Upload unsigned release APK
-      - name: Upload apks
+      - name: 📦 Upload apks
         uses: actions/upload-artifact@v2
         with:
           name: apk
