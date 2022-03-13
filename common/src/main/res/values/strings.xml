@@ -11,6 +11,8 @@
 
     <string name="bgg_username">BoardGameGeek Username</string>
     <string name="bgg_username_summary">Your BoardGameGeek account or pseudo to retrieve your games</string>
+    <string name="filter_previously_own">Display previously own games</string>
+    <string name="filter_previously_own_summary">Show all games you do not own anymore in all application</string>
 
     <!-- Sample -->
     <string name="sample_game_title" translatable="false">Ticket to Ride</string>

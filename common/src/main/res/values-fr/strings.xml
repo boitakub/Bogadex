@@ -9,4 +9,6 @@
     <string name="fab_theme_auto_desc">Mode jour/nuit automatique</string>
     <string name="bgg_username">Compte BoardGameGeek</string>
     <string name="bgg_username_summary">Votre compte / pseudo Board Game Geek ou récupéré vos jeux</string>
+    <string name="filter_previously_own">Afficher les jeux revendus</string>
+    <string name="filter_previously_own_summary">Afficher les jeux que vous ne possédez plus dans toute l\'application</string>
 </resources>

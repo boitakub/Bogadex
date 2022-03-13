@@ -47,12 +47,14 @@ import fr.boitakub.bogadex.boardgame.usecase.ListCollection
 import fr.boitakub.bogadex.boardgame.usecase.ListCollectionItemOwned
 import fr.boitakub.bogadex.boardgame.usecase.ListCollectionItemSolo
 import fr.boitakub.bogadex.boardgame.usecase.ListCollectionItemWanted
+import fr.boitakub.common.UserSettings
 import fr.boitakub.common.databinding.CommonListFragmentBinding
 import fr.boitakub.common.ui.application.AppViewModel
 import fr.boitakub.common.ui.application.ApplicationState
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import javax.inject.Named
 
 @AndroidEntryPoint
 class BoardGameCollectionFragment :
@@ -61,6 +63,9 @@ class BoardGameCollectionFragment :
 
     @Inject
     lateinit var repository: BoardGameCollectionRepository
+
+    @Inject
+    lateinit var userSettings: UserSettings
 
     @Inject
     lateinit var imageLoaderViewModelFactory: BoardGameCollectionViewModel.BoardGameCollectionViewModelFactory
@@ -149,11 +154,11 @@ class BoardGameCollectionFragment :
 
     private fun getCollection(string: String?): ListCollection {
         return when (string) {
-            "collection" -> ListCollectionItemOwned(repository)
-            "wishlist" -> ListCollectionItemWanted(repository)
-            "solo" -> ListCollectionItemSolo(repository)
+            "collection" -> ListCollectionItemOwned(repository, userSettings)
+            "wishlist" -> ListCollectionItemWanted(repository, userSettings)
+            "solo" -> ListCollectionItemSolo(repository, userSettings)
             else -> { // Note the block
-                ListCollection(repository)
+                ListCollection(repository, userSettings)
             }
         }
     }

@@ -31,13 +31,24 @@ package fr.boitakub.bogadex.boardgame.usecase
 import fr.boitakub.architecture.UseCase
 import fr.boitakub.bogadex.boardgame.BoardGameCollectionRepository
 import fr.boitakub.bogadex.boardgame.model.CollectionItemWithDetails
+import fr.boitakub.common.UserSettings
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 open class ListCollection @Inject constructor(
     private val repository: BoardGameCollectionRepository,
+    private val userSettings: UserSettings,
 ) : UseCase<Flow<List<CollectionItemWithDetails>>, String> {
     override fun apply(input: String): Flow<List<CollectionItemWithDetails>> {
-        return repository.get(input)
+        return repository.get(input).map {
+            it.filter { item ->
+                if (!userSettings.displayPreviouslyOwned) {
+                    !item.item.status.previouslyOwned
+                } else {
+                    true
+                }
+            }
+        }
     }
 }
