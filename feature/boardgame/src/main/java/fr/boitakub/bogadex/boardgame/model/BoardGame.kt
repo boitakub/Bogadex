@@ -42,6 +42,7 @@ data class BoardGame(
     @PrimaryKey @ColumnInfo(name = "bgg_id") var bggId: String = "",
     @ColumnInfo(name = "title") var title: String = "",
     @ColumnInfo(name = "description") var description: String? = "",
+    @ColumnInfo(name = "type") var type: String = "",
     @ColumnInfo(name = "year_published") var yearPublished: Int = 0,
     @ColumnInfo(name = "min_player") var minPlayer: Int = 0,
     @ColumnInfo(name = "max_player") var maxPlayer: Int = 0,

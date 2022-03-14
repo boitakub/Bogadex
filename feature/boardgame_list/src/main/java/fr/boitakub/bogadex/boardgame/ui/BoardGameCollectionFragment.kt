@@ -54,7 +54,6 @@ import fr.boitakub.common.ui.application.ApplicationState
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import javax.inject.Named
 
 @AndroidEntryPoint
 class BoardGameCollectionFragment :
@@ -98,8 +97,7 @@ class BoardGameCollectionFragment :
         savedInstanceState: Bundle?
     ): View {
         binding = CommonListFragmentBinding.inflate(inflater, container, false)
-        adapter =
-            BoardGameCollectionListAdapter((binding.recyclerView.layoutManager as GridLayoutManager))
+        adapter = BoardGameCollectionListAdapter((binding.recyclerView.layoutManager as GridLayoutManager))
         return binding.root
     }
 
@@ -144,9 +142,7 @@ class BoardGameCollectionFragment :
     private fun switchLayout(state: Int) {
         if (state == 1) {
             (binding.recyclerView.layoutManager as GridLayoutManager).spanCount = 1
-            adapter.isGridMode = true
         } else {
-            adapter.isGridMode = false
             (binding.recyclerView.layoutManager as GridLayoutManager).spanCount =
                 resources.getInteger(R.integer.game_grid_columns)
         }

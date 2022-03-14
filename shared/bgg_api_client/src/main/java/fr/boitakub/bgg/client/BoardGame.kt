@@ -37,6 +37,7 @@ import com.tickaroo.tikxml.converter.htmlescape.HtmlEscapeStringConverter
 
 @Xml
 class BoardGame : Publishable() {
+
     @JvmField
     @PropertyElement
     var thumbnail: String? = null

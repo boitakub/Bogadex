@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021, Boitakub
+ * Copyright (c) 2021-2022, Boitakub
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -28,10 +28,9 @@
  */
 package fr.boitakub.common.ui
 
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
-abstract class CommonListAdapter<T : CommonListViewHolder, E>(val layoutManager: GridLayoutManager) :
+abstract class CommonListAdapter<T : CommonListViewHolder, E> :
     RecyclerView.Adapter<T>() {
 
     var itemList = mutableListOf<E>()

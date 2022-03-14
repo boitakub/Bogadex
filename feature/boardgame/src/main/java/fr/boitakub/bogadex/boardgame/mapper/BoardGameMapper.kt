@@ -45,6 +45,7 @@ class BoardGameMapper @Inject constructor() :
             source.id.toString(),
             BoardGameHelper.nameChooser(source.name),
             source.description,
+            source.type.orEmpty(),
             source.yearPublished,
             source.minplayers,
             source.maxplayers,

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021, Boitakub
+ * Copyright (c) 2021-2022, Boitakub
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -36,6 +36,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.viewbinding.ViewBinding
 import coil.load
 import fr.boitakub.boardgame_list.R
+import fr.boitakub.boardgame_list.databinding.BoardgameExpansionListItemBinding
 import fr.boitakub.boardgame_list.databinding.BoardgameListItemBinding
 import fr.boitakub.boardgame_list.databinding.BoardgameListItemGridBinding
 import fr.boitakub.bogadex.boardgame.model.CollectionItemWithDetails
@@ -43,24 +44,31 @@ import fr.boitakub.common.ui.CommonListAdapter
 import fr.boitakub.common.ui.CommonListViewHolder
 import fr.boitakub.common.ui.Filter
 
-internal class BoardGameCollectionListAdapter(layoutManager: GridLayoutManager) :
-    CommonListAdapter<BoardGameItemViewHolder, CollectionItemWithDetails>(layoutManager) {
-
-    open var isGridMode: Boolean = false
+internal class BoardGameCollectionListAdapter(private val layoutManager: GridLayoutManager) :
+    CommonListAdapter<BoardGameItemViewHolder, CollectionItemWithDetails>() {
 
     override fun getItemViewType(position: Int): Int {
-        return if (isGridMode) {
+        return if (layoutManager.spanCount > 1) {
             VIEW_TYPE_BIG
         } else {
-            VIEW_TYPE_SMALL
+            if (itemList[position].details != null && itemList[position].details?.type == "boardgameexpansion") {
+                VIEW_TYPE_SMALL_EXPANSION
+            } else {
+                VIEW_TYPE_SMALL
+            }
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BoardGameItemViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         var binding: ViewBinding = BoardgameListItemBinding.inflate(inflater, parent, false)
-        if (viewType == VIEW_TYPE_SMALL) {
-            binding = BoardgameListItemGridBinding.inflate(inflater, parent, false)
+        if (viewType == VIEW_TYPE_BIG) {
+            return BoardGameItemViewHolder(BoardgameListItemGridBinding.inflate(inflater, parent, false))
+        }
+        if (viewType == VIEW_TYPE_SMALL_EXPANSION) {
+            binding = BoardgameExpansionListItemBinding.inflate(inflater, parent, false)
+        } else if (viewType == VIEW_TYPE_SMALL) {
+            binding = BoardgameListItemBinding.inflate(inflater, parent, false)
         }
         return BoardGameItemViewHolder(binding)
     }
@@ -92,6 +100,25 @@ internal class BoardGameCollectionListAdapter(layoutManager: GridLayoutManager) 
             )
             holder.binding.pvRating.noOfSides = game.details?.statistic?.average?.toInt() ?: 0
             holder.binding.tvShapeRating.text = "${"%.1f".format(game.details?.statistic?.average)}"
+        } else if (holder.binding is BoardgameExpansionListItemBinding) {
+            holder.binding.tvTitle.text = game.item.title
+            holder.binding.ivCover.load(game.item.coverUrl)
+            holder.binding.tvPlayers.text = holder.itemView.context.getString(
+                R.string.players,
+                game.details?.minPlayer,
+                game.details?.maxPlayer
+            )
+            holder.binding.tvDuration.text = holder.itemView.context.getString(
+                R.string.duration,
+                game.details?.minPlayTime,
+                game.details?.maxPlayTime
+            )
+            holder.binding.tvWeight.text = holder.itemView.context.getString(
+                R.string.weight,
+                game.details?.statistic?.averageWeight
+            )
+            holder.binding.pvRating.noOfSides = game.details?.statistic?.average?.toInt() ?: 0
+            holder.binding.tvShapeRating.text = "${"%.1f".format(game.details?.statistic?.average)}"
         } else if (holder.binding is BoardgameListItemGridBinding) {
             holder.binding.tvTitle.text = game.item.title
             holder.binding.tvDescription.text = game.details?.description ?: ""
@@ -100,10 +127,10 @@ internal class BoardGameCollectionListAdapter(layoutManager: GridLayoutManager) 
     }
 
     companion object {
-        const val SPAN_COUNT_ONE = 1
+        const val VIEW_TYPE_SMALL = 10
+        const val VIEW_TYPE_SMALL_EXPANSION = 11
 
-        const val VIEW_TYPE_SMALL = 1
-        const val VIEW_TYPE_BIG = 2
+        const val VIEW_TYPE_BIG = 20
     }
 
     override fun applyFilter(fullList: List<CollectionItemWithDetails>?, filters: Filter) {
