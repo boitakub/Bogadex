@@ -71,6 +71,7 @@ class BoardGameCollectionFragment :
 
     lateinit var binding: CommonListFragmentBinding
     private val appViewModel: AppViewModel by activityViewModels()
+
     override val presenter: BoardGameCollectionViewModel by viewModels {
         provideFactory(
             imageLoaderViewModelFactory,
@@ -136,7 +137,6 @@ class BoardGameCollectionFragment :
 
     private fun applyApplicationChanges(data: ApplicationState) {
         switchLayout(data.viewType)
-        adapter.applyFilter(boardGameList, data.filters)
     }
 
     private fun switchLayout(state: Int) {
@@ -150,11 +150,11 @@ class BoardGameCollectionFragment :
 
     private fun getCollection(string: String?): ListCollection {
         return when (string) {
-            "collection" -> ListCollectionItemOwned(repository, userSettings)
-            "wishlist" -> ListCollectionItemWanted(repository, userSettings)
-            "solo" -> ListCollectionItemSolo(repository, userSettings)
+            "collection" -> ListCollectionItemOwned(repository, appViewModel.filterViewModel, userSettings)
+            "wishlist" -> ListCollectionItemWanted(repository, appViewModel.filterViewModel, userSettings)
+            "solo" -> ListCollectionItemSolo(repository, appViewModel.filterViewModel, userSettings)
             else -> { // Note the block
-                ListCollection(repository, userSettings)
+                ListCollection(repository, appViewModel.filterViewModel, userSettings)
             }
         }
     }

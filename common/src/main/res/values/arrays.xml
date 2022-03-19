@@ -5,6 +5,12 @@
         <item>0.0</item>
         <item>10.0</item>
     </array>
+    <integer name="weight_min_value">0</integer>
+    <integer name="weight_max_value">5</integer>
+    <array name="weight_initial_slider_values">
+        <item>0.0</item>
+        <item>5.0</item>
+    </array>
     <string-array name="list_preference_themes">
         <item>@string/theme_light</item>
         <item>@string/theme_dark</item>

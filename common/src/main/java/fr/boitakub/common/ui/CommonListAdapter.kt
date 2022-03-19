@@ -30,6 +30,9 @@ package fr.boitakub.common.ui
 
 import androidx.recyclerview.widget.RecyclerView
 
+/**
+ * https://stackoverflow.com/a/48959184
+ */
 abstract class CommonListAdapter<T : CommonListViewHolder, E> :
     RecyclerView.Adapter<T>() {
 
@@ -43,6 +46,4 @@ abstract class CommonListAdapter<T : CommonListViewHolder, E> :
     override fun getItemCount(): Int {
         return itemList.size
     }
-
-    abstract fun applyFilter(fullList: List<E>?, filters: Filter)
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021, Boitakub
+ * Copyright (c) 2022, Boitakub
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,6 +26,21 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package fr.boitakub.common.ui
+package fr.boitakub.filter
 
-data class Filter(val minRatingValue: Float = 0.0f, val maxRatingValue: Float = 10.0f)
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import javax.inject.Inject
+
+class FilterViewModel @Inject constructor() {
+    private val _filter = MutableStateFlow(Filter())
+    val filter: StateFlow<Filter> = _filter
+
+    fun get(): StateFlow<Filter> {
+        return filter
+    }
+
+    fun mutate(filter: Filter) {
+        _filter.value = filter
+    }
+}

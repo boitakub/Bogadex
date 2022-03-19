@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021-2022, Boitakub
+ * Copyright (c) 2022, Boitakub
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,24 +26,43 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package fr.boitakub.bogadex.boardgame.model
+package fr.boitakub.filter
 
-import androidx.room.Embedded
-import androidx.room.Relation
+import android.content.Context
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import fr.boitakub.common.databinding.MbsFiltersBinding
 
-data class CollectionItemWithDetails(
-    @Embedded val item: CollectionItem,
-    @Relation(
-        entity = BoardGame::class,
-        parentColumn = "bgg_id",
-        entityColumn = "bgg_id"
-    ) var details: BoardGame?
-) {
-    fun averageRating(): Float {
-        return details?.statistic?.average ?: 0.0f
-    }
-
-    fun averageWeight(): Float {
-        return details?.statistic?.averageWeight ?: 0.0f
+class FilterBottomSheetDialog(context: Context, filterViewModel: FilterViewModel) : BottomSheetDialog(context) {
+    init {
+        val binding: MbsFiltersBinding = MbsFiltersBinding.inflate(layoutInflater, null, false)
+        setContentView(binding.root)
+        binding.rsMinRating.setValues(
+            filterViewModel.get().value.minRatingValue,
+            filterViewModel.get().value.maxRatingValue
+        )
+        binding.rsMinRating.addOnChangeListener { slider, _, _ ->
+            filterViewModel.mutate(
+                Filter(
+                    slider.values[0],
+                    slider.values[1],
+                    filterViewModel.get().value.minWeightValue,
+                    filterViewModel.get().value.maxWeightValue
+                )
+            )
+        }
+        binding.rsMinWeight.setValues(
+            filterViewModel.get().value.minWeightValue,
+            filterViewModel.get().value.maxWeightValue
+        )
+        binding.rsMinWeight.addOnChangeListener { slider, _, _ ->
+            filterViewModel.mutate(
+                Filter(
+                    filterViewModel.get().value.minRatingValue,
+                    filterViewModel.get().value.maxRatingValue,
+                    slider.values[0],
+                    slider.values[1]
+                )
+            )
+        }
     }
 }

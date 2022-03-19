@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021, Boitakub
+ * Copyright (c) 2021-2022, Boitakub
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -31,7 +31,7 @@ package fr.boitakub.common.ui.application
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fr.boitakub.architecture.Presenter
-import fr.boitakub.common.ui.Filter
+import fr.boitakub.filter.FilterViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject
@@ -40,6 +40,9 @@ import javax.inject.Inject
 class AppViewModel @Inject constructor() : ViewModel(), Presenter {
     private val _applicationState = MutableStateFlow(ApplicationState())
     val applicationState: StateFlow<ApplicationState> = _applicationState
+
+    @Inject
+    lateinit var filterViewModel: FilterViewModel
 
     fun switchLayout(state: ApplicationState) {
         if (state.viewType == 1) {
@@ -51,10 +54,5 @@ class AppViewModel @Inject constructor() : ViewModel(), Presenter {
 
     fun filterCollectionWith(state: ApplicationState, filter: String) {
         _applicationState.value = ApplicationState(filter, state.viewType)
-    }
-
-    fun applyFilter(state: ApplicationState, filter: Filter) {
-        _applicationState.value =
-            ApplicationState(state.collection, state.viewType, filter)
     }
 }

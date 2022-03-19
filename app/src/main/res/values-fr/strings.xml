@@ -5,9 +5,6 @@
     <string name="display_collection">Ma collection</string>
     <string name="display_wishlist">Ma liste de souhait</string>
 
-    <string name="filters">Filtrer les jeux</string>
-    <string name="filters_desc">Afficher une liste de paramétres pour filtrer la liste de jeux</string>
-    <string name="rs_min_rating">Note comprise entre</string>
     <string name="change_display">Changer la vue</string>
     <string name="content_change_display">Changer la vue d\'affichage de la collection</string>
     <string name="display_solo">Jouable en solo</string>

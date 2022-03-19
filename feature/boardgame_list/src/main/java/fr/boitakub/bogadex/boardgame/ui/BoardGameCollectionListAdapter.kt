@@ -42,7 +42,6 @@ import fr.boitakub.boardgame_list.databinding.BoardgameListItemGridBinding
 import fr.boitakub.bogadex.boardgame.model.CollectionItemWithDetails
 import fr.boitakub.common.ui.CommonListAdapter
 import fr.boitakub.common.ui.CommonListViewHolder
-import fr.boitakub.common.ui.Filter
 
 internal class BoardGameCollectionListAdapter(private val layoutManager: GridLayoutManager) :
     CommonListAdapter<BoardGameItemViewHolder, CollectionItemWithDetails>() {
@@ -131,17 +130,6 @@ internal class BoardGameCollectionListAdapter(private val layoutManager: GridLay
         const val VIEW_TYPE_SMALL_EXPANSION = 11
 
         const val VIEW_TYPE_BIG = 20
-    }
-
-    override fun applyFilter(fullList: List<CollectionItemWithDetails>?, filters: Filter) {
-        fullList?.let {
-            setItems(
-                it.filter { item ->
-                    item.averageRating() >= filters.minRatingValue &&
-                        item.averageRating() <= filters.maxRatingValue
-                }
-            )
-        }
     }
 }
 

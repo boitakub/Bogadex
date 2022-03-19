@@ -41,14 +41,11 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import androidx.preference.PreferenceManager
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.slider.RangeSlider
 import dagger.hilt.android.AndroidEntryPoint
 import fr.boitakub.bogadex.databinding.ActivityMainBinding
-import fr.boitakub.common.ui.Filter
 import fr.boitakub.common.ui.application.AppViewModel
-import fr.boitakub.common.ui.application.ApplicationState
+import fr.boitakub.filter.FilterBottomSheetDialog
 import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
@@ -122,15 +119,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     // https://www.section.io/engineering-education/bottom-sheet-dialogs-using-android-studio/
-    private fun showFilterBottomSheetDialog(state: ApplicationState) {
-        val bottomSheetDialog = BottomSheetDialog(this)
-        bottomSheetDialog.setContentView(R.layout.mbs_filters)
-        bottomSheetDialog.findViewById<RangeSlider>(R.id.rs_min_rating)
-            ?.addOnChangeListener { slider, _, _ ->
-                appViewModel.applyFilter(state, Filter(slider.values[0], slider.values[1]))
-            }
-
-        bottomSheetDialog.show()
+    private fun showFilterBottomSheetDialog() {
+        val filterBottomSheetDialog = FilterBottomSheetDialog(this, appViewModel.filterViewModel)
+        filterBottomSheetDialog.show()
     }
 
     private fun observeFilters() {
@@ -152,7 +143,7 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 binding.fabFilters.setOnClickListener {
-                    showFilterBottomSheetDialog(state)
+                    showFilterBottomSheetDialog()
                 }
             }
         }

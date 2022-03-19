@@ -32,14 +32,16 @@ import fr.boitakub.architecture.UseCase
 import fr.boitakub.bogadex.boardgame.BoardGameCollectionRepository
 import fr.boitakub.bogadex.boardgame.model.CollectionItemWithDetails
 import fr.boitakub.common.UserSettings
+import fr.boitakub.filter.FilterViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class ListCollectionItemOwned @Inject constructor(
     private val repository: BoardGameCollectionRepository,
+    private val filterViewModel: FilterViewModel,
     private val userSettings: UserSettings,
-) : UseCase<Flow<List<CollectionItemWithDetails>>, String>, ListCollection(repository, userSettings) {
+) : UseCase<Flow<List<CollectionItemWithDetails>>, String>, ListCollection(repository, filterViewModel, userSettings) {
     override fun apply(input: String): Flow<List<CollectionItemWithDetails>> {
         return super.apply(input).map { it.filter { boardGame -> boardGame.item.status.own } }
     }

@@ -32,23 +32,33 @@ import fr.boitakub.architecture.UseCase
 import fr.boitakub.bogadex.boardgame.BoardGameCollectionRepository
 import fr.boitakub.bogadex.boardgame.model.CollectionItemWithDetails
 import fr.boitakub.common.UserSettings
+import fr.boitakub.filter.FilterViewModel
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.combine
 import javax.inject.Inject
 
 open class ListCollection @Inject constructor(
     private val repository: BoardGameCollectionRepository,
+    private val filterViewModel: FilterViewModel,
     private val userSettings: UserSettings,
 ) : UseCase<Flow<List<CollectionItemWithDetails>>, String> {
     override fun apply(input: String): Flow<List<CollectionItemWithDetails>> {
-        return repository.get(input).map {
-            it.filter { item ->
-                if (!userSettings.displayPreviouslyOwned) {
-                    !item.item.status.previouslyOwned
-                } else {
-                    true
+        return repository.get(input)
+            .combine(filterViewModel.get()) { collectionList, filter ->
+                // Apply session filters
+                collectionList.filter { item ->
+                    item.averageRating() in filter.minRatingValue..filter.maxRatingValue &&
+                        item.averageWeight() in filter.minWeightValue..filter.maxWeightValue
                 }
+                    .filter {
+                        // Apply global app filters
+                        if (!userSettings.displayPreviouslyOwned) {
+                            !it.item.status.previouslyOwned
+                        } else {
+                            true
+                        }
+                    }
+                // Apply grouping
             }
-        }
     }
 }

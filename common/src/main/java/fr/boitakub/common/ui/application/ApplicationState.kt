@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021, Boitakub
+ * Copyright (c) 2021-2022, Boitakub
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -28,6 +28,6 @@
  */
 package fr.boitakub.common.ui.application
 
-import fr.boitakub.common.ui.Filter
+import fr.boitakub.filter.Filter
 
 data class ApplicationState(val collection: String = "all", val viewType: Int = 1, val filters: Filter = Filter())

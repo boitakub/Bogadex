@@ -14,6 +14,11 @@
     <string name="filter_previously_own">Display previously own games</string>
     <string name="filter_previously_own_summary">Show all games you do not own anymore in all application</string>
 
+    <string name="filters">Filter games</string>
+    <string name="filters_desc">Display filter screen with different parameters</string>
+    <string name="rs_min_rating">Rate between</string>
+    <string name="rs_min_weight">Weight between</string>
+
     <!-- Sample -->
     <string name="sample_game_title" translatable="false">Ticket to Ride</string>
     <string name="sample_game_category" translatable="false">Designer : Alan R. Moon</string>
