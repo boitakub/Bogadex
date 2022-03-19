@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022, Boitakub
+ * Copyright (c) 2021-2022, Boitakub
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,43 +26,33 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package fr.boitakub.filter
+package fr.boitakub.bogadex.common.ui.application
 
-import android.content.Context
-import com.google.android.material.bottomsheet.BottomSheetDialog
-import fr.boitakub.common.databinding.MbsFiltersBinding
+import androidx.lifecycle.ViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
+import fr.boitakub.architecture.Presenter
+import fr.boitakub.bogadex.filter.FilterViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import javax.inject.Inject
 
-class FilterBottomSheetDialog(context: Context, filterViewModel: FilterViewModel) : BottomSheetDialog(context) {
-    init {
-        val binding: MbsFiltersBinding = MbsFiltersBinding.inflate(layoutInflater, null, false)
-        setContentView(binding.root)
-        binding.rsMinRating.setValues(
-            filterViewModel.get().value.minRatingValue,
-            filterViewModel.get().value.maxRatingValue
-        )
-        binding.rsMinRating.addOnChangeListener { slider, _, _ ->
-            filterViewModel.mutate(
-                Filter(
-                    slider.values[0],
-                    slider.values[1],
-                    filterViewModel.get().value.minWeightValue,
-                    filterViewModel.get().value.maxWeightValue
-                )
-            )
+@HiltViewModel
+class AppViewModel @Inject constructor() : ViewModel(), Presenter {
+    private val _applicationState = MutableStateFlow(ApplicationState())
+    val applicationState: StateFlow<ApplicationState> = _applicationState
+
+    @Inject
+    lateinit var filterViewModel: FilterViewModel
+
+    fun switchLayout(state: ApplicationState) {
+        if (state.viewType == 1) {
+            _applicationState.value = ApplicationState(state.collection, 2)
+        } else {
+            _applicationState.value = ApplicationState(state.collection, 1)
         }
-        binding.rsMinWeight.setValues(
-            filterViewModel.get().value.minWeightValue,
-            filterViewModel.get().value.maxWeightValue
-        )
-        binding.rsMinWeight.addOnChangeListener { slider, _, _ ->
-            filterViewModel.mutate(
-                Filter(
-                    filterViewModel.get().value.minRatingValue,
-                    filterViewModel.get().value.maxRatingValue,
-                    slider.values[0],
-                    slider.values[1]
-                )
-            )
-        }
+    }
+
+    fun filterCollectionWith(state: ApplicationState, filter: String) {
+        _applicationState.value = ApplicationState(filter, state.viewType)
     }
 }

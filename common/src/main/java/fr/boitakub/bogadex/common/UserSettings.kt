@@ -26,21 +26,6 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package fr.boitakub.filter
+package fr.boitakub.bogadex.common
 
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import javax.inject.Inject
-
-class FilterViewModel @Inject constructor() {
-    private val _filter = MutableStateFlow(Filter())
-    val filter: StateFlow<Filter> = _filter
-
-    fun get(): StateFlow<Filter> {
-        return filter
-    }
-
-    fun mutate(filter: Filter) {
-        _filter.value = filter
-    }
-}
+data class UserSettings(val displayPreviouslyOwned: Boolean)

@@ -40,8 +40,8 @@ import fr.boitakub.boardgame_list.databinding.BoardgameExpansionListItemBinding
 import fr.boitakub.boardgame_list.databinding.BoardgameListItemBinding
 import fr.boitakub.boardgame_list.databinding.BoardgameListItemGridBinding
 import fr.boitakub.bogadex.boardgame.model.CollectionItemWithDetails
-import fr.boitakub.common.ui.CommonListAdapter
-import fr.boitakub.common.ui.CommonListViewHolder
+import fr.boitakub.bogadex.common.ui.CommonListAdapter
+import fr.boitakub.bogadex.common.ui.CommonListViewHolder
 
 internal class BoardGameCollectionListAdapter(private val layoutManager: GridLayoutManager) :
     CommonListAdapter<BoardGameItemViewHolder, CollectionItemWithDetails>() {

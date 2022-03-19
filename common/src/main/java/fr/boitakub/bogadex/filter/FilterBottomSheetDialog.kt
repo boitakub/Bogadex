@@ -26,6 +26,43 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package fr.boitakub.common
+package fr.boitakub.bogadex.filter
 
-data class UserSettings(val displayPreviouslyOwned: Boolean)
+import android.content.Context
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import fr.boitakub.bogadex.common.databinding.MbsFiltersBinding
+
+class FilterBottomSheetDialog(context: Context, filterViewModel: FilterViewModel) : BottomSheetDialog(context) {
+    init {
+        val binding: MbsFiltersBinding = MbsFiltersBinding.inflate(layoutInflater, null, false)
+        setContentView(binding.root)
+        binding.rsMinRating.setValues(
+            filterViewModel.get().value.minRatingValue,
+            filterViewModel.get().value.maxRatingValue
+        )
+        binding.rsMinRating.addOnChangeListener { slider, _, _ ->
+            filterViewModel.mutate(
+                Filter(
+                    slider.values[0],
+                    slider.values[1],
+                    filterViewModel.get().value.minWeightValue,
+                    filterViewModel.get().value.maxWeightValue
+                )
+            )
+        }
+        binding.rsMinWeight.setValues(
+            filterViewModel.get().value.minWeightValue,
+            filterViewModel.get().value.maxWeightValue
+        )
+        binding.rsMinWeight.addOnChangeListener { slider, _, _ ->
+            filterViewModel.mutate(
+                Filter(
+                    filterViewModel.get().value.minRatingValue,
+                    filterViewModel.get().value.maxRatingValue,
+                    slider.values[0],
+                    slider.values[1]
+                )
+            )
+        }
+    }
+}

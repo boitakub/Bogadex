@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021, Boitakub
+ * Copyright (c) 2021-2022, Boitakub
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -37,8 +37,8 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import fr.boitakub.bogadex.common.ui.application.AppViewModel
 import fr.boitakub.bogadex.databinding.FragmentBottomsheetBinding
-import fr.boitakub.common.ui.application.AppViewModel
 import kotlinx.coroutines.flow.collect
 
 class BottomNavigationDrawerFragment(private val navController: NavController) : BottomSheetDialogFragment() {

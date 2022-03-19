@@ -31,8 +31,8 @@ package fr.boitakub.bogadex.boardgame.usecase
 import fr.boitakub.architecture.UseCase
 import fr.boitakub.bogadex.boardgame.BoardGameCollectionRepository
 import fr.boitakub.bogadex.boardgame.model.CollectionItemWithDetails
-import fr.boitakub.common.UserSettings
-import fr.boitakub.filter.FilterViewModel
+import fr.boitakub.bogadex.common.UserSettings
+import fr.boitakub.bogadex.filter.FilterViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import javax.inject.Inject

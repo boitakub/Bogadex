@@ -43,9 +43,9 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.preference.PreferenceManager
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import dagger.hilt.android.AndroidEntryPoint
+import fr.boitakub.bogadex.common.ui.application.AppViewModel
 import fr.boitakub.bogadex.databinding.ActivityMainBinding
-import fr.boitakub.common.ui.application.AppViewModel
-import fr.boitakub.filter.FilterBottomSheetDialog
+import fr.boitakub.bogadex.filter.FilterBottomSheetDialog
 import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint

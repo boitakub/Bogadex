@@ -28,7 +28,7 @@
 
     <fragment
         android:id="@id/navigation_settings"
-        android:name="fr.boitakub.common.ui.settings.SettingsFragment"
+        android:name="fr.boitakub.bogadex.common.ui.settings.SettingsFragment"
         android:label="@string/settings">
     </fragment>
 

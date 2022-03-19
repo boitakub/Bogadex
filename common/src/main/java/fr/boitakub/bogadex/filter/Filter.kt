@@ -26,8 +26,11 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package fr.boitakub.common.ui.application
+package fr.boitakub.bogadex.filter
 
-import fr.boitakub.filter.Filter
-
-data class ApplicationState(val collection: String = "all", val viewType: Int = 1, val filters: Filter = Filter())
+data class Filter(
+    val minRatingValue: Float = 0.0f,
+    val maxRatingValue: Float = 10.0f,
+    val minWeightValue: Float = 0.0f,
+    val maxWeightValue: Float = 5.0f
+)

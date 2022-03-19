@@ -51,7 +51,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.rememberImagePainter
 import fr.boitakub.bogadex.boardgame.R
 import fr.boitakub.bogadex.boardgame.model.BoardGame
-import fr.boitakub.common.ui.navigation.RatingBar
+import fr.boitakub.bogadex.common.ui.navigation.RatingBar
 
 @Composable
 fun BoardGameDetailScreen(

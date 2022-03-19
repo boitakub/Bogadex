@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021-2022, Boitakub
+ * Copyright (c) 2022, Boitakub
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,24 +26,14 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package fr.boitakub.common.ui
+package fr.boitakub.bogadex.common.ui.settings
 
-import androidx.recyclerview.widget.RecyclerView
+import android.os.Bundle
+import androidx.preference.PreferenceFragmentCompat
+import fr.boitakub.bogadex.common.R
 
-/**
- * https://stackoverflow.com/a/48959184
- */
-abstract class CommonListAdapter<T : CommonListViewHolder, E> :
-    RecyclerView.Adapter<T>() {
-
-    var itemList = mutableListOf<E>()
-
-    fun setItems(items: List<E>) {
-        this.itemList = items.toMutableList()
-        notifyDataSetChanged()
-    }
-
-    override fun getItemCount(): Int {
-        return itemList.size
+class SettingsFragment : PreferenceFragmentCompat() {
+    override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
+        setPreferencesFromResource(R.xml.preferences, rootKey)
     }
 }

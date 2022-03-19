@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022, Boitakub
+ * Copyright (c) 2021-2022, Boitakub
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,14 +26,8 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package fr.boitakub.common.ui.settings
+package fr.boitakub.bogadex.common.ui.application
 
-import android.os.Bundle
-import androidx.preference.PreferenceFragmentCompat
-import fr.boitakub.common.R
+import fr.boitakub.bogadex.filter.Filter
 
-class SettingsFragment : PreferenceFragmentCompat() {
-    override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
-        setPreferencesFromResource(R.xml.preferences, rootKey)
-    }
-}
+data class ApplicationState(val collection: String = "all", val viewType: Int = 1, val filters: Filter = Filter())

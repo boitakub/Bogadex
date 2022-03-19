@@ -26,33 +26,9 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package fr.boitakub.common.ui.application
+package fr.boitakub.bogadex.common.ui
 
-import androidx.lifecycle.ViewModel
-import dagger.hilt.android.lifecycle.HiltViewModel
-import fr.boitakub.architecture.Presenter
-import fr.boitakub.filter.FilterViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import javax.inject.Inject
+import androidx.recyclerview.widget.RecyclerView
+import androidx.viewbinding.ViewBinding
 
-@HiltViewModel
-class AppViewModel @Inject constructor() : ViewModel(), Presenter {
-    private val _applicationState = MutableStateFlow(ApplicationState())
-    val applicationState: StateFlow<ApplicationState> = _applicationState
-
-    @Inject
-    lateinit var filterViewModel: FilterViewModel
-
-    fun switchLayout(state: ApplicationState) {
-        if (state.viewType == 1) {
-            _applicationState.value = ApplicationState(state.collection, 2)
-        } else {
-            _applicationState.value = ApplicationState(state.collection, 1)
-        }
-    }
-
-    fun filterCollectionWith(state: ApplicationState, filter: String) {
-        _applicationState.value = ApplicationState(filter, state.viewType)
-    }
-}
+abstract class CommonListViewHolder(binding: ViewBinding) : RecyclerView.ViewHolder(binding.root)
