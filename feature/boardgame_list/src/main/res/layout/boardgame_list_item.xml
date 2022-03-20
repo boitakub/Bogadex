@@ -73,7 +73,7 @@
         android:layout_margin="16dp"
         android:elevation="12dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/v_right_line"
         app:layout_constraintStart_toEndOf="@id/tv_title"
         app:layout_constraintTop_toTopOf="parent"
         app:shape_polygon_noOfSides="9">
@@ -90,5 +90,18 @@
             tools:text="100" />
 
     </io.github.florent37.shapeofview.shapes.PolygonView>
+
+    <View
+        android:id="@+id/v_right_line"
+        android:layout_width="5dp"
+        android:layout_height="0dp"
+        android:padding="@dimen/half_padding"
+        android:alpha="0.9"
+        app:layout_constraintStart_toEndOf="@id/pv_rating"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:background="@color/weight_very_hard"/>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

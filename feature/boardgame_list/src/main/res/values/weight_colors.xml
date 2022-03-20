@@ -1,0 +1,7 @@
+<resources>
+    <color name="weight_very_easy">#4CAF50</color>
+    <color name="weight_easy">#FFEB3B</color>
+    <color name="weight_normal">#FF9800</color>
+    <color name="weight_hard">#F44336</color>
+    <color name="weight_very_hard">#9C27B0</color>
+</resources>

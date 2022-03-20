@@ -28,8 +28,10 @@
  */
 package fr.boitakub.bogadex.boardgame.ui
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.annotation.ColorInt
 import androidx.core.os.bundleOf
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
@@ -81,6 +83,12 @@ internal class BoardGameCollectionListAdapter(private val layoutManager: GridLay
                 .navigate(R.id.navigation_boardgame_details, bundle)
         }
         if (holder.binding is BoardgameListItemBinding) {
+            holder.binding.vRightLine.setBackgroundColor(
+                getWeightColor(
+                    holder.binding.ivCover.context,
+                    game.averageWeight()
+                )
+            )
             holder.binding.tvTitle.text = game.item.title
             holder.binding.ivCover.load(game.item.coverUrl)
             holder.binding.tvPlayers.text = holder.itemView.context.getString(
@@ -123,6 +131,27 @@ internal class BoardGameCollectionListAdapter(private val layoutManager: GridLay
             holder.binding.tvDescription.text = game.details?.description ?: ""
             holder.binding.ivCover.load(game.details?.image)
         }
+    }
+
+    @ColorInt
+    private fun getWeightColor(context: Context, averageWeight: Float): Int {
+        var color = context.getColor(android.R.color.white)
+        if (averageWeight in 0F..1F) {
+            color = context.getColor(R.color.weight_very_easy)
+        }
+        if (averageWeight in 1F..2F) {
+            color = context.getColor(R.color.weight_easy)
+        }
+        if (averageWeight in 2F..3F) {
+            color = context.getColor(R.color.weight_normal)
+        }
+        if (averageWeight in 3F..4F) {
+            color = context.getColor(R.color.weight_hard)
+        }
+        if (averageWeight in 4F..5F) {
+            color = context.getColor(R.color.weight_very_hard)
+        }
+        return color
     }
 
     companion object {
