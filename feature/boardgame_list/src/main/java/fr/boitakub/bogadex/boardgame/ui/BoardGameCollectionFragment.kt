@@ -36,7 +36,9 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.GridLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import fr.boitakub.boardgame_list.R
@@ -81,17 +83,6 @@ class BoardGameCollectionFragment :
     private lateinit var adapter: BoardGameCollectionListAdapter
     private var boardGameList: List<CollectionItemWithDetails> = listOf()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        lifecycleScope.launch {
-            presenter.gameList.collect {
-                boardGameList = it
-                (binding.recyclerView.adapter as BoardGameCollectionListAdapter).setItems(it)
-            }
-        }
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -106,23 +97,33 @@ class BoardGameCollectionFragment :
         super.onViewCreated(view, savedInstanceState)
         binding.recyclerView.adapter = adapter
 
-        presenter.errorMessage.observe(
-            viewLifecycleOwner,
-            {
-                Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
-            }
-        )
-
-        presenter.loading.observe(
-            viewLifecycleOwner,
-            {
-                if (it) {
-                    binding.pbLoading.visibility = View.VISIBLE
-                } else {
-                    binding.pbLoading.visibility = View.GONE
+        // Create a new coroutine in the lifecycleScope
+        viewLifecycleOwner.lifecycleScope.launch {
+            // repeatOnLifecycle launches the block in a new coroutine every time the
+            // lifecycle is in the STARTED state (or above) and cancels it when it's STOPPED.
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                presenter.gameList.collect {
+                    boardGameList = it
+                    (binding.recyclerView.adapter as BoardGameCollectionListAdapter).setItems(it)
                 }
             }
-        )
+        }
+
+        presenter.errorMessage.observe(
+            viewLifecycleOwner
+        ) {
+            Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+        }
+
+        presenter.loading.observe(
+            viewLifecycleOwner
+        ) {
+            if (it) {
+                binding.pbLoading.visibility = View.VISIBLE
+            } else {
+                binding.pbLoading.visibility = View.GONE
+            }
+        }
 
         observeApplicationState()
     }
