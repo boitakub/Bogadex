@@ -86,6 +86,9 @@ dependencies {
     implementation(AndroidX.compose.material)
     implementation(AndroidX.compose.foundation)
 
+    debugImplementation(AndroidX.compose.ui.tooling)
+    implementation(AndroidX.compose.ui.toolingPreview)
+
     //endregion
 
     //region UI

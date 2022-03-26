@@ -19,6 +19,11 @@
     <string name="rs_min_rating">Rate between</string>
     <string name="rs_min_weight">Weight between</string>
 
+    <string name="description">Description</string>
+
+    <string name="link_to_boardgamegeek" translatable="false">BoardGameGeek</string>
+    <string name="link_to_bgstats" translatable="false">BgStats</string>
+
     <!-- Sample -->
     <string name="sample_game_title" translatable="false">Ticket to Ride</string>
     <string name="sample_game_category" translatable="false">Designer : Alan R. Moon</string>

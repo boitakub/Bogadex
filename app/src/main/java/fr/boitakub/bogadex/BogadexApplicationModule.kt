@@ -29,7 +29,7 @@
 package fr.boitakub.bogadex
 
 import android.content.Context
-import android.preference.PreferenceManager
+import androidx.preference.PreferenceManager
 import coil.ImageLoader
 import dagger.Module
 import dagger.Provides
