@@ -56,10 +56,7 @@ class MainActivity : AppCompatActivity() {
     private var currentTheme = AppCompatDelegate.MODE_NIGHT_NO
 
     companion object {
-        private const val PREF_THEME_KEY: String = "ui_night_mode"
-        private const val PREF_THEME_DAY_VALUE: String = "LIGHT"
-        private const val PREF_THEME_NIGHT_VALUE: String = "NIGHT"
-        private const val PREF_THEME_AUTO_VALUE: String = "AUTO"
+        private const val PREF_THEME_KEY: String = "theme_mode"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -69,7 +66,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         currentTheme = PreferenceManager.getDefaultSharedPreferences(this)
-            .getString(PREF_THEME_KEY, PREF_THEME_DAY_VALUE).toNightMode()
+            .getInt(PREF_THEME_KEY, AppCompatDelegate.MODE_NIGHT_NO)
 
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
         val drawer = FakeDrawer(supportFragmentManager, BottomNavigationDrawerFragment(navController))
@@ -97,7 +94,7 @@ class MainActivity : AppCompatActivity() {
             AppCompatDelegate.setDefaultNightMode(currentTheme)
             PreferenceManager.getDefaultSharedPreferences(this)
                 .edit()
-                .putString(PREF_THEME_KEY, currentTheme.toThemeValue())
+                .putInt(PREF_THEME_KEY, currentTheme)
                 .apply()
         }
     }
@@ -175,21 +172,5 @@ class MainActivity : AppCompatActivity() {
         override fun close() {
             isOpen = false
         }
-    }
-
-    private fun Int.toThemeValue(): String {
-        when (this) {
-            AppCompatDelegate.MODE_NIGHT_YES -> PREF_THEME_NIGHT_VALUE
-            AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM -> PREF_THEME_AUTO_VALUE
-        }
-        return PREF_THEME_DAY_VALUE
-    }
-
-    private fun String?.toNightMode(): Int {
-        when (this) {
-            PREF_THEME_NIGHT_VALUE -> AppCompatDelegate.MODE_NIGHT_YES
-            PREF_THEME_AUTO_VALUE -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
-        }
-        return AppCompatDelegate.MODE_NIGHT_NO
     }
 }
