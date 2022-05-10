@@ -52,6 +52,7 @@ android {
     sourceSets {
         getByName("androidTest").assets.srcDirs("src/androidTest/assets")
     }
+    namespace = "fr.boitakub.bogadex.boardgame"
 }
 
 dependencies {

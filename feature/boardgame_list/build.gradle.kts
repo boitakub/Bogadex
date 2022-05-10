@@ -37,6 +37,7 @@ android {
     buildFeatures {
         viewBinding = true
     }
+    namespace = "fr.boitakub.boardgame_list"
 }
 
 dependencies {

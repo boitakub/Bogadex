@@ -91,6 +91,7 @@ android {
         htmlReport = true
         htmlOutput = file("${project.rootDir}/build/reports/android-lint.html")
     }
+    namespace = "fr.boitakub.bogadex"
 }
 
 dependencies {
