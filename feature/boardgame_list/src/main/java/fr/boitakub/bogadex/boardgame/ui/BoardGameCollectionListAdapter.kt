@@ -29,14 +29,17 @@
 package fr.boitakub.bogadex.boardgame.ui
 
 import android.content.Context
+import android.content.res.ColorStateList
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.annotation.ColorInt
+import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.viewbinding.ViewBinding
 import coil.load
+import com.google.android.material.chip.Chip
 import fr.boitakub.boardgame_list.R
 import fr.boitakub.boardgame_list.databinding.BoardgameExpansionListItemBinding
 import fr.boitakub.boardgame_list.databinding.BoardgameListItemBinding
@@ -83,7 +86,7 @@ internal class BoardGameCollectionListAdapter(private val layoutManager: GridLay
                 .navigate(R.id.navigation_boardgame_details, bundle)
         }
         if (holder.binding is BoardgameListItemBinding) {
-            holder.binding.vRightLine.setBackgroundColor(
+            holder.binding.ivWeight.imageTintList = ColorStateList.valueOf(
                 getWeightColor(
                     holder.binding.ivCover.context,
                     game.averageWeight()
@@ -91,6 +94,9 @@ internal class BoardGameCollectionListAdapter(private val layoutManager: GridLay
             )
             holder.binding.tvTitle.text = game.item.title
             holder.binding.ivCover.load(game.item.coverUrl)
+            holder.binding.ivBgCover.load(game.item.coverUrl)
+            holder.binding.cgTags.removeAllViews()
+            holder.binding.cgTags.addView(createTagChip(holder.binding.root.context, "Test"))
             holder.binding.tvPlayers.text = holder.itemView.context.getString(
                 R.string.players,
                 game.details?.minPlayer,
@@ -133,22 +139,28 @@ internal class BoardGameCollectionListAdapter(private val layoutManager: GridLay
         }
     }
 
+    private fun createTagChip(context: Context, chipName: String): Chip {
+        return Chip(context).apply {
+            text = chipName
+        }
+    }
+
     @ColorInt
     private fun getWeightColor(context: Context, averageWeight: Float): Int {
         var color = context.getColor(android.R.color.white)
-        if (averageWeight in 0F..1F) {
+        if (averageWeight in 0F..1.2F) {
             color = context.getColor(R.color.weight_very_easy)
         }
-        if (averageWeight in 1F..2F) {
+        if (averageWeight in 1.2F..2.4F) {
             color = context.getColor(R.color.weight_easy)
         }
-        if (averageWeight in 2F..3F) {
+        if (averageWeight in 2.4F..3.0F) {
             color = context.getColor(R.color.weight_normal)
         }
-        if (averageWeight in 3F..4F) {
+        if (averageWeight in 3.0F..3.9F) {
             color = context.getColor(R.color.weight_hard)
         }
-        if (averageWeight in 4F..5F) {
+        if (averageWeight in 3.9F..5F) {
             color = context.getColor(R.color.weight_very_hard)
         }
         return color
