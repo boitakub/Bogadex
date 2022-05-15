@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="players">De %1$d à %2$d joueurs</string>
-    <string name="duration">Entre %1$d et %2$d minutes</string>
+    <string name="players">%1$d - %2$d</string>
+    <string name="duration">%1$d - %2$d</string>
     <string name="weight">%1$.2f"</string>
     <string name="rating">Note moyenne de %1$.2f/10</string>
 </resources>

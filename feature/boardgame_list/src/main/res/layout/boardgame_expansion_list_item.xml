@@ -35,46 +35,102 @@
         app:layout_constraintTop_toTopOf="@id/iv_cover"
         tools:text="7 Wonders - Expansion of the golden sun third place" />
 
-    <TextView
-        android:id="@+id/tv_players"
-        android:layout_width="0dp"
-        android:layout_height="16dp"
-        android:drawableStart="@drawable/ic_users_sized"
-        android:drawablePadding="12dp"
-        android:paddingStart="12dp"
-        android:textSize="11sp"
-        app:layout_constraintEnd_toEndOf="@id/tv_title"
-        app:layout_constraintStart_toStartOf="@id/tv_title"
-        app:layout_constraintTop_toBottomOf="@id/tv_title"
-        tools:text="De 1 à 4 Joueurs" />
-
-    <TextView
-        android:id="@+id/tv_duration"
-        android:layout_width="0dp"
-        android:layout_height="16dp"
-        android:drawableStart="@drawable/ic_stopwatch_sized"
-        android:drawablePadding="12dp"
-        android:paddingStart="12dp"
-        android:textSize="11sp"
-        app:layout_constraintEnd_toEndOf="@id/tv_title"
-        app:layout_constraintStart_toStartOf="@id/tv_title"
-        app:layout_constraintTop_toBottomOf="@id/tv_players"
-        tools:text="De 30 à 120 minutes" />
-
-    <TextView
-        android:id="@+id/tv_weight"
-        android:layout_width="0dp"
-        android:layout_height="16dp"
-        android:layout_marginBottom="8dp"
-        android:drawableStart="@drawable/ic_weight_sized"
-        android:drawablePadding="12dp"
-        android:paddingStart="12dp"
-        android:textSize="11sp"
+    <LinearLayout
+        android:id="@+id/v_players"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:alpha="0.7"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@id/tv_title"
+        app:layout_constraintEnd_toStartOf="@id/v_duration"
         app:layout_constraintStart_toStartOf="@id/tv_title"
-        app:layout_constraintTop_toBottomOf="@id/tv_duration"
-        tools:text="Complexité 4.5/5" />
+        app:layout_constraintTop_toBottomOf="@id/tv_title">
+
+        <ImageView
+            android:id="@+id/iv_players"
+            android:layout_width="55dp"
+            android:layout_height="28dp"
+            android:src="@drawable/ic_people_group_duotone" />
+
+        <TextView
+            android:id="@+id/tv_players"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:gravity="center"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            tools:text="2 - 2" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/v_duration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:alpha="0.7"
+        app:layout_constraintEnd_toStartOf="@id/v_separator"
+        app:layout_constraintStart_toEndOf="@id/v_players"
+        app:layout_constraintBottom_toBottomOf="@id/v_players"
+        app:layout_constraintTop_toTopOf="@id/v_players">
+
+        <ImageView
+            android:id="@+id/iv_duration"
+            android:layout_width="55dp"
+            android:layout_height="28dp"
+            android:src="@drawable/ic_watch_duotone" />
+
+        <TextView
+            android:id="@+id/tv_duration"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:gravity="center"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            tools:text="60 - 240" />
+
+    </LinearLayout>
+
+    <View
+        android:id="@+id/v_separator"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        app:layout_constraintBottom_toBottomOf="@id/v_duration"
+        app:layout_constraintEnd_toStartOf="@id/v_weight"
+        app:layout_constraintStart_toEndOf="@id/v_duration"
+        app:layout_constraintTop_toTopOf="@id/v_duration" />
+
+    <FrameLayout
+        android:id="@+id/v_weight"
+        android:layout_width="38dp"
+        android:layout_height="38dp"
+        android:layout_marginEnd="@dimen/normal_padding"
+        android:alpha="0.7"
+        app:layout_constraintBottom_toBottomOf="@id/pv_rating"
+        app:layout_constraintEnd_toStartOf="@id/pv_rating"
+        app:layout_constraintTop_toBottomOf="@id/tv_title">
+
+        <ImageView
+            android:id="@+id/iv_weight"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_weight_scale_duotone"
+            tools:tint="@color/weight_hard" />
+
+        <TextView
+            android:id="@+id/tv_weight"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:gravity="center"
+            android:textColor="@android:color/white"
+            android:textSize="11sp"
+            android:textStyle="bold"
+            tools:text="4.9" />
+
+    </FrameLayout>
 
     <io.github.florent37.shapeofview.shapes.PolygonView
         android:id="@+id/pv_rating"
@@ -85,6 +141,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:elevation="12dp"
+        android:alpha="0.8"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/tv_title"

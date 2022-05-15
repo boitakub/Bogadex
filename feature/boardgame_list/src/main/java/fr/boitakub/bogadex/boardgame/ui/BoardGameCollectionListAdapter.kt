@@ -114,6 +114,12 @@ internal class BoardGameCollectionListAdapter(private val layoutManager: GridLay
             holder.binding.pvRating.noOfSides = game.details?.statistic?.average?.toInt() ?: 0
             holder.binding.tvShapeRating.text = "${"%.1f".format(game.details?.statistic?.average)}"
         } else if (holder.binding is BoardgameExpansionListItemBinding) {
+            holder.binding.ivWeight.imageTintList = ColorStateList.valueOf(
+                getWeightColor(
+                    holder.binding.ivCover.context,
+                    game.averageWeight()
+                )
+            )
             holder.binding.tvTitle.text = game.item.title
             holder.binding.ivCover.load(game.item.coverUrl)
             holder.binding.tvPlayers.text = holder.itemView.context.getString(
