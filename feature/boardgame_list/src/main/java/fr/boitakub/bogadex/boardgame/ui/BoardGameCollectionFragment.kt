@@ -40,6 +40,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
 import fr.boitakub.boardgame_list.R
 import fr.boitakub.bogadex.boardgame.BoardGameCollectionRepository
@@ -90,6 +91,7 @@ class BoardGameCollectionFragment :
     ): View {
         binding = CommonListFragmentBinding.inflate(inflater, container, false)
         adapter = BoardGameCollectionListAdapter((binding.recyclerView.layoutManager as GridLayoutManager))
+        adapter.stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
         return binding.root
     }
 

@@ -57,6 +57,7 @@ dependencies {
     implementation(AndroidX.compose.ui.tooling)
     implementation(AndroidX.compose.foundation)
     implementation(AndroidX.preference.ktx)
+    implementation(AndroidX.recyclerView)
 
     //endregion
 

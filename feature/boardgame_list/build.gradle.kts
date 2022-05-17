@@ -71,7 +71,7 @@ dependencies {
     implementation(Google.android.material)
     implementation(AndroidX.navigation.fragmentKtx)
     implementation(COIL)
-
+    implementation(AndroidX.recyclerView)
     implementation("io.github.florent37:shapeofview:_")
 
     //endregion
