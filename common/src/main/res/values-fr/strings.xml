@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="theme_light">Clair/Jour</string>
-    <string name="theme_dark">Sombre/Nuit</string>
-    <string name="theme_system">Selon l\'état du téléphone</string>
-    <string name="settings_theme">Theme de l\'application</string>
-    <string name="fab_theme_night_desc">Passer au mode nuit</string>
-    <string name="fab_theme_day_desc">Passer au mode jour</string>
-    <string name="fab_theme_auto_desc">Mode jour/nuit automatique</string>
+    <!-- region Theme -->
+    <string name="pref_night_title">Mode nuit</string>
+    <string name="pref_night_summary">Choisissez le théme de l\'application.</string>
+    <string name="pref_night_dialog">Mode nuit</string>
+    <string name="night_mode_auto">Automatique</string>
+    <string name="night_mode_on">Théme sombre</string>
+    <string name="night_mode_off">Théme clair</string>
+    <!-- endregion -->
     <string name="bgg_username">Compte BoardGameGeek</string>
     <string name="bgg_username_summary">Votre compte / pseudo Board Game Geek ou récupéré vos jeux</string>
     <string name="filter_previously_own">Afficher les jeux revendus</string>

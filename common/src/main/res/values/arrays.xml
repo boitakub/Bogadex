@@ -12,13 +12,13 @@
         <item>5.0</item>
     </array>
     <string-array name="list_preference_themes">
-        <item>@string/theme_light</item>
-        <item>@string/theme_dark</item>
-        <item>@string/theme_system</item>
+        <item>@string/night_mode_auto</item>
+        <item>@string/night_mode_on</item>
+        <item>@string/night_mode_off</item>
     </string-array>
     <string-array name="list_preference_themes_values">
-        <item>LIGHT</item>
-        <item>DARK</item>
-        <item>AUTO</item>
+        <item>@string/pref_night_auto</item>
+        <item>@string/pref_night_on</item>
+        <item>@string/pref_night_off</item>
     </string-array>
 </resources>

@@ -28,12 +28,47 @@
  */
 package fr.boitakub.bogadex.common.ui.settings
 
+import android.os.Build
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.preference.ListPreference
+import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import fr.boitakub.bogadex.common.R
 
 class SettingsFragment : PreferenceFragmentCompat() {
+
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.preferences, rootKey)
+        val preference: ListPreference? = findPreference(getString(R.string.pref_key_night))
+        preference?.onPreferenceChangeListener = modeChangeListener
+    }
+
+    private val modeChangeListener = object : Preference.OnPreferenceChangeListener {
+        override fun onPreferenceChange(preference: Preference?, newValue: Any?): Boolean {
+            newValue as? String
+            when (newValue) {
+                getString(R.string.pref_night_on) -> {
+                    updateTheme(AppCompatDelegate.MODE_NIGHT_YES)
+                }
+                getString(R.string.pref_night_off) -> {
+                    updateTheme(AppCompatDelegate.MODE_NIGHT_NO)
+                }
+                else -> {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+                    } else {
+                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY)
+                    }
+                }
+            }
+            return true
+        }
+    }
+
+    private fun updateTheme(nightMode: Int): Boolean {
+        AppCompatDelegate.setDefaultNightMode(nightMode)
+        requireActivity().recreate()
+        return true
     }
 }

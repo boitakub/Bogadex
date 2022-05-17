@@ -1,13 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="theme_light">Light Theme</string>
-    <string name="theme_dark">Dark Theme</string>
-    <string name="theme_system">System Theme</string>
-    <string name="settings_theme">Application Theme</string>
 
-    <string name="fab_theme_night_desc">Switch to Night Theme</string>
-    <string name="fab_theme_day_desc">Switch to Day Theme</string>
-    <string name="fab_theme_auto_desc">Switch to Automatic Theme</string>
+    <!-- region Theme -->
+    <string name="pref_key_night" translatable="false">key_night_mode</string>
+    <string name="pref_night_title">Night mode</string>
+    <string name="pref_night_summary">Select a dark or light theme.</string>
+    <string name="pref_night_dialog">Set Night mode</string>
+    <string name="pref_night_auto" translatable="false">auto</string>
+    <string name="pref_night_on" translatable="false">on</string>
+    <string name="pref_night_off" translatable="false">off</string>
+    <string name="night_mode_auto">Automatic</string>
+    <string name="night_mode_on">Night mode</string>
+    <string name="night_mode_off">Day mode</string>
+    <!-- endregion -->
 
     <string name="bgg_username">BoardGameGeek Username</string>
     <string name="bgg_username_summary">Your BoardGameGeek account or pseudo to retrieve your games</string>

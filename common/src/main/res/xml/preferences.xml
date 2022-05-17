@@ -13,13 +13,15 @@
         app:singleLineTitle="true" />
 
     <ListPreference
-        android:defaultValue="LIGHT"
-        android:key="ui_night_mode"
+        android:defaultValue="@string/pref_night_auto"
         android:icon="@drawable/ic_eclipse_solid"
-        android:title="@string/settings_theme"
+        android:dialogTitle="@string/pref_night_dialog"
         app:useSimpleSummaryProvider="true"
         android:entries="@array/list_preference_themes"
-        android:entryValues="@array/list_preference_themes_values" />
+        android:entryValues="@array/list_preference_themes_values"
+        app:key="@string/pref_key_night"
+        app:summary="@string/pref_night_summary"
+        app:title="@string/pref_night_title" />
 
     <SwitchPreference
         android:defaultValue="true"

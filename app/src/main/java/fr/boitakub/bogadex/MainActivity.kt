@@ -53,20 +53,12 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private val appViewModel: AppViewModel by viewModels()
-    private var currentTheme = AppCompatDelegate.MODE_NIGHT_NO
-
-    companion object {
-        private const val PREF_THEME_KEY: String = "theme_mode"
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        currentTheme = PreferenceManager.getDefaultSharedPreferences(this)
-            .getInt(PREF_THEME_KEY, AppCompatDelegate.MODE_NIGHT_NO)
 
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
         val drawer = FakeDrawer(supportFragmentManager, BottomNavigationDrawerFragment(navController))
@@ -84,35 +76,6 @@ class MainActivity : AppCompatActivity() {
 
         binding.appBar.setupWithNavController(navController, appBarConfiguration)
         observeFilters()
-        observeLightButton(binding.fabLight)
-    }
-
-    private fun observeLightButton(fabLight: FloatingActionButton) {
-        applyTheme(fabLight)
-        fabLight.setOnClickListener {
-            applyTheme(it as FloatingActionButton)
-            AppCompatDelegate.setDefaultNightMode(currentTheme)
-            PreferenceManager.getDefaultSharedPreferences(this)
-                .edit()
-                .putInt(PREF_THEME_KEY, currentTheme)
-                .apply()
-        }
-    }
-
-    private fun applyTheme(button: FloatingActionButton) {
-        if (currentTheme == AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM) {
-            button.setImageResource(R.drawable.ic_moon_solid)
-            button.contentDescription = getString(R.string.fab_theme_night_desc)
-            currentTheme = AppCompatDelegate.MODE_NIGHT_NO
-        } else if (currentTheme == AppCompatDelegate.MODE_NIGHT_NO) {
-            button.setImageResource(R.drawable.ic_sun_solid)
-            button.contentDescription = getString(R.string.fab_theme_day_desc)
-            currentTheme = AppCompatDelegate.MODE_NIGHT_YES
-        } else {
-            button.setImageResource(R.drawable.ic_eclipse_solid)
-            button.contentDescription = getString(R.string.fab_theme_auto_desc)
-            currentTheme = AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
-        }
     }
 
     // https://www.section.io/engineering-education/bottom-sheet-dialogs-using-android-studio/
