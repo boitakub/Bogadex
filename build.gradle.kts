@@ -1,6 +1,7 @@
 plugins {
     id("io.gitlab.arturbosch.detekt")
     id("com.diffplug.spotless")
+    id("com.autonomousapps.dependency-analysis")
 }
 
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
