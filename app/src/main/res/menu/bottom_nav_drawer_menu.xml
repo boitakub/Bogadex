@@ -21,4 +21,9 @@
         android:icon="@drawable/ic_user_solid"
         android:title="@string/display_solo" />
 
+    <item
+        android:id="@+id/display_filler"
+        android:icon="@drawable/ic_stopwatch_solid"
+        android:title="@string/display_filler" />
+
 </menu>

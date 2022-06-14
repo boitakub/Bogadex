@@ -71,6 +71,7 @@ class BottomNavigationDrawerFragment(private val navController: NavController) :
                         R.id.display_collection -> dest = "collection"
                         R.id.display_wishlist -> dest = "wishlist"
                         R.id.display_solo -> dest = "solo"
+                        R.id.display_filler -> dest = "filler"
                     }
                     applicationViewModel.filterCollectionWith(state, dest)
 

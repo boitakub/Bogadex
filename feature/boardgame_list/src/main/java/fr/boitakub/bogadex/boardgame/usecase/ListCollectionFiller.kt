@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021-2022, Boitakub
+ * Copyright (c) 2022, Boitakub
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,32 +26,29 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package fr.boitakub.bogadex.boardgame.model
+package fr.boitakub.bogadex.boardgame.usecase
 
-import androidx.room.Embedded
-import androidx.room.Relation
+import fr.boitakub.architecture.UseCase
+import fr.boitakub.bogadex.boardgame.BoardGameCollectionRepository
+import fr.boitakub.bogadex.boardgame.model.CollectionItemWithDetails
+import fr.boitakub.bogadex.common.UserSettings
+import fr.boitakub.bogadex.filter.FilterViewModel
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
+import javax.inject.Inject
 
-data class CollectionItemWithDetails(
-    @Embedded val item: CollectionItem,
-    @Relation(
-        entity = BoardGame::class,
-        parentColumn = "bgg_id",
-        entityColumn = "bgg_id"
-    ) var details: BoardGame?
-) {
-    fun averageRating(): Float {
-        return details?.statistic?.average ?: 0.0f
-    }
-
-    fun averageWeight(): Float {
-        return details?.statistic?.averageWeight ?: 0.0f
-    }
-
-    fun minPlayTime(): Int {
-        return details?.minPlayTime ?: 0
-    }
-
-    fun maxPlayTime(): Int {
-        return details?.maxPlayTime ?: 0
+class ListCollectionFiller @Inject constructor(
+    private val repository: BoardGameCollectionRepository,
+    private val filterViewModel: FilterViewModel,
+    private val userSettings: UserSettings,
+) : UseCase<Flow<List<CollectionItemWithDetails>>, String>, ListCollection(repository, filterViewModel, userSettings) {
+    override fun apply(input: String): Flow<List<CollectionItemWithDetails>> {
+        return super.apply(input).map {
+            it.filter { item ->
+                item.minPlayTime() in 5..45 &&
+                    item.maxPlayTime() in 5..45 &&
+                    item.averageWeight() in 0.1f..2.1f
+            }
+        }
     }
 }

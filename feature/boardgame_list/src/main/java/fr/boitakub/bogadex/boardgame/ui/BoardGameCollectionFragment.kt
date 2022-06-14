@@ -47,6 +47,7 @@ import fr.boitakub.bogadex.boardgame.BoardGameCollectionRepository
 import fr.boitakub.bogadex.boardgame.model.CollectionItemWithDetails
 import fr.boitakub.bogadex.boardgame.ui.BoardGameCollectionViewModel.Companion.provideFactory
 import fr.boitakub.bogadex.boardgame.usecase.ListCollection
+import fr.boitakub.bogadex.boardgame.usecase.ListCollectionFiller
 import fr.boitakub.bogadex.boardgame.usecase.ListCollectionItemOwned
 import fr.boitakub.bogadex.boardgame.usecase.ListCollectionItemSolo
 import fr.boitakub.bogadex.boardgame.usecase.ListCollectionItemWanted
@@ -153,6 +154,7 @@ class BoardGameCollectionFragment :
 
     private fun getCollection(string: String?): ListCollection {
         return when (string) {
+            "filler" -> ListCollectionFiller(repository, appViewModel.filterViewModel, userSettings)
             "collection" -> ListCollectionItemOwned(repository, appViewModel.filterViewModel, userSettings)
             "wishlist" -> ListCollectionItemWanted(repository, appViewModel.filterViewModel, userSettings)
             "solo" -> ListCollectionItemSolo(repository, appViewModel.filterViewModel, userSettings)

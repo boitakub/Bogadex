@@ -6,6 +6,7 @@
     <string name="display_collection">My collection</string>
     <string name="display_wishlist">My wishlist</string>
     <string name="display_solo">Single player playable</string>
+    <string name="display_filler">Filler games</string>
 
     <string name="change_display">Toggle view</string>
     <string name="content_change_display">Switch display of your collection</string>

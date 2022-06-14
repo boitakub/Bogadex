@@ -4,6 +4,7 @@
     <string name="display_all">Afficher tout</string>
     <string name="display_collection">Ma collection</string>
     <string name="display_wishlist">Ma liste de souhait</string>
+    <string name="display_filler">Filler game</string>
 
     <string name="change_display">Changer la vue</string>
     <string name="content_change_display">Changer la vue d\'affichage de la collection</string>
