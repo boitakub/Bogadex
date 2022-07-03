@@ -4,8 +4,6 @@ plugins {
     kotlin("kapt")
 }
 
-apply(rootProject.file("./gradle/jacoco.gradle"))
-
 android {
     compileSdk = 31
 

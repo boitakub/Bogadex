@@ -5,8 +5,6 @@ plugins {
     id("dagger.hilt.android.plugin")
 }
 
-apply(rootProject.file("./gradle/jacoco.gradle"))
-
 android {
     compileSdk = 31
 
@@ -20,7 +18,8 @@ android {
 
     buildTypes {
         debug {
-            isTestCoverageEnabled = true
+            // FIXME: isTestCoverageEnabled not compatible with espresso
+            // isTestCoverageEnabled = true
         }
         getByName("release") {
             isMinifyEnabled = false

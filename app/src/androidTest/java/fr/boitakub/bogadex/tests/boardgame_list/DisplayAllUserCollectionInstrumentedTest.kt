@@ -28,11 +28,8 @@
  */
 package fr.boitakub.bogadex.tests.boardgame_list
 
-import android.content.Intent
 import android.util.Log
 import androidx.recyclerview.widget.RecyclerView
-import androidx.test.core.app.ActivityScenario
-import androidx.test.core.app.ApplicationProvider
 import androidx.test.core.app.launchActivity
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.IdlingRegistry
@@ -84,8 +81,6 @@ class DisplayAllUserCollectionInstrumentedTest {
     @get:Rule(order = 0)
     var hiltRule = HiltAndroidRule(this)
 
-    lateinit var scenario: ActivityScenario<MainActivity>
-
     @Before
     fun setUp() {
         hiltRule.inject()
@@ -103,7 +98,6 @@ class DisplayAllUserCollectionInstrumentedTest {
 
     @After
     fun teardown() {
-        scenario.close()
         mockWebServer.shutdown()
         IdlingRegistry.getInstance().unregister(okHttp3IdlingResource)
     }
@@ -128,12 +122,11 @@ class DisplayAllUserCollectionInstrumentedTest {
             }
         }
 
-        val intent = Intent(ApplicationProvider.getApplicationContext(), MainActivity::class.java)
-        scenario = launchActivity(intent)
-
-        onView(withId(R.id.recycler_view))
-            .perform(scrollToPosition<RecyclerView.ViewHolder>(0))
-        onView(withText("5211")).check(matches(isDisplayed()))
+        launchActivity<MainActivity>().use {
+            onView(withId(R.id.recycler_view))
+                .perform(scrollToPosition<RecyclerView.ViewHolder>(0))
+            onView(withText("5211")).check(matches(isDisplayed()))
+        }
     }
 
     @Test
@@ -156,15 +149,14 @@ class DisplayAllUserCollectionInstrumentedTest {
             }
         }
 
-        val intent = Intent(ApplicationProvider.getApplicationContext(), MainActivity::class.java)
-        scenario = launchActivity(intent)
+        launchActivity<MainActivity>().use {
+            onView(withContentDescription("Open navigation drawer")).perform(click())
+            onView(withId(R.id.display_collection)).perform(click())
 
-        onView(withContentDescription("Open navigation drawer")).perform(click())
-        onView(withId(R.id.display_collection)).perform(click())
-
-        onView(withId(R.id.recycler_view))
-            .perform(scrollToPosition<RecyclerView.ViewHolder>(0))
-        onView(withText("7 Wonders Duel")).check(matches(isDisplayed()))
+            onView(withId(R.id.recycler_view))
+                .perform(scrollToPosition<RecyclerView.ViewHolder>(0))
+            onView(withText("7 Wonders Duel")).check(matches(isDisplayed()))
+        }
     }
 
     @Test
@@ -187,15 +179,14 @@ class DisplayAllUserCollectionInstrumentedTest {
             }
         }
 
-        val intent = Intent(ApplicationProvider.getApplicationContext(), MainActivity::class.java)
-        scenario = launchActivity(intent)
+        launchActivity<MainActivity>().use {
+            onView(withContentDescription("Open navigation drawer")).perform(click())
+            onView(withId(R.id.display_wishlist)).perform(click())
 
-        onView(withContentDescription("Open navigation drawer")).perform(click())
-        onView(withId(R.id.display_wishlist)).perform(click())
-
-        onView(withId(R.id.recycler_view))
-            .perform(scrollToPosition<RecyclerView.ViewHolder>(1))
-        onView(withText("Anachrony")).check(matches(isDisplayed()))
+            onView(withId(R.id.recycler_view))
+                .perform(scrollToPosition<RecyclerView.ViewHolder>(1))
+            onView(withText("Anachrony")).check(matches(isDisplayed()))
+        }
     }
 
     @Test
@@ -218,56 +209,12 @@ class DisplayAllUserCollectionInstrumentedTest {
             }
         }
 
-        val intent = Intent(ApplicationProvider.getApplicationContext(), MainActivity::class.java)
-        scenario = launchActivity(intent)
+        launchActivity<MainActivity>().use {
+            onView(withId(R.id.menu_switch_layout)).perform(click())
 
-        onView(withId(R.id.menu_switch_layout)).perform(click())
-
-        onView(withId(R.id.recycler_view))
-            .perform(scrollToPosition<RecyclerView.ViewHolder>(0))
-        onView(withText("7 Wonders Duel")).check(matches(isDisplayed()))
-    }
-
-    @Test
-    fun has_soloList_displayed() {
-        mockWebServer.dispatcher = object : Dispatcher() {
-            override fun dispatch(request: RecordedRequest): MockResponse {
-                var response: MockResponse = MockResponse().setResponseCode(404)
-                if (request.path!!.contains("/xmlapi2/collection")) {
-                    response = MockResponse()
-                        .setResponseCode(200)
-                        .setBody(readStringFromFile("Cubenbois.xml"))
-                        .setBodyDelay(1, TimeUnit.SECONDS)
-                } else if (request.path!!.contains("/xmlapi2/thing")) {
-                    response = MockResponse()
-                        .setResponseCode(200)
-                        .setBody(readStringFromFile("86246.xml"))
-                        .setBodyDelay(1, TimeUnit.SECONDS)
-                }
-                return response
-            }
+            onView(withId(R.id.recycler_view))
+                .perform(scrollToPosition<RecyclerView.ViewHolder>(0))
+            onView(withText("7 Wonders Duel")).check(matches(isDisplayed()))
         }
-
-        runBlocking {
-            boardGameDao.insertAllBoardGame(
-                listOf(
-                    BoardGame(
-                        bggId = "180263",
-                        minPlayer = 1,
-                        title = "The 7th Continent"
-                    )
-                )
-            )
-        }
-
-        val intent = Intent(ApplicationProvider.getApplicationContext(), MainActivity::class.java)
-        scenario = launchActivity(intent)
-
-        onView(withContentDescription("Open navigation drawer")).perform(click())
-        onView(withId(R.id.display_solo)).perform(click())
-
-        onView(withId(R.id.recycler_view))
-            .perform(scrollToPosition<RecyclerView.ViewHolder>(0))
-        onView(withText("The 7th Continent")).check(matches(isDisplayed()))
     }
 }

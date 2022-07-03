@@ -48,12 +48,13 @@ jobs:
 
       # Generate jacoco report
       - name: 📜 Generate report
-        run: ./gradlew jacocoTestReport
+        run: ./gradlew rootCoverageReport
 
       - name: 🗜️ Zip build reports
         id: zipBuildReports
         if: always()
-        run: cd build/coverage-report && zip -r ../../build-reports.zip ./* && cd -
+        run: cd build/reports && zip -r ../../build-reports.zip ./* && cd -
+        continue-on-error: true
 
       - name: 📜 Upload build reports
         if: always() && steps.zipBuildReports.outcome == 'success'

@@ -11,8 +11,6 @@ plugins {
     id("com.google.firebase.firebase-perf")
 }
 
-apply(rootProject.file("./gradle/jacoco.gradle"))
-
 android {
     compileSdk = 31
 
@@ -48,7 +46,8 @@ android {
     buildTypes {
         getByName("debug") {
             isDebuggable = true
-            isTestCoverageEnabled = true
+            // FIXME: isTestCoverageEnabled not compatible with espresso
+            // isTestCoverageEnabled = true
             configure<com.google.firebase.perf.plugin.FirebasePerfExtension> {
                 // Set this flag to 'false' to disable @AddTrace annotation processing and
                 // automatic monitoring of HTTP/S network requests

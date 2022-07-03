@@ -16,4 +16,5 @@
     <string name="filters_desc">Afficher une liste de paramétres pour filtrer la liste de jeux</string>
     <string name="rs_min_rating">Note comprise entre</string>
     <string name="rs_min_weight">Poids comprise entre</string>
+    <string name="description">Description</string>
 </resources>

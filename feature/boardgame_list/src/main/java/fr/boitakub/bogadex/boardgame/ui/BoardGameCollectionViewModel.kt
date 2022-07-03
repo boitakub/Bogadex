@@ -69,6 +69,7 @@ class BoardGameCollectionViewModel @AssistedInject constructor(
         loading.value = false
     }
 
+    @Suppress("UNCHECKED_CAST")
     companion object {
         fun provideFactory(
             assistedFactory: BoardGameCollectionViewModelFactory,

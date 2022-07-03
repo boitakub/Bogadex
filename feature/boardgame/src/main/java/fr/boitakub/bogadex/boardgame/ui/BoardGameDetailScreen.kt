@@ -75,21 +75,20 @@ fun BoardGameDetailScreen(
             .fillMaxSize(),
     ) {
 
-        MovieDetailHeader(boardGame)
+        GameDetailHeader(boardGame)
 
-        MovieDetailSummary(boardGame)
+        GameDetailSummary(boardGame)
+
+        GameDetailLinks(boardGame)
 
         Spacer(modifier = Modifier.height(24.dp))
     }
 }
 
 @Composable
-private fun MovieDetailHeader(
+private fun GameDetailHeader(
     boardGame: BoardGame?
 ) {
-    val context = LocalContext.current
-    val resources = context.resources
-
     Column {
 
         Image(
@@ -137,53 +136,61 @@ private fun MovieDetailHeader(
                 .height(15.dp)
                 .align(Alignment.CenterHorizontally)
         )
+    }
+}
 
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center,
-            modifier = Modifier
-                .fillMaxWidth()
-                .fillMaxHeight()
-                .padding(top = 16.dp)
+@Composable
+private fun GameDetailLinks(
+    boardGame: BoardGame?
+) {
+    val context = LocalContext.current
+    val resources = context.resources
+
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Center,
+        modifier = Modifier
+            .fillMaxWidth()
+            .fillMaxHeight()
+            .padding(top = 16.dp)
+    ) {
+        Button(
+            modifier = Modifier.padding(4.dp),
+            onClick = {
+                try {
+                    val openUrlIntent = Intent(
+                        Intent.ACTION_VIEW,
+                        Uri.parse("https://boardgamegeek.com/boardgame/${boardGame?.bggId}")
+                    )
+                    startActivity(context, openUrlIntent, null)
+                } catch (e: ActivityNotFoundException) {
+                    Log.d("Bogadex", "No application can handle this request.", e)
+                }
+            }
         ) {
-            Button(
-                modifier = Modifier.padding(4.dp),
-                onClick = {
-                    try {
-                        val openUrlIntent = Intent(
-                            Intent.ACTION_VIEW,
-                            Uri.parse("https://boardgamegeek.com/boardgame/${boardGame?.bggId}")
-                        )
-                        startActivity(context, openUrlIntent, null)
-                    } catch (e: ActivityNotFoundException) {
-                        Log.d("Bogadex", "No application can handle this request.", e)
-                    }
+            Text(resources.getString(R.string.link_to_boardgamegeek))
+        }
+        Button(
+            modifier = Modifier.padding(4.dp),
+            onClick = {
+                try {
+                    val openUrlIntent = Intent(
+                        Intent.ACTION_VIEW,
+                        Uri.parse("https://app.bgstatsapp.com/addPlay.html?gameId=${boardGame?.bggId}")
+                    )
+                    startActivity(context, openUrlIntent, null)
+                } catch (e: ActivityNotFoundException) {
+                    Log.d("Bogadex", "No application can handle this request.", e)
                 }
-            ) {
-                Text(resources.getString(R.string.link_to_boardgamegeek))
             }
-            Button(
-                modifier = Modifier.padding(4.dp),
-                onClick = {
-                    try {
-                        val openUrlIntent = Intent(
-                            Intent.ACTION_VIEW,
-                            Uri.parse("https://app.bgstatsapp.com/addPlay.html?gameId=${boardGame?.bggId}")
-                        )
-                        startActivity(context, openUrlIntent, null)
-                    } catch (e: ActivityNotFoundException) {
-                        Log.d("Bogadex", "No application can handle this request.", e)
-                    }
-                }
-            ) {
-                Text(resources.getString(R.string.link_to_bgstats))
-            }
+        ) {
+            Text(resources.getString(R.string.link_to_bgstats))
         }
     }
 }
 
 @Composable
-private fun MovieDetailSummary(
+private fun GameDetailSummary(
     boardGame: BoardGame?
 ) {
     Column {

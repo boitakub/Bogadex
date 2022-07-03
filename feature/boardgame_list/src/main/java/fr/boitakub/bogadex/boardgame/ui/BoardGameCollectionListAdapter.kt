@@ -85,33 +85,7 @@ internal class BoardGameCollectionListAdapter(private val layoutManager: GridLay
                 .navigate(R.id.navigation_boardgame_details, bundle)
         }
         if (holder.binding is BoardgameListItemBinding) {
-            holder.binding.ivWeight.imageTintList = ColorStateList.valueOf(
-                getWeightColor(
-                    holder.binding.ivCover.context,
-                    game.averageWeight()
-                )
-            )
-            holder.binding.tvTitle.text = game.item.title
-            holder.binding.ivCover.load(game.item.coverUrl)
-            holder.binding.ivBgCover.load(game.item.coverUrl)
-            holder.binding.cgTags.removeAllViews()
-            holder.binding.cgTags.addView(createTagChip(holder.binding.root.context, "Test"))
-            holder.binding.tvPlayers.text = holder.itemView.context.getString(
-                R.string.players,
-                game.details?.minPlayer,
-                game.details?.maxPlayer
-            )
-            holder.binding.tvDuration.text = holder.itemView.context.getString(
-                R.string.duration,
-                game.details?.minPlayTime,
-                game.details?.maxPlayTime
-            )
-            holder.binding.tvWeight.text = holder.itemView.context.getString(
-                R.string.weight,
-                game.details?.statistic?.averageWeight
-            )
-            holder.binding.pvRating.noOfSides = game.details?.statistic?.average?.toInt() ?: 0
-            holder.binding.tvShapeRating.text = "${"%.1f".format(game.details?.statistic?.average)}"
+            bindBoardgameListItemBinding(holder.itemView.context, holder.binding, game)
         } else if (holder.binding is BoardgameExpansionListItemBinding) {
             holder.binding.ivWeight.imageTintList = ColorStateList.valueOf(
                 getWeightColor(
@@ -142,6 +116,40 @@ internal class BoardGameCollectionListAdapter(private val layoutManager: GridLay
             holder.binding.tvDescription.text = game.details?.description ?: ""
             holder.binding.ivCover.load(game.details?.image)
         }
+    }
+
+    private fun bindBoardgameListItemBinding(
+        context: Context,
+        binding: BoardgameListItemBinding,
+        game: CollectionItemWithDetails
+    ) {
+        binding.ivWeight.imageTintList = ColorStateList.valueOf(
+            getWeightColor(
+                binding.ivCover.context,
+                game.averageWeight()
+            )
+        )
+        binding.tvTitle.text = game.item.title
+        binding.ivCover.load(game.item.coverUrl)
+        binding.ivBgCover.load(game.item.coverUrl)
+        binding.cgTags.removeAllViews()
+        binding.cgTags.addView(createTagChip(binding.root.context, "Test"))
+        binding.tvPlayers.text = context.getString(
+            R.string.players,
+            game.details?.minPlayer,
+            game.details?.maxPlayer
+        )
+        binding.tvDuration.text = context.getString(
+            R.string.duration,
+            game.details?.minPlayTime,
+            game.details?.maxPlayTime
+        )
+        binding.tvWeight.text = context.getString(
+            R.string.weight,
+            game.details?.statistic?.averageWeight
+        )
+        binding.pvRating.noOfSides = game.details?.statistic?.average?.toInt() ?: 0
+        binding.tvShapeRating.text = "${"%.1f".format(game.details?.statistic?.average)}"
     }
 
     private fun createTagChip(context: Context, chipName: String): Chip {

@@ -2,6 +2,7 @@ plugins {
     id("io.gitlab.arturbosch.detekt")
     id("com.diffplug.spotless")
     id("com.autonomousapps.dependency-analysis")
+    id("nl.neotech.plugin.rootcoverage") version "1.5.3"
 }
 
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
@@ -15,9 +16,6 @@ buildscript {
         // -- Core plugins
         classpath(Android.tools.build.gradlePlugin)
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:_")
-
-        // -- Utility plugins
-        classpath("org.jacoco:org.jacoco.core:_")
 
         // -- Application plugins
         classpath(Google.dagger.hilt.android.gradlePlugin)
@@ -65,18 +63,6 @@ allprojects {
         kotlinGradle {
             target("*.gradle.kts")
             ktlint()
-        }
-    }
-}
-
-subprojects {
-    configurations.all {
-        resolutionStrategy {
-            eachDependency {
-                when (requested.group) {
-                    "org.jacoco" -> useVersion("0.8.7")
-                }
-            }
         }
     }
 }
