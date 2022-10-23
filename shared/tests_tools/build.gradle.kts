@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    compileSdk = 31
+    compileSdk = 32
 
     defaultConfig {
         minSdk = 23
@@ -34,11 +34,13 @@ android {
 }
 
 dependencies {
+    val espressoVersion: String by project
+    val coilVersion: String by project
 
     //region AndroidTest
 
-    implementation(AndroidX.test.espresso.core)
-    implementation(COIL)
+    implementation("androidx.test.espresso:espresso-core:$espressoVersion")
+    implementation("io.coil-kt:coil:$coilVersion")
 
     //endregion
 }

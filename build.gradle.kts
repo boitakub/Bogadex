@@ -1,12 +1,14 @@
 plugins {
-    id("io.gitlab.arturbosch.detekt")
-    id("com.diffplug.spotless")
-    id("com.autonomousapps.dependency-analysis")
+    id("io.gitlab.arturbosch.detekt") version "1.19.0"
+    id("com.diffplug.spotless") version "6.3.0"
+    id("com.autonomousapps.dependency-analysis") version "1.2.1"
     id("nl.neotech.plugin.rootcoverage") version "1.5.3"
 }
 
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
+    val kotlinVersion: String by project
+    val daggerVersion: String by project
     repositories {
         google()
         mavenCentral()
@@ -14,16 +16,16 @@ buildscript {
     }
     dependencies {
         // -- Core plugins
-        classpath(Android.tools.build.gradlePlugin)
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:_")
+        classpath("com.android.tools.build:gradle:7.2.1")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
 
         // -- Application plugins
-        classpath(Google.dagger.hilt.android.gradlePlugin)
+        classpath("com.google.dagger:hilt-android-gradle-plugin:$daggerVersion")
 
         // -- Services & Monitoring
-        classpath(Google.playServicesGradlePlugin)
-        classpath(Firebase.crashlyticsGradlePlugin)
-        classpath(Firebase.performanceMonitoringGradlePlugin)
+        classpath("com.google.gms:google-services:4.3.10")
+        classpath("com.google.firebase:firebase-crashlytics-gradle:2.8.1")
+        classpath("com.google.firebase:perf-plugin:1.4.1")
     }
 }
 

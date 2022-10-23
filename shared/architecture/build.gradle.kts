@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    compileSdk = 31
+    compileSdk = 32
 
     defaultConfig {
         minSdk = 23
@@ -34,17 +34,18 @@ android {
 }
 
 dependencies {
+    val junitVersion: String by project
+    val espressoVersion: String by project
 
     //region Test
 
-    testImplementation(Testing.junit4)
+    testImplementation("junit:junit:$junitVersion")
 
     //endregion
 
     //region AndroidTest
 
-    androidTestImplementation(AndroidX.test.ext.junit)
-    androidTestImplementation(AndroidX.test.espresso.core)
+    androidTestImplementation("androidx.test.espresso:espresso-core:$espressoVersion")
 
     //endregion
 }

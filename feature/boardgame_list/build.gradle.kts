@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    compileSdk = 31
+    compileSdk = 32
 
     defaultConfig {
         minSdk = 23
@@ -40,6 +40,22 @@ android {
 }
 
 dependencies {
+    val androidCoreVersion: String by project
+    val appcompatVersion: String by project
+    val fragmentVersion: String by project
+    val recyclerviewVersion: String by project
+    val navigationVersion: String by project
+    val lifecycleVersion: String by project
+    val daggerVersion: String by project
+    val hiltVersion: String by project
+    val coilVersion: String by project
+    val materialVersion: String by project
+    val composeVersion: String by project
+    val roomVersion: String by project
+    val workVersion: String by project
+    val junitVersion: String by project
+    val espressoVersion: String by project
+
     implementation(project(":common"))
     implementation(project(":shared:architecture"))
     implementation(project(":shared:bgg_api_client"))
@@ -47,57 +63,59 @@ dependencies {
 
     //region Core & Lifecycle
 
-    implementation(AndroidX.core.ktx)
-    implementation(AndroidX.appCompat)
-    implementation(AndroidX.fragment.ktx)
+    implementation("androidx.core:core-ktx:$androidCoreVersion")
+    implementation("androidx.appcompat:appcompat:$appcompatVersion")
+    implementation("androidx.fragment:fragment-ktx:$fragmentVersion")
 
-    implementation(AndroidX.lifecycle.viewModelKtx)
-    implementation(AndroidX.lifecycle.liveDataKtx)
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:$lifecycleVersion")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion")
 
     //endregion
 
     //region Dependency Injection
 
-    implementation(Google.dagger.hilt.android)
-    kapt(Google.dagger.hilt.compiler)
-    implementation(AndroidX.hilt.work)
-    kapt(AndroidX.hilt.compiler)
+    implementation("com.google.dagger:hilt-android:$daggerVersion")
+    kapt("com.google.dagger:hilt-compiler:$daggerVersion")
+    implementation("androidx.hilt:hilt-work:$hiltVersion")
+    kapt("androidx.hilt:hilt-compiler:$hiltVersion")
 
     //endregion
 
     //region UI
 
-    implementation(Google.android.material)
-    implementation(AndroidX.navigation.fragmentKtx)
-    implementation(COIL)
-    implementation(AndroidX.recyclerView)
-    implementation("io.github.florent37:shapeofview:_")
+    implementation("androidx.compose.material:material:$materialVersion")
+    implementation("com.google.android.material:material:1.7.0")
+    implementation("androidx.fragment:fragment-ktx:$fragmentVersion")
+    implementation("androidx.navigation:navigation-fragment-ktx:$navigationVersion")
+
+    implementation("io.coil-kt:coil:$coilVersion")
+    implementation("androidx.recyclerview:recyclerview:$recyclerviewVersion")
+    implementation("io.github.florent37:shapeofview:1.4.7")
 
     //endregion
 
     //region Service & Worker
 
-    implementation(AndroidX.work.runtime)
-    implementation(AndroidX.work.runtimeKtx)
+    implementation("androidx.work:work-runtime:$workVersion")
+    implementation("androidx.work:work-runtime-ktx:$workVersion")
 
     //endregion
 
     //region Database
 
-    implementation(AndroidX.room.runtime)
+    implementation("androidx.room:room-runtime:$roomVersion")
 
     //endregion
 
     //region Test
 
-    testImplementation(Testing.junit4)
+    testImplementation("junit:junit:$junitVersion")
 
     //endregion
 
     //region AndroidTest
 
-    androidTestImplementation(AndroidX.test.ext.junit)
-    androidTestImplementation(AndroidX.test.espresso.core)
+    androidTestImplementation("androidx.test.espresso:espresso-core:$espressoVersion")
 
     //endregion
 }

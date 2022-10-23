@@ -55,7 +55,6 @@ Go to the [Releases](https://github.com/boitakub/Bogadex/releases) to download t
 * [Coil](https://github.com/coil-kt/coil) - loading images.
 * [Material-Components](https://github.com/material-components/material-components-android) - Material design components like ripple animation, cardView.
 * [Codacy](https://codacy.com/) - Code quality and coverage analysis
-* [refreshVersion](https://jmfayard.github.io/refreshVersions) - Bump dependencies version on all modules using one command and [centralized in one file](versions.properties)
 * [Gradle optimizations](https://proandroiddev.com/how-we-reduced-our-gradle-build-times-by-over-80-51f2b6d6b05b) - Some gradle tips to optimize build time
 
 ## MAD Score

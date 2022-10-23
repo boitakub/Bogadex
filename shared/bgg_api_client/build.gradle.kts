@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    compileSdk = 31
+    compileSdk = 32
 
     defaultConfig {
         minSdk = 23
@@ -35,39 +35,42 @@ android {
 }
 
 dependencies {
+    val okhttpVersion: String by project
+    val retrofitVersion: String by project
+    val junitVersion: String by project
+    val espressoVersion: String by project
 
     //region Parsing
-    api("com.tickaroo.tikxml:annotation:_") {
+    api("com.tickaroo.tikxml:annotation:0.8.13") {
         exclude(group = "com.squareup.okio")
     }
-    implementation("com.tickaroo.tikxml:core:_") {
+    implementation("com.tickaroo.tikxml:core:0.8.13") {
         exclude(group = "com.squareup.okio")
     }
-    implementation("com.tickaroo.tikxml:retrofit-converter:_") {
+    implementation("com.tickaroo.tikxml:retrofit-converter:0.8.13") {
         exclude(group = "com.squareup.okhttp3")
         exclude(group = "com.squareup.retrofit2")
     }
-    implementation("com.tickaroo.tikxml:converter-htmlescape:_")
-    kapt("com.tickaroo.tikxml:processor:_")
+    implementation("com.tickaroo.tikxml:converter-htmlescape:0.8.13")
+    kapt("com.tickaroo.tikxml:processor:0.8.13")
     //endregion
 
     //region Networking
 
-    implementation(Square.okHttp3)
-    implementation(Square.retrofit2)
+    implementation("com.squareup.okhttp3:okhttp:$okhttpVersion")
+    implementation("com.squareup.retrofit2:retrofit:$retrofitVersion")
 
     //endregion
 
     //region Test
 
-    testImplementation(Testing.junit4)
+    testImplementation("junit:junit:$junitVersion")
 
     //endregion
 
     //region AndroidTest
 
-    androidTestImplementation(AndroidX.test.ext.junit)
-    androidTestImplementation(AndroidX.test.espresso.core)
+    androidTestImplementation("androidx.test.espresso:espresso-core:$espressoVersion")
 
     //endregion
 }

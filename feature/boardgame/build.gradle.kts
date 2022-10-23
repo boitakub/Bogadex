@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    compileSdk = 31
+    compileSdk = 32
 
     defaultConfig {
         minSdk = 23
@@ -39,7 +39,7 @@ android {
         viewBinding = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.1.1"
+        kotlinCompilerExtensionVersion = "1.3.2"
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
@@ -55,79 +55,98 @@ android {
 }
 
 dependencies {
+    val androidCoreVersion: String by project
+    val appcompatVersion: String by project
+    val fragmentVersion: String by project
+    val coilVersion: String by project
+    val lifecycleVersion: String by project
+    val daggerVersion: String by project
+    val hiltVersion: String by project
+    val materialVersion: String by project
+    val composeVersion: String by project
+    val roomVersion: String by project
+    val workVersion: String by project
+    val junitVersion: String by project
+    val junitExtVersion: String by project
+    val testCoreVersion: String by project
+    val espressoVersion: String by project
+
     implementation(project(":common"))
     implementation(project(":shared:architecture"))
     implementation(project(":shared:bgg_api_client"))
 
     //region Core & Lifecycle
 
-    implementation(AndroidX.core.ktx)
-    implementation(AndroidX.appCompat)
-    implementation(AndroidX.fragment.ktx)
+    implementation("androidx.core:core-ktx:$androidCoreVersion")
+    implementation("androidx.appcompat:appcompat:$appcompatVersion")
+    implementation("androidx.fragment:fragment-ktx:$fragmentVersion")
 
-    implementation(AndroidX.lifecycle.runtimeKtx)
-    implementation(AndroidX.lifecycle.viewModelKtx)
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:$lifecycleVersion")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion")
 
     //endregion
 
     //region Dependency Injection
 
-    implementation(Google.dagger.hilt.android)
-    kapt(Google.dagger.hilt.compiler)
-    implementation(AndroidX.hilt.work)
-    kapt(AndroidX.hilt.compiler)
+    implementation("com.google.dagger:hilt-android:$daggerVersion")
+    kapt("com.google.dagger:hilt-compiler:$daggerVersion")
+    implementation("androidx.hilt:hilt-work:$hiltVersion")
+    kapt("androidx.hilt:hilt-compiler:$hiltVersion")
+
+    //endregion
+
+    //region UI
+    implementation("androidx.compose.material:material:$materialVersion")
+
+    //region Compose
+
+    implementation("androidx.compose.foundation:foundation:$composeVersion")
+    implementation("androidx.compose.ui:ui:$composeVersion")
+
+    // Android Studio Preview support
+    implementation("androidx.compose.ui:ui-tooling-preview:$composeVersion")
+    debugImplementation("androidx.compose.ui:ui-tooling:$composeVersion")
 
     //endregion
 
     //region UI
 
-    implementation(AndroidX.compose.ui)
-    implementation(AndroidX.compose.ui.tooling)
-    implementation(AndroidX.compose.material)
-    implementation(AndroidX.compose.foundation)
-
-    debugImplementation(AndroidX.compose.ui.tooling)
-    implementation(AndroidX.compose.ui.toolingPreview)
-
-    //endregion
-
-    //region UI
-
-    implementation(COIL.compose)
+    implementation("io.coil-kt:coil-compose:$coilVersion")
 
     //endregion
 
     //region Service & Worker
 
-    implementation(AndroidX.work.runtime)
-    implementation(AndroidX.work.runtimeKtx)
+    implementation("androidx.work:work-runtime:$workVersion")
+    implementation("androidx.work:work-runtime-ktx:$workVersion")
 
     //endregion
 
     //region Database
 
-    implementation(AndroidX.room.runtime)
+    implementation("androidx.room:room-runtime:$roomVersion")
 
     //endregion
 
     //region Test
 
-    testImplementation(Testing.junit4)
-    testImplementation(AndroidX.test.coreKtx)
+    testImplementation("junit:junit:$junitVersion")
 
     //endregion
 
     //region AndroidTest
 
     androidTestImplementation(project(":shared:tests_tools"))
-    androidTestImplementation(AndroidX.test.ext.junit)
-    androidTestImplementation(AndroidX.test.espresso.core)
-    androidTestImplementation(Testing.mockK.android)
-    androidTestImplementation(AndroidX.work.testing)
 
-    // -- Compose Tests
-    androidTestImplementation(AndroidX.compose.ui.testJunit4)
-    debugImplementation(AndroidX.compose.ui.testManifest)
+    androidTestImplementation("androidx.test:core-ktx:$testCoreVersion")
+    androidTestImplementation("androidx.test.espresso:espresso-core:$espressoVersion")
+    androidTestImplementation("androidx.test.ext:junit:$junitExtVersion")
+
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4:$composeVersion")
+    debugImplementation("androidx.compose.ui:ui-test-manifest:$composeVersion")
+
+    androidTestImplementation("io.mockk:mockk-android:1.12.3")
+    androidTestImplementation("androidx.work:work-testing:$workVersion")
 
     //endregion
 }

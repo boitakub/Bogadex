@@ -5,14 +5,14 @@ plugins {
     id("kotlin-android")
     id("kotlin-kapt")
     id("dagger.hilt.android.plugin")
-    id("io.github.reactivecircus.app-versioning")
+    id("io.github.reactivecircus.app-versioning") version "1.1.0"
     id("com.google.gms.google-services")
     id("com.google.firebase.crashlytics")
     id("com.google.firebase.firebase-perf")
 }
 
 android {
-    compileSdk = 31
+    compileSdk = 32
 
     defaultConfig {
         applicationId = "fr.boitakub.bogadex"
@@ -73,7 +73,7 @@ android {
         viewBinding = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.1.1"
+        kotlinCompilerExtensionVersion = "1.3.2"
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
@@ -94,6 +94,24 @@ android {
 }
 
 dependencies {
+    val androidCoreVersion: String by project
+    val appcompatVersion: String by project
+    val preferencesVersion: String by project
+    val navigationVersion: String by project
+    val daggerVersion: String by project
+    val hiltVersion: String by project
+    val coilVersion: String by project
+    val materialVersion: String by project
+    val okhttpVersion: String by project
+    val retrofitVersion: String by project
+    val roomVersion: String by project
+    val workVersion: String by project
+    val firebaseVersion: String by project
+    val junitVersion: String by project
+    val junitExtVersion: String by project
+    val testCoreVersion: String by project
+    val espressoVersion: String by project
+
     implementation(project(":common"))
     implementation(project(":shared:architecture"))
     implementation(project(":shared:bgg_api_client"))
@@ -102,57 +120,56 @@ dependencies {
 
     //region Core & Lifecycle
 
-    implementation(AndroidX.core.ktx)
-    implementation(AndroidX.appCompat)
-    implementation(AndroidX.preference.ktx)
+    implementation("androidx.core:core-ktx:$androidCoreVersion")
+    implementation("androidx.appcompat:appcompat:$appcompatVersion")
+    implementation("androidx.preference:preference-ktx:$preferencesVersion")
 
     //endregion
 
     //region Dependency Injection
 
-    implementation(Google.dagger.hilt.android)
-    kapt(Google.dagger.hilt.compiler)
-    implementation(AndroidX.hilt.work)
-    kapt(AndroidX.hilt.compiler)
+    implementation("com.google.dagger:hilt-android:$daggerVersion")
+    kapt("com.google.dagger:hilt-compiler:$daggerVersion")
+    implementation("androidx.hilt:hilt-work:$hiltVersion")
+    kapt("androidx.hilt:hilt-compiler:$hiltVersion")
 
     //endregion
 
     //region UI
 
-    implementation(Google.android.material)
-    implementation(AndroidX.navigation.uiKtx)
-    implementation(AndroidX.navigation.fragmentKtx)
-    implementation(AndroidX.compose.runtime)
+    implementation("androidx.compose.material:material:$materialVersion")
+    implementation("androidx.navigation:navigation-ui-ktx:$navigationVersion")
+    implementation("androidx.navigation:navigation-fragment-ktx:$navigationVersion")
 
     //endregion
 
     //region Networking
 
-    implementation(Square.okHttp3)
-    implementation(Square.okHttp3.loggingInterceptor)
-    implementation(Square.retrofit2)
-    implementation(COIL)
+    implementation("com.squareup.okhttp3:okhttp:$okhttpVersion")
+    implementation("com.squareup.okhttp3:logging-interceptor:$okhttpVersion")
+    implementation("com.squareup.retrofit2:retrofit:$retrofitVersion")
+    implementation("io.coil-kt:coil:$coilVersion")
 
     //endregion
 
     //region Service & Worker
 
-    implementation(AndroidX.work.runtime)
-    implementation(AndroidX.work.runtimeKtx)
+    implementation("androidx.work:work-runtime:$workVersion")
+    implementation("androidx.work:work-runtime-ktx:$workVersion")
 
     //endregion
 
     //region Database
 
-    implementation(AndroidX.room.runtime)
-    kapt(AndroidX.room.compiler)
-    implementation(AndroidX.room.ktx)
+    implementation("androidx.room:room-runtime:$roomVersion")
+    kapt("androidx.room:room-compiler:$roomVersion")
+    implementation("androidx.room:room-ktx:$roomVersion")
 
     //endregion
 
     //region Monitoring
 
-    implementation(platform(Firebase.bom))
+    implementation(platform("com.google.firebase:firebase-bom:$firebaseVersion"))
     implementation("com.google.firebase:firebase-crashlytics-ktx")
     implementation("com.google.firebase:firebase-analytics-ktx")
     implementation("com.google.firebase:firebase-perf-ktx")
@@ -161,23 +178,24 @@ dependencies {
 
     //region Test
 
-    testImplementation(Testing.junit4)
+    testImplementation("junit:junit:$junitVersion")
 
     //endregion
 
     //region AndroidTest
 
     androidTestImplementation(project(":shared:tests_tools"))
-    androidTestImplementation(AndroidX.test.ext.junit)
-    androidTestImplementation(AndroidX.test.espresso.core)
-    androidTestImplementation("androidx.test.espresso:espresso-contrib:_") {
+
+    androidTestImplementation("androidx.test:core-ktx:$testCoreVersion")
+    androidTestImplementation("androidx.test.ext:junit:$junitExtVersion")
+    androidTestImplementation("androidx.test.espresso:espresso-core:$espressoVersion")
+    androidTestImplementation("androidx.test.espresso:espresso-contrib:$espressoVersion") {
         exclude(module = "protobuf-lite")
     }
-    androidTestImplementation(AndroidX.test.coreKtx)
-    androidTestImplementation(Google.dagger.hilt.android.testing)
-    kaptAndroidTest(Google.dagger.hilt.compiler)
-    androidTestImplementation(AndroidX.work.testing)
-    androidTestImplementation(Square.okHttp3.mockWebServer)
+    androidTestImplementation("com.google.dagger:hilt-android-testing:$daggerVersion")
+    kaptAndroidTest("com.google.dagger:hilt-compiler:$daggerVersion")
+    androidTestImplementation("androidx.work:work-testing:$workVersion")
+    androidTestImplementation("com.squareup.okhttp3:mockwebserver:$okhttpVersion")
 
     //endregion
 }
