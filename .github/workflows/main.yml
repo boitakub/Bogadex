@@ -51,7 +51,7 @@ jobs:
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 29
-          script: ./gradlew createDebugCoverageReport --stacktrace
+          script: ./gradlew createDebugCoverageReport --scan --stacktrace
 
       # Generate jacoco report
       - name: 📜 Generate report
