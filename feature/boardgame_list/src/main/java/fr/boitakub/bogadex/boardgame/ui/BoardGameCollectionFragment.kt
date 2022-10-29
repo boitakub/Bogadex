@@ -55,7 +55,6 @@ import fr.boitakub.bogadex.common.UserSettings
 import fr.boitakub.bogadex.common.databinding.CommonListFragmentBinding
 import fr.boitakub.bogadex.common.ui.application.AppViewModel
 import fr.boitakub.bogadex.common.ui.application.ApplicationState
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

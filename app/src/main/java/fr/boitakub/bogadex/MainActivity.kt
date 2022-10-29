@@ -32,7 +32,6 @@ import android.os.Bundle
 import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.res.ResourcesCompat
 import androidx.customview.widget.Openable
 import androidx.fragment.app.FragmentManager
@@ -40,13 +39,10 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
-import androidx.preference.PreferenceManager
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import dagger.hilt.android.AndroidEntryPoint
 import fr.boitakub.bogadex.common.ui.application.AppViewModel
 import fr.boitakub.bogadex.databinding.ActivityMainBinding
 import fr.boitakub.bogadex.filter.FilterBottomSheetDialog
-import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {

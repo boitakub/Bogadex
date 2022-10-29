@@ -39,7 +39,6 @@ import androidx.navigation.NavController
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import fr.boitakub.bogadex.common.ui.application.AppViewModel
 import fr.boitakub.bogadex.databinding.FragmentBottomsheetBinding
-import kotlinx.coroutines.flow.collect
 
 class BottomNavigationDrawerFragment(private val navController: NavController) : BottomSheetDialogFragment() {
 
