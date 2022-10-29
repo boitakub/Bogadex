@@ -46,8 +46,8 @@ android {
     buildTypes {
         getByName("debug") {
             isDebuggable = true
-            // FIXME: isTestCoverageEnabled not compatible with espresso
-            // isTestCoverageEnabled = true
+            enableUnitTestCoverage = true
+            enableAndroidTestCoverage = true
             configure<com.google.firebase.perf.plugin.FirebasePerfExtension> {
                 // Set this flag to 'false' to disable @AddTrace annotation processing and
                 // automatic monitoring of HTTP/S network requests

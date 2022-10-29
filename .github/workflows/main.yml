@@ -30,7 +30,7 @@ jobs:
           distribution: 'adopt'
           java-version: '11'
 
-      - name: Cache SonarCloud packages
+      - name: 🏭 Cache SonarCloud packages
         uses: actions/cache@v3
         with:
           path: ~/.sonar/cache
@@ -46,47 +46,38 @@ jobs:
       - name: 🏭 Setup Gradle
         uses: gradle/gradle-build-action@v2
 
+      - name: 🔨 Build
+        run: ./gradlew assembleDebug --scan
+
       # Run emulator
       - name: 🧪 Run integration test on emulator
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 29
-          script: ./gradlew createDebugCoverageReport --scan --stacktrace
+          script: ./gradlew rootCoverageReport --stacktrace
 
       # Generate jacoco report
-      - name: 📜 Generate report
+      - name: 🔍 Inspect code with SonarQube
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: ./gradlew rootCoverageReport sonarqube --info
-
-      - name: 🗜️ Zip build reports
-        id: zipBuildReports
-        if: always()
-        run: cd build/reports && zip -r ../../build-reports.zip ./* && cd -
-        continue-on-error: true
+        run: ./gradlew sonarqube --info
 
       - name: 📜 Upload build reports
-        if: always() && steps.zipBuildReports.outcome == 'success'
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: build-reports
-          path: build-reports.zip
-          retention-days: 3
+          path: build/reports/
+          retention-days: 7
+          if-no-files-found: warn
 
-      - name: 📋 Test Report
+      - name: 📋 Test report
         uses: dorny/test-reporter@v1
         if: success() || failure()    # run this step even if previous step failed
         with:
           name: 🧪 Tests results
           path: '**/TEST-*.xml'
           reporter: java-junit
-
-      # Upload coverage report to Codacy
-      - name: 📋 Run codacy-coverage-reporter
-        uses: codacy/codacy-coverage-reporter-action@v1
-        with:
-          project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
 
   static-analysis:
     name: Execute analyse on code
@@ -172,7 +163,6 @@ jobs:
       - name: 🏭 Setup Gradle
         uses: gradle/gradle-build-action@v2
 
-
       - name: 🔨️ Build Release
         run: ./gradlew app:assembleRelease
         env:
@@ -182,7 +172,7 @@ jobs:
 
       # Upload unsigned release APK
       - name: 📦 Upload apks
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: apk
           path: |

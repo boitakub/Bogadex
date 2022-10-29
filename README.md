@@ -4,15 +4,21 @@
 </p>
 </h1>
 
-<p align="center">
-<a href="https://github.com/boitakub/Bogadex/actions"><img alt="Build Status" src="https://github.com/boitakub/Bogadex/actions/workflows/main.yml/badge.svg"/></a>
-<a href="https://www.codacy.com/gh/boitakub/Bogadex/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=boitakub/Bogadex&amp;utm_campaign=Badge_Grade"><img src="https://app.codacy.com/project/badge/Grade/92ff47411c2a4d65b4389f4924ea8f0d"/></a>
-<a href="https://www.codacy.com/gh/boitakub/Bogadex/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=boitakub/Bogadex&amp;utm_campaign=Badge_Coverage"><img src="https://app.codacy.com/project/badge/Coverage/92ff47411c2a4d65b4389f4924ea8f0d"/></a>
-<a href="https://kotlinlang.org"><img alt="API" src="https://img.shields.io/badge/Kotlin-1.6.10-blue.svg?style=flat"/></a>
-<a href="https://android-arsenal.com/api?level=23"><img alt="API" src="https://img.shields.io/badge/API-23%2B-brightgreen.svg?style=flat"/></a>
-<a href="LICENSE.md"><img alt="License" src="https://img.shields.io/github/license/boitakub/bogadex"/></a>
-<a href="https://github.com/carloscuesta/gitmoji"><img alt="gitmoji badge" src="https://img.shields.io/badge/gitmoji-%20😜%20😍-FFDD67.svg"/></a>
-</p>
+[![Build](https://github.com/boitakub/Bogadex/actions/workflows/main.yml/badge.svg)](https://github.com/boitakub/Bogadex/actions/workflows/main.yml)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=boitakub_Bogadex&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=boitakub_Bogadex)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=boitakub_Bogadex&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=boitakub_Bogadex)
+[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=boitakub_Bogadex&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=boitakub_Bogadex)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=boitakub_Bogadex&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=boitakub_Bogadex)
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=boitakub_Bogadex&metric=bugs)](https://sonarcloud.io/summary/new_code?id=boitakub_Bogadex)
+[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=boitakub_Bogadex&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=boitakub_Bogadex)
+[![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=boitakub_Bogadex&metric=sqale_index)](https://sonarcloud.io/summary/new_code?id=boitakub_Bogadex)
+[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=boitakub_Bogadex&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=boitakub_Bogadex)
+[![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=boitakub_Bogadex&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=boitakub_Bogadex)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=boitakub_Bogadex&metric=coverage)](https://sonarcloud.io/summary/new_code?id=boitakub_Bogadex)
+[![Kotlin](https://img.shields.io/badge/Kotlin-1.6.10-blue.svg?style=flat)](https://kotlinlang.org)
+[![API](https://img.shields.io/badge/API-23%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=23)
+[![License](https://img.shields.io/github/license/boitakub/bogadex)](LICENSE.md)
+[![gitmoji](https://img.shields.io/badge/gitmoji-%20😜%20😍-FFDD67.svg)](https://github.com/carloscuesta/gitmoji)
 
 <p align="center">
 Bogadex is a small demo and functionnal application based on modern Android application tech-stacks and MVVM architecture.<br>This project aim to regroup and present most of current practices and patterns.<br>
@@ -54,7 +60,7 @@ Go to the [Releases](https://github.com/boitakub/Bogadex/releases) to download t
 * [Retrofit2 & OkHttp3](https://github.com/square/retrofit) - construct the REST APIs and paging network data.
 * [Coil](https://github.com/coil-kt/coil) - loading images.
 * [Material-Components](https://github.com/material-components/material-components-android) - Material design components like ripple animation, cardView.
-* [Codacy](https://codacy.com/) - Code quality and coverage analysis
+* [SonarCloud](https://sonarcloud.io/project/overview?id=boitakub_Bogadex) - Code quality and coverage analysis
 * [Gradle optimizations](https://proandroiddev.com/how-we-reduced-our-gradle-build-times-by-over-80-51f2b6d6b05b) - Some gradle tips to optimize build time
 
 ## MAD Score
@@ -100,6 +106,12 @@ Before committing your code, run `./gradlew app:spotlessApply` to automatically 
 ## Architecture 📐
 
 Bogadex is based on MVVM architecture and a repository pattern with a modular approach.
+
+Concerns are separate by modules containing feature
+![Design by features](docs/assets/design_by_feature.png)
+
+Each modules/feature share a common clean architecture pattern
+![Clean architecture](docs/assets/clean_architecture.png)
 
 <!---
 

@@ -35,7 +35,30 @@ sonarqube {
         property("sonar.projectKey", "boitakub_Bogadex")
         property("sonar.organization", "boitakub")
         property("sonar.host.url", "https://sonarcloud.io")
+        property("sonar.coverage.jacoco.xmlReportPaths", "$buildDir/reports/jacoco.xml")
     }
+}
+
+rootCoverage {
+    // Class & package exclude patterns
+    excludes = listOf("**/*Hilt*.**", "**/*Generated*.**")
+
+    // Since 1.1 generateHtml is by default true
+    generateCsv = true
+    generateHtml = true
+    generateXml = true
+
+    // Since 1.2: Same as executeTests except that this only affects the instrumented Android tests
+    executeAndroidTests = true
+
+    // Since 1.2: Same as executeTests except that this only affects the unit tests
+    executeUnitTests = true
+
+    // Since 1.2: When true include results from instrumented Android tests into the coverage report
+    includeAndroidTestResults = true
+
+    // Since 1.2: When true include results from unit tests into the coverage report
+    includeUnitTestResults = true
 }
 
 allprojects {

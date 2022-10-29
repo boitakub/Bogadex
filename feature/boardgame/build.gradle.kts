@@ -18,8 +18,8 @@ android {
 
     buildTypes {
         debug {
-            // FIXME: isTestCoverageEnabled not compatible with espresso
-            // isTestCoverageEnabled = true
+            enableUnitTestCoverage = true
+            enableAndroidTestCoverage = true
         }
         getByName("release") {
             isMinifyEnabled = false

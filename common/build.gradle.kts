@@ -18,8 +18,8 @@ android {
 
     buildTypes {
         debug {
-            // FIXME: isTestCoverageEnabled not compatible with espresso
-            // isTestCoverageEnabled = true
+            enableUnitTestCoverage = true
+            enableAndroidTestCoverage = true
         }
         getByName("release") {
             isMinifyEnabled = false
@@ -47,6 +47,7 @@ android {
 }
 
 dependencies {
+    val lifecycleVersion: String by project
     val preferencesVersion: String by project
     val recyclerviewVersion: String by project
     val daggerVersion: String by project
@@ -59,6 +60,9 @@ dependencies {
     implementation(project(":shared:architecture"))
 
     implementation("androidx.preference:preference-ktx:$preferencesVersion")
+
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:$lifecycleVersion")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion")
 
     //region UI
     implementation("androidx.compose.material:material:$materialVersion")
