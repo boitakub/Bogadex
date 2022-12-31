@@ -1,20 +1,3 @@
 <resources>
     <string name="title_list_game">List de jeux</string>
-    <string name="searchbar_hint">Rechercher un jeu</string>
-
-    <string name="browse_games">Collection</string>
-    <string name="content_browse_games">Parcourir ma collection de jeux</string>
-    <string name="game_tools">Outils de jeux</string>
-    <string name="content_game_tools">Parcourir les outils de jeux</string>
-
-    <string name="display_all">Afficher tout</string>
-    <string name="display_collection">Ma collection</string>
-    <string name="display_wishlist">Ma liste de souhait</string>
-    <string name="display_filler">Filler game</string>
-
-    <string name="change_display">Changer la vue</string>
-    <string name="content_change_display">Changer la vue d\'affichage de la collection</string>
-    <string name="display_solo">Jouable en solo</string>
-    <string name="settings">Paramétres</string>
-    <string name="content_settings">Personaliser votre expérience</string>
 </resources>

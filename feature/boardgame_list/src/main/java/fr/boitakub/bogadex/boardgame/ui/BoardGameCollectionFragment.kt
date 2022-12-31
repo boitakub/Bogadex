@@ -30,19 +30,26 @@ package fr.boitakub.bogadex.boardgame.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.res.ResourcesCompat
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
 import fr.boitakub.boardgame_list.R
+import fr.boitakub.boardgame_list.databinding.BoardgameListFragmentBinding
 import fr.boitakub.bogadex.boardgame.BoardGameCollectionRepository
 import fr.boitakub.bogadex.boardgame.model.CollectionItemWithDetails
 import fr.boitakub.bogadex.boardgame.ui.BoardGameCollectionViewModel.Companion.provideFactory
@@ -52,9 +59,9 @@ import fr.boitakub.bogadex.boardgame.usecase.ListCollectionItemOwned
 import fr.boitakub.bogadex.boardgame.usecase.ListCollectionItemSolo
 import fr.boitakub.bogadex.boardgame.usecase.ListCollectionItemWanted
 import fr.boitakub.bogadex.common.UserSettings
-import fr.boitakub.bogadex.common.databinding.CommonListFragmentBinding
 import fr.boitakub.bogadex.common.ui.application.AppViewModel
 import fr.boitakub.bogadex.common.ui.application.ApplicationState
+import fr.boitakub.bogadex.filter.FilterBottomSheetDialog
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -72,7 +79,9 @@ class BoardGameCollectionFragment :
     @Inject
     lateinit var imageLoaderViewModelFactory: BoardGameCollectionViewModel.BoardGameCollectionViewModelFactory
 
-    lateinit var binding: CommonListFragmentBinding
+    lateinit var binding: BoardgameListFragmentBinding
+    private lateinit var navController: NavController
+
     private val appViewModel: AppViewModel by activityViewModels()
 
     override val presenter: BoardGameCollectionViewModel by viewModels {
@@ -89,7 +98,7 @@ class BoardGameCollectionFragment :
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = CommonListFragmentBinding.inflate(inflater, container, false)
+        binding = BoardgameListFragmentBinding.inflate(inflater, container, false)
         adapter = BoardGameCollectionListAdapter((binding.recyclerView.layoutManager as GridLayoutManager))
         adapter.stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
         return binding.root
@@ -98,6 +107,7 @@ class BoardGameCollectionFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.recyclerView.adapter = adapter
+        setupNavigation()
 
         // Create a new coroutine in the lifecycleScope
         viewLifecycleOwner.lifecycleScope.launch {
@@ -130,6 +140,16 @@ class BoardGameCollectionFragment :
         observeApplicationState()
     }
 
+    // Setting Up One Time Navigation
+
+    private fun setupNavigation() {
+        navController = findNavController()
+        binding.searchBar.setupWithNavController(navController, binding.root)
+        binding.navigationView.setupWithNavController(navController)
+    }
+
+    //endregion
+
     private fun observeApplicationState() {
         lifecycleScope.launchWhenStarted {
             appViewModel.applicationState.collect {
@@ -138,8 +158,45 @@ class BoardGameCollectionFragment :
         }
     }
 
-    private fun applyApplicationChanges(data: ApplicationState) {
-        switchLayout(data.viewType)
+    private fun applyApplicationChanges(state: ApplicationState) {
+        switchLayout(state.viewType)
+        binding.searchBar.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.menu_switch_layout -> {
+                    appViewModel.switchLayout(state)
+                    switchIcon(state.viewType, menuItem)
+                    true
+                }
+                else -> false
+            }
+        }
+
+        binding.fabFilters.setOnClickListener {
+            showFilterBottomSheetDialog()
+        }
+
+        binding.navigationView.setNavigationItemSelectedListener { menuItem ->
+            menuItem.isChecked = true
+            var dest = state.collection
+            when (menuItem.itemId) {
+                R.id.display_all -> dest = "all"
+                R.id.display_collection -> dest = "collection"
+                R.id.display_wishlist -> dest = "wishlist"
+                R.id.display_solo -> dest = "solo"
+                R.id.display_filler -> dest = "filler"
+            }
+            appViewModel.filterCollectionWith(state, dest)
+
+            if (menuItem.itemId != R.id.menu_settings) {
+                val bundle = bundleOf("filter" to dest)
+                navController
+                    .navigate(fr.boitakub.boardgame_list.R.id.navigation_boardgame_list, bundle)
+            } else {
+                navController.navigate(R.id.navigation_settings)
+            }
+
+            true
+        }
     }
 
     private fun switchLayout(state: Int) {
@@ -148,6 +205,20 @@ class BoardGameCollectionFragment :
         } else {
             (binding.recyclerView.layoutManager as GridLayoutManager).spanCount =
                 resources.getInteger(R.integer.game_grid_columns)
+        }
+    }
+
+    // https://www.section.io/engineering-education/bottom-sheet-dialogs-using-android-studio/
+    private fun showFilterBottomSheetDialog() {
+        val filterBottomSheetDialog = FilterBottomSheetDialog(requireContext(), appViewModel.filterViewModel)
+        filterBottomSheetDialog.show()
+    }
+
+    private fun switchIcon(currentState: Number, item: MenuItem) {
+        if (currentState == 1) {
+            item.icon = ResourcesCompat.getDrawable(resources, R.drawable.ic_span_1, requireActivity().theme)
+        } else {
+            item.icon = ResourcesCompat.getDrawable(resources, R.drawable.ic_span_3, requireActivity().theme)
         }
     }
 

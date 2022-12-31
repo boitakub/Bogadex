@@ -5,7 +5,6 @@
 </h1>
 
 [![Build](https://github.com/boitakub/Bogadex/actions/workflows/main.yml/badge.svg)](https://github.com/boitakub/Bogadex/actions/workflows/main.yml)
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=boitakub_Bogadex&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=boitakub_Bogadex)
 [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=boitakub_Bogadex&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=boitakub_Bogadex)
 [![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=boitakub_Bogadex&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=boitakub_Bogadex)
 [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=boitakub_Bogadex&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=boitakub_Bogadex)
@@ -44,19 +43,19 @@ Go to the [Releases](https://github.com/boitakub/Bogadex/releases) to download t
 - [Kotlin](https://kotlinlang.org/) based, [Coroutines](https://github.com/Kotlin/kotlinx.coroutines) + [Flow](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/) for asynchronous.
 - [Hilt](https://dagger.dev/hilt/) for dependency injection.
 - [JetPack](https://developer.android.com/jetpack)
-  * [DataStore]()
-  * Room - construct a database using the abstract layer.
-  * Worker - Updating data periodically when phone is idling
-  * [Bindables](https://github.com/skydoves/bindables) - Android DataBinding kit for notifying data changes to UI layers.
+* [DataStore]()
+* Room - construct a database using the abstract layer.
+* Worker - Updating data periodically when phone is idling
+* [Bindables](https://github.com/skydoves/bindables) - Android DataBinding kit for notifying data changes to UI layers.
 - Lifecycle - dispose of observing data when lifecycle state changes.
 - ViewModel - UI related data holder, lifecycle aware.
 - Architecture
-  * MVVM Architecture (View - DataBinding - ViewModel - Model)
-  * Business oriented with UseCases pattern
-  * Repository pattern
+* MVVM Architecture (View - DataBinding - ViewModel - Model)
+* Business oriented with UseCases pattern
+* Repository pattern
 - [Material You](https://m3.material.io/) - Using Material Design 3
-  * [App bars: bottom](https://material.io/components/app-bars-bottom)
-  * [Dark Mode](https://developer.android.com/guide/topics/ui/look-and-feel/darktheme) - Generate theme trough [Material Theme Builder](https://material-foundation.github.io/material-theme-builder/#/dynamic)
+* [App bars: bottom](https://material.io/components/app-bars-bottom)
+* [Dark Mode](https://developer.android.com/guide/topics/ui/look-and-feel/darktheme) - Generate theme trough [Material Theme Builder](https://material-foundation.github.io/material-theme-builder/#/dynamic)
 - [Retrofit2 & OkHttp3](https://github.com/square/retrofit) - construct the REST APIs and paging network data.
 - [Coil](https://github.com/coil-kt/coil) - loading images.
 - [Material-Components](https://github.com/material-components/material-components-android) - Material design components like ripple animation, cardView.
@@ -71,13 +70,13 @@ Release a build version triggers in the following scenarios:
 - You push a version tag to the repository.
 - You create a pull request targeting the main branch.
 - Check on pre-commit [Article](https://medium.com/@anjani.kjoshi/android-lint-pre-commit-hook-for-clean-code-747edfe57abf)
-  * lint - for Android critical issues
-  * KtLint - for kotlin file quality
+* lint - for Android critical issues
+* KtLint - for kotlin file quality
 - Auto version from git tag [Article](https://dev.to/ychescale9/git-based-android-app-versioning-with-agp-4-0-24ip) [Plugin](https://github.com/ReactiveCircus/app-versioning)
 - Auto delivery from git tag
-  * on GitHub Release
-  * on Firebase App Distribution
-  * on Google Play Store - Beta & Production -
+* on GitHub Release
+* on Firebase App Distribution
+* on Google Play Store - Beta & Production -
 - Release signing [Article](https://proandroiddev.com/how-to-securely-build-and-sign-your-android-app-with-github-actions-ad5323452ce)
 
 ## Code formatting

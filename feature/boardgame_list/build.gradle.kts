@@ -29,6 +29,9 @@ android {
             )
         }
     }
+    buildFeatures {
+        viewBinding = true
+    }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
@@ -87,6 +90,7 @@ dependencies {
     implementation("com.google.android.material:material:$materialVersion")
     implementation("androidx.compose.material:material:$materialComposeVersion")
     implementation("androidx.fragment:fragment-ktx:$fragmentVersion")
+    implementation("androidx.navigation:navigation-ui-ktx:$navigationVersion")
     implementation("androidx.navigation:navigation-fragment-ktx:$navigationVersion")
 
     implementation("io.coil-kt:coil:$coilVersion")
