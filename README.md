@@ -41,51 +41,44 @@ Go to the [Releases](https://github.com/boitakub/Bogadex/releases) to download t
 
 ## Tech stack & Open-source libraries 🧬
 
-* [Kotlin](https://kotlinlang.org/) based, [Coroutines](https://github.com/Kotlin/kotlinx.coroutines) + [Flow](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/) for asynchronous.
-* [Hilt](https://dagger.dev/hilt/) for dependency injection.
-* [JetPack](https://developer.android.com/jetpack)
-	+ [DataStore]()
-	+ Room - construct a database using the abstract layer.
-	+ Worker - Updating data periodically when phone is idling
-	+ [Bindables](https://github.com/skydoves/bindables) - Android DataBinding kit for notifying data changes to UI layers.
-+ Lifecycle - dispose of observing data when lifecycle state changes.
-+ ViewModel - UI related data holder, lifecycle aware.
-* Architecture
-	+ MVVM Architecture (View - DataBinding - ViewModel - Model)
-	+ Business oriented with UseCases pattern
-	+ Repository pattern
-* [Material You](https://m3.material.io/) - Using Material Design 3
-	+ [App bars: bottom](https://material.io/components/app-bars-bottom)
-	+ [Dark Mode](https://developer.android.com/guide/topics/ui/look-and-feel/darktheme) - Generate theme trough [Material Theme Builder](https://material-foundation.github.io/material-theme-builder/#/dynamic)
-* [Retrofit2 & OkHttp3](https://github.com/square/retrofit) - construct the REST APIs and paging network data.
-* [Coil](https://github.com/coil-kt/coil) - loading images.
-* [Material-Components](https://github.com/material-components/material-components-android) - Material design components like ripple animation, cardView.
-* [SonarCloud](https://sonarcloud.io/project/overview?id=boitakub_Bogadex) - Code quality and coverage analysis
-* [Gradle optimizations](https://proandroiddev.com/how-we-reduced-our-gradle-build-times-by-over-80-51f2b6d6b05b) - Some gradle tips to optimize build time
-
-## MAD Score
-![summary](/docs/assets/summary.png)
-![kotlin](/docs/assets/kotlin.png)
-
-[Complete Scorecard](https://madscorecard.withgoogle.com/scorecard/share/2471216653/)
+- [Kotlin](https://kotlinlang.org/) based, [Coroutines](https://github.com/Kotlin/kotlinx.coroutines) + [Flow](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/) for asynchronous.
+- [Hilt](https://dagger.dev/hilt/) for dependency injection.
+- [JetPack](https://developer.android.com/jetpack)
+  * [DataStore]()
+  * Room - construct a database using the abstract layer.
+  * Worker - Updating data periodically when phone is idling
+  * [Bindables](https://github.com/skydoves/bindables) - Android DataBinding kit for notifying data changes to UI layers.
+- Lifecycle - dispose of observing data when lifecycle state changes.
+- ViewModel - UI related data holder, lifecycle aware.
+- Architecture
+  * MVVM Architecture (View - DataBinding - ViewModel - Model)
+  * Business oriented with UseCases pattern
+  * Repository pattern
+- [Material You](https://m3.material.io/) - Using Material Design 3
+  * [App bars: bottom](https://material.io/components/app-bars-bottom)
+  * [Dark Mode](https://developer.android.com/guide/topics/ui/look-and-feel/darktheme) - Generate theme trough [Material Theme Builder](https://material-foundation.github.io/material-theme-builder/#/dynamic)
+- [Retrofit2 & OkHttp3](https://github.com/square/retrofit) - construct the REST APIs and paging network data.
+- [Coil](https://github.com/coil-kt/coil) - loading images.
+- [Material-Components](https://github.com/material-components/material-components-android) - Material design components like ripple animation, cardView.
+- [SonarCloud](https://sonarcloud.io/project/overview?id=boitakub_Bogadex) - Code quality and coverage analysis
+- [Gradle optimizations](https://proandroiddev.com/how-we-reduced-our-gradle-build-times-by-over-80-51f2b6d6b05b) - Some gradle tips to optimize build time
 
 ## Flow & Delivery 🚚
 
 ### Triggering a Release
 
 Release a build version triggers in the following scenarios:
-* You push a version tag to the repository.
-* You create a pull request targeting the main branch.
-
-* Check on pre-commit [Article](https://medium.com/@anjani.kjoshi/android-lint-pre-commit-hook-for-clean-code-747edfe57abf)
-+ lint - for Android critical issues
-+ KtLint - for kotlin file quality
-* Auto version from git tag [Article](https://dev.to/ychescale9/git-based-android-app-versioning-with-agp-4-0-24ip) [Plugin](https://github.com/ReactiveCircus/app-versioning)
-* Auto delivery from git tag
-+ on GitHub Release
-+ on Firebase App Distribution
-+ on Google Play Store - Beta & Production -
-* Release signing [Article](https://proandroiddev.com/how-to-securely-build-and-sign-your-android-app-with-github-actions-ad5323452ce)
+- You push a version tag to the repository.
+- You create a pull request targeting the main branch.
+- Check on pre-commit [Article](https://medium.com/@anjani.kjoshi/android-lint-pre-commit-hook-for-clean-code-747edfe57abf)
+  * lint - for Android critical issues
+  * KtLint - for kotlin file quality
+- Auto version from git tag [Article](https://dev.to/ychescale9/git-based-android-app-versioning-with-agp-4-0-24ip) [Plugin](https://github.com/ReactiveCircus/app-versioning)
+- Auto delivery from git tag
+  * on GitHub Release
+  * on Firebase App Distribution
+  * on Google Play Store - Beta & Production -
+- Release signing [Article](https://proandroiddev.com/how-to-securely-build-and-sign-your-android-app-with-github-actions-ad5323452ce)
 
 ## Code formatting
 
@@ -107,6 +100,8 @@ Before committing your code, run `./gradlew app:spotlessApply` to automatically 
 
 Bogadex is based on MVVM architecture and a repository pattern with a modular approach.
 
+- [By layer or feature? Why not both?! Guide to Android app modularization](https://www.youtube.com/watch?v=16SwTvzDO0A)
+
 Concerns are separate by modules containing feature
 ![Design by features](docs/assets/design_by_feature.png)
 
@@ -123,8 +118,8 @@ Each modules/feature share a common clean architecture pattern
 
 Bogadex is inspired by the wonderful repositories :
 
-* [Jaewoong Eum](https://github.com/skydoves), especially [Pokedex](https://github.com/skydoves/Pokedex).
-* [Igor Wojda](https://github.com/igorwojda) and his great repo [android-showcase](https://github.com/igorwojda/android-showcase).
+-[Jaewoong Eum](https://github.com/skydoves), especially [Pokedex](https://github.com/skydoves/Pokedex).
+-[Igor Wojda](https://github.com/igorwojda) and his great repo [android-showcase](https://github.com/igorwojda/android-showcase).
 
 Thank you for the great job.
 

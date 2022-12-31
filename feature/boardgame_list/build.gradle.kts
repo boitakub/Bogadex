@@ -50,6 +50,7 @@ dependencies {
     val hiltVersion: String by project
     val coilVersion: String by project
     val materialVersion: String by project
+    val materialComposeVersion: String by project
     val composeVersion: String by project
     val roomVersion: String by project
     val workVersion: String by project
@@ -83,8 +84,8 @@ dependencies {
 
     //region UI
 
-    implementation("androidx.compose.material:material:$materialVersion")
-    implementation("com.google.android.material:material:1.7.0")
+    implementation("com.google.android.material:material:$materialVersion")
+    implementation("androidx.compose.material:material:$materialComposeVersion")
     implementation("androidx.fragment:fragment-ktx:$fragmentVersion")
     implementation("androidx.navigation:navigation-fragment-ktx:$navigationVersion")
 

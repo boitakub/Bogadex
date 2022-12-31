@@ -53,6 +53,7 @@ dependencies {
     val daggerVersion: String by project
     val hiltVersion: String by project
     val materialVersion: String by project
+    val materialComposeVersion: String by project
     val composeVersion: String by project
     val junitVersion: String by project
     val espressoVersion: String by project
@@ -65,9 +66,9 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion")
 
     //region UI
-    implementation("androidx.compose.material:material:$materialVersion")
+    implementation("androidx.compose.material:material:$materialComposeVersion")
     implementation("androidx.recyclerview:recyclerview:$recyclerviewVersion")
-    implementation("com.google.android.material:material:1.7.0")
+    implementation("com.google.android.material:material:$materialVersion")
 
     //region Compose
 

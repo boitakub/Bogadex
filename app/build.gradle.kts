@@ -5,19 +5,19 @@ plugins {
     id("kotlin-android")
     id("kotlin-kapt")
     id("dagger.hilt.android.plugin")
-    id("io.github.reactivecircus.app-versioning") version "1.1.0"
+    id("io.github.reactivecircus.app-versioning") version "1.2.0"
     id("com.google.gms.google-services")
     id("com.google.firebase.crashlytics")
     id("com.google.firebase.firebase-perf")
 }
 
 android {
-    compileSdk = 32
+    compileSdk = 33
 
     defaultConfig {
         applicationId = "fr.boitakub.bogadex"
         minSdk = 23
-        targetSdk = 31
+        targetSdk = 33
 
         testApplicationId = "fr.boitakub.bogadex.tests"
         testInstrumentationRunner = "fr.boitakub.bogadex.tests.InstrumentHiltTestRunner"
@@ -101,7 +101,7 @@ dependencies {
     val daggerVersion: String by project
     val hiltVersion: String by project
     val coilVersion: String by project
-    val materialVersion: String by project
+    val materialComposeVersion: String by project
     val okhttpVersion: String by project
     val retrofitVersion: String by project
     val roomVersion: String by project
@@ -137,7 +137,7 @@ dependencies {
 
     //region UI
 
-    implementation("androidx.compose.material:material:$materialVersion")
+    implementation("androidx.compose.material:material:$materialComposeVersion")
     implementation("androidx.navigation:navigation-ui-ktx:$navigationVersion")
     implementation("androidx.navigation:navigation-fragment-ktx:$navigationVersion")
 

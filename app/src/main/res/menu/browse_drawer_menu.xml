@@ -26,4 +26,16 @@
         android:icon="@drawable/ic_stopwatch_solid"
         android:title="@string/display_filler" />
 
+    <item
+        android:id="@+id/labels_item"
+        android:title="">
+        <menu>
+            <item
+                android:id="@+id/menu_settings"
+                android:contentDescription="@string/content_settings"
+                android:icon="@drawable/ic_baseline_settings_24"
+                android:title="@string/settings" />
+        </menu>
+    </item>
+
 </menu>

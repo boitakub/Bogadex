@@ -1,5 +1,11 @@
 <resources>
     <string name="title_list_game">List de jeux</string>
+    <string name="searchbar_hint">Rechercher un jeu</string>
+
+    <string name="browse_games">Collection</string>
+    <string name="content_browse_games">Parcourir ma collection de jeux</string>
+    <string name="game_tools">Outils de jeux</string>
+    <string name="content_game_tools">Parcourir les outils de jeux</string>
 
     <string name="display_all">Afficher tout</string>
     <string name="display_collection">Ma collection</string>

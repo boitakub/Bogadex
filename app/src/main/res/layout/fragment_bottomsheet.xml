@@ -13,6 +13,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:menu="@menu/bottom_nav_drawer_menu" />
+        app:menu="@menu/browse_drawer_menu" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

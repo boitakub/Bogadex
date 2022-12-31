@@ -1,6 +1,12 @@
 <resources>
     <string name="app_name" translatable="false">Bogadex</string>
     <string name="title_list_game">Game list</string>
+    <string name="searchbar_hint">Search game</string>
+
+    <string name="browse_games">Collection</string>
+    <string name="content_browse_games">Browse game collection</string>
+    <string name="game_tools">Game tools</string>
+    <string name="content_game_tools">Browse companion tools for games</string>
 
     <string name="display_all">Display all</string>
     <string name="display_collection">My collection</string>

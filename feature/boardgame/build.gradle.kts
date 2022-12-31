@@ -62,7 +62,7 @@ dependencies {
     val lifecycleVersion: String by project
     val daggerVersion: String by project
     val hiltVersion: String by project
-    val materialVersion: String by project
+    val materialComposeVersion: String by project
     val composeVersion: String by project
     val roomVersion: String by project
     val workVersion: String by project
@@ -96,7 +96,7 @@ dependencies {
     //endregion
 
     //region UI
-    implementation("androidx.compose.material:material:$materialVersion")
+    implementation("androidx.compose.material:material:$materialComposeVersion")
 
     //region Compose
 
