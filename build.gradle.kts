@@ -17,7 +17,7 @@ buildscript {
     }
     dependencies {
         // -- Core plugins
-        classpath("com.android.tools.build:gradle:7.3.1")
+        classpath("com.android.tools.build:gradle:7.4.2")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
 
         // -- Application plugins
@@ -75,7 +75,7 @@ allprojects {
             "$rootDir/build.gradle.kts",
             "$rootDir/settings.gradle.kts",
             "src/build.gradle.kts",
-            "src/main",
+            "src/main"
         )
     }
 
