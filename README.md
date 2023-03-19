@@ -14,7 +14,7 @@
 [![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=boitakub_Bogadex&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=boitakub_Bogadex)
 [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=boitakub_Bogadex&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=boitakub_Bogadex)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=boitakub_Bogadex&metric=coverage)](https://sonarcloud.io/summary/new_code?id=boitakub_Bogadex)
-[![Kotlin](https://img.shields.io/badge/Kotlin-1.6.10-blue.svg?style=flat)](https://kotlinlang.org)
+[![Kotlin](https://img.shields.io/badge/Kotlin-1.8.10-blue.svg?style=flat)](https://kotlinlang.org)
 [![API](https://img.shields.io/badge/API-23%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=23)
 [![License](https://img.shields.io/github/license/boitakub/bogadex)](LICENSE.md)
 [![gitmoji](https://img.shields.io/badge/gitmoji-%20😜%20😍-FFDD67.svg)](https://github.com/carloscuesta/gitmoji)
