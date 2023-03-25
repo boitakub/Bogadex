@@ -35,6 +35,10 @@ import java.util.Date
 
 class DatabaseExtensions {
 
+    companion object {
+        const val SEPARATOR = ","
+    }
+
     @TypeConverter
     fun fromTimestamp(value: Long?): Date? {
         return if (value == null) null else Date(value)
@@ -49,4 +53,18 @@ class DatabaseExtensions {
     fun wishedToTnt(value: Wished) = value.toInt()
     @TypeConverter
     fun intTowished(value: Int) = Wished.from(value)
+
+    @TypeConverter
+    fun fromIntList(value: List<Int>): String {
+        var string = ""
+        value.forEach {
+            string = "$string$SEPARATOR$it"
+        }
+        return string
+    }
+
+    @TypeConverter
+    fun toIntList(value: String): List<Int> {
+        return value.split(SEPARATOR).filter { it.isNotBlank() }.map { it.toInt() }.toList()
+    }
 }

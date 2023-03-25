@@ -30,6 +30,7 @@ package fr.boitakub.bogadex.boardgame.mapper
 
 import fr.boitakub.architecture.Mapper
 import fr.boitakub.bgg.client.BoardGameHelper
+import fr.boitakub.bgg.client.Poll
 import fr.boitakub.bgg.client.Statistics
 import fr.boitakub.bogadex.boardgame.model.BoardGame
 import fr.boitakub.bogadex.boardgame.model.BoardGameBggStatistic
@@ -40,6 +41,13 @@ import javax.inject.Singleton
 @Singleton
 class BoardGameMapper @Inject constructor() :
     Mapper<BoardGame, Iterable<fr.boitakub.bgg.client.BoardGame>> {
+
+    companion object {
+        const val BEST_AT_VALUE = "Best"
+        const val RECOMMENDED_AT_VALUE = "Recommended"
+        const val NOT_RECOMMENDED_AT_VALUE = "Not Recommended"
+    }
+
     private fun map(source: fr.boitakub.bgg.client.BoardGame): BoardGame =
         BoardGame(
             source.id.toString(),
@@ -49,13 +57,16 @@ class BoardGameMapper @Inject constructor() :
             source.yearPublished,
             source.minplayers,
             source.maxplayers,
+            mapRecommendedPlayer(source.polls, source.maxplayers),
             source.playingtime,
             source.minplaytime,
             source.maxplaytime,
+            source.minage,
+            mapRecommendedAge(source.polls),
             source.image,
             source.thumbnail,
             Date(),
-            map(source.statistics)
+            map(source.statistics),
         )
 
     override fun map(source: Iterable<fr.boitakub.bgg.client.BoardGame>): BoardGame =
@@ -71,7 +82,64 @@ class BoardGameMapper @Inject constructor() :
             source.owned,
             source.wanting,
             source.wishing,
-            source.trading
+            source.trading,
         )
     }
+
+    private fun mapRecommendedPlayer(source: List<Poll>?, maxPlayers: Int, minVote: Int = 10): List<Int> {
+        var intermediate = mutableMapOf<Int?, Int>()
+        source?.forEach { poll ->
+            if (poll.name == "suggested_numplayers" && poll.totalvotes > minVote) {
+                poll.results?.forEach { pollResult ->
+                    val numPlayers = pollResult.numplayers.ifPlus(maxPlayers)
+                    val bestScore = pollResult.results?.singleOrNull { it.value == BEST_AT_VALUE }?.numvotes
+                    val recommendedScore =
+                        pollResult.results?.singleOrNull { it.value == RECOMMENDED_AT_VALUE }?.numvotes
+                    val notRecommendedScore =
+                        pollResult.results?.singleOrNull { it.value == NOT_RECOMMENDED_AT_VALUE }?.numvotes
+
+                    var score = 0
+                    if (bestScore != null) {
+                        score += (bestScore * 5)
+                    }
+                    if (recommendedScore != null) {
+                        score += (recommendedScore * 3)
+                    }
+                    if (notRecommendedScore != null) {
+                        score += (notRecommendedScore * -1)
+                    }
+                    intermediate[numPlayers!!.toIntOrNull()] = score
+                }
+            }
+        }
+        return intermediate.toList().sortedByDescending { it.second }.map { it.first }.filterNotNull()
+    }
+
+    private fun mapRecommendedAge(source: List<Poll>?, minVote: Int = 10): List<Int> {
+        var table = listOf<Int>()
+        source?.forEach { poll ->
+            if (poll.name == "suggested_playerage" && poll.totalvotes > minVote) {
+                poll.results?.forEach { result ->
+                    result.results?.let { results ->
+                        table = results
+                            .sortedByDescending { it.numvotes }
+                            .filter { !it.value.isNullOrBlank() }
+                            .mapNotNull { tryParse(it.value) }
+                    }
+                }
+            }
+        }
+        return table
+    }
+
+    private fun tryParse(stringValue: String?): Int? {
+        return stringValue?.toIntOrNull()
+    }
+}
+
+private fun String?.ifPlus(maxPlayers: Int): String? {
+    if (this != null && this.contains("+")) {
+        return maxPlayers.toString()
+    }
+    return this
 }

@@ -21,6 +21,11 @@ android {
 
         testApplicationId = "fr.boitakub.bogadex.tests"
         testInstrumentationRunner = "fr.boitakub.bogadex.tests.InstrumentHiltTestRunner"
+        kapt {
+            arguments {
+                arg("room.schemaLocation", "$projectDir/schemas")
+            }
+        }
     }
     signingConfigs {
         create("release") {

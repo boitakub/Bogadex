@@ -134,11 +134,17 @@ internal class BoardGameCollectionListAdapter(private val layoutManager: GridLay
         binding.ivBgCover.load(game.item.coverUrl)
         binding.cgTags.removeAllViews()
         binding.cgTags.addView(createTagChip(binding.root.context, "Test"))
-        binding.tvPlayers.text = context.getString(
+        var players = context.getString(
             R.string.players,
             game.details?.minPlayer,
             game.details?.maxPlayer
         )
+        game.details?.recommendedPlayers?.let {
+            if(it.isNotEmpty()) {
+                players += " (${it[0]})"
+            }
+        }
+        binding.tvPlayers.text = players
         binding.tvDuration.text = context.getString(
             R.string.duration,
             game.details?.minPlayTime,

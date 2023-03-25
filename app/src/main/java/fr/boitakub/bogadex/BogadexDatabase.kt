@@ -29,6 +29,7 @@
 package fr.boitakub.bogadex
 
 import android.content.Context
+import androidx.room.AutoMigration
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
@@ -38,7 +39,13 @@ import fr.boitakub.bogadex.boardgame.BoardGameListDao
 import fr.boitakub.bogadex.boardgame.model.BoardGame
 import fr.boitakub.bogadex.boardgame.model.CollectionItem
 
-@Database(entities = [BoardGame::class, CollectionItem::class], version = 1, exportSchema = false)
+@Database(
+    entities = [BoardGame::class, CollectionItem::class],
+    version = 2,
+    autoMigrations = [
+        AutoMigration(from = 1, to = 2),
+    ],
+)
 @TypeConverters(DatabaseExtensions::class)
 abstract class BogadexDatabase : RoomDatabase() {
     abstract fun boardGameDao(): BoardGameDao
@@ -60,7 +67,7 @@ abstract class BogadexDatabase : RoomDatabase() {
         private fun buildDatabase(context: Context) = Room.databaseBuilder(
             context.applicationContext,
             BogadexDatabase::class.java,
-            DB_NAME
+            DB_NAME,
         ).build()
     }
 }

@@ -46,13 +46,16 @@ data class BoardGame(
     @ColumnInfo(name = "year_published") var yearPublished: Int = 0,
     @ColumnInfo(name = "min_player") var minPlayer: Int = 0,
     @ColumnInfo(name = "max_player") var maxPlayer: Int = 0,
+    @ColumnInfo(name = "recommended_player", defaultValue = "") var recommendedPlayers: List<Int> = listOf(),
     @ColumnInfo(name = "play_time") var playTime: Int = 0,
     @ColumnInfo(name = "min_play_time") var minPlayTime: Int = 0,
     @ColumnInfo(name = "max_play_time") var maxPlayTime: Int = 0,
+    @ColumnInfo(name = "min_age") var minAge: Int? = 0,
+    @ColumnInfo(name = "recommended_age", defaultValue = "") var recommendedAges: List<Int> = listOf(),
     @ColumnInfo(name = "image") var image: String? = "",
     @ColumnInfo(name = "thumbnail") var thumbnail: String? = "",
     @ColumnInfo(name = "update_date") var updateDate: Date = Date(),
-    @Embedded var statistic: BoardGameBggStatistic = BoardGameBggStatistic()
+    @Embedded var statistic: BoardGameBggStatistic = BoardGameBggStatistic(),
 ) : BusinessModel {
 
     fun isOutdated(): Boolean {

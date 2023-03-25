@@ -1,0 +1,240 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "e119753c578081283c81cc92e85d6993",
+    "entities": [
+      {
+        "tableName": "boardgame",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`bgg_id` TEXT NOT NULL, `title` TEXT NOT NULL, `description` TEXT, `type` TEXT NOT NULL, `year_published` INTEGER NOT NULL, `min_player` INTEGER NOT NULL, `max_player` INTEGER NOT NULL, `recommended_player` TEXT NOT NULL, `play_time` INTEGER NOT NULL, `min_play_time` INTEGER NOT NULL, `max_play_time` INTEGER NOT NULL, `min_age` INTEGER NOT NULL, `recommended_age` TEXT NOT NULL, `image` TEXT, `thumbnail` TEXT, `update_date` INTEGER NOT NULL, `num_of_rating_votes` INTEGER NOT NULL, `average` REAL NOT NULL, `bayes_average` REAL NOT NULL, `num_of_weight_votes` INTEGER NOT NULL, `average_weight` REAL NOT NULL, `num_of_owns` INTEGER NOT NULL, `num_of_wanted` INTEGER NOT NULL, `num_of_wished` INTEGER NOT NULL, `num_of_trading` INTEGER NOT NULL, `creation_date` INTEGER NOT NULL, PRIMARY KEY(`bgg_id`))",
+        "fields": [
+          {
+            "fieldPath": "bggId",
+            "columnName": "bgg_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "title",
+            "columnName": "title",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "description",
+            "columnName": "description",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "type",
+            "columnName": "type",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "yearPublished",
+            "columnName": "year_published",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "minPlayer",
+            "columnName": "min_player",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "maxPlayer",
+            "columnName": "max_player",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "playTime",
+            "columnName": "play_time",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "minPlayTime",
+            "columnName": "min_play_time",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "maxPlayTime",
+            "columnName": "max_play_time",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "image",
+            "columnName": "image",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "thumbnail",
+            "columnName": "thumbnail",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "updateDate",
+            "columnName": "update_date",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "statistic.numOfRatingVotes",
+            "columnName": "num_of_rating_votes",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "statistic.average",
+            "columnName": "average",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "statistic.bayesAverage",
+            "columnName": "bayes_average",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "statistic.numOfWeightVotes",
+            "columnName": "num_of_weight_votes",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "statistic.averageWeight",
+            "columnName": "average_weight",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "statistic.numOfOwns",
+            "columnName": "num_of_owns",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "statistic.numOfWanted",
+            "columnName": "num_of_wanted",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "statistic.numOfWished",
+            "columnName": "num_of_wished",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "statistic.numOfTrading",
+            "columnName": "num_of_trading",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "statistic.creationDate",
+            "columnName": "creation_date",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "bgg_id"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "collection_item",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`bgg_id` TEXT NOT NULL, `title` TEXT, `year_published` INTEGER NOT NULL, `cover_url` TEXT, `update_date` INTEGER NOT NULL, `is_own` INTEGER NOT NULL, `is_pre_ordered` INTEGER NOT NULL, `is_previously_owned` INTEGER NOT NULL, `is_for_trade` INTEGER NOT NULL, `is_wished` INTEGER NOT NULL, PRIMARY KEY(`bgg_id`))",
+        "fields": [
+          {
+            "fieldPath": "bggId",
+            "columnName": "bgg_id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "title",
+            "columnName": "title",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "yearPublished",
+            "columnName": "year_published",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "coverUrl",
+            "columnName": "cover_url",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "updateDate",
+            "columnName": "update_date",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "status.own",
+            "columnName": "is_own",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "status.preOrdered",
+            "columnName": "is_pre_ordered",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "status.previouslyOwned",
+            "columnName": "is_previously_owned",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "status.forTrade",
+            "columnName": "is_for_trade",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "status.wished",
+            "columnName": "is_wished",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "bgg_id"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'e119753c578081283c81cc92e85d6993')"
+    ]
+  }
+}
