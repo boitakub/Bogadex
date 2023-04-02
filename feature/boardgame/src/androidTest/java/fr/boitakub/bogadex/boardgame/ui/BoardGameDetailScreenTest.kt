@@ -28,7 +28,7 @@
  */
 package fr.boitakub.bogadex.boardgame.ui
 
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
@@ -79,8 +79,8 @@ class BoardGameDetailScreenTest {
                         yearPublished = 2005,
                         minPlayer = 1,
                         maxPlayer = 4,
-                        statistic = BoardGameBggStatistic(average = 3.06f)
-                    )
+                        statistic = BoardGameBggStatistic(average = 3.06f),
+                    ),
                 )
             }
         }

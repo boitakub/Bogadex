@@ -26,24 +26,10 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package fr.boitakub.bogadex.common.ui
+package fr.boitakub.bogadex.filter
 
-import androidx.recyclerview.widget.RecyclerView
-
-/**
- * https://stackoverflow.com/a/48959184
- */
-abstract class CommonListAdapter<T : CommonListViewHolder, E> :
-    RecyclerView.Adapter<T>() {
-
-    var itemList = mutableListOf<E>()
-
-    fun setItems(items: List<E>) {
-        this.itemList = items.toMutableList()
-        notifyDataSetChanged()
-    }
-
-    override fun getItemCount(): Int {
-        return itemList.size
-    }
-}
+data class FilterRange(
+    val minValueRange: Float,
+    val maxValueRange: Float,
+    val steps: Int,
+) : Filter()

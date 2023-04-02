@@ -29,13 +29,16 @@
 package fr.boitakub.bogadex.tests
 
 import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
+import coil.Coil
 import coil.ImageLoader
+import coil.test.FakeImageLoaderEngine
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.components.SingletonComponent
 import dagger.hilt.testing.TestInstallIn
 import fr.boitakub.bogadex.BogadexApplicationModule
-import fr.boitakub.bogadex.tests.tools.CoilFakeImageLoader
 import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.OkHttpClient
@@ -53,7 +56,16 @@ class FakeDataServiceModule : BogadexApplicationModule() {
     }
 
     override fun imageLoader(context: Context): ImageLoader {
-        return CoilFakeImageLoader(context)
+        val engine = FakeImageLoaderEngine.Builder()
+            .intercept("https://www.example.com/image.jpg", ColorDrawable(Color.RED))
+            .intercept({ it is String && it.endsWith("test.png") }, ColorDrawable(Color.GREEN))
+            .default(ColorDrawable(Color.BLUE))
+            .build()
+        val imageLoader = ImageLoader.Builder(context)
+            .components { add(engine) }
+            .build()
+        Coil.setImageLoader(imageLoader)
+        return imageLoader
     }
 
     @Provides

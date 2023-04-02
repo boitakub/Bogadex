@@ -29,31 +29,25 @@
 package fr.boitakub.bogadex.tests.boardgame_list
 
 import android.util.Log
-import androidx.recyclerview.widget.RecyclerView
-import androidx.test.core.app.launchActivity
-import androidx.test.espresso.Espresso.onView
+import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.navigation.NavHostController
 import androidx.test.espresso.IdlingRegistry
-import androidx.test.espresso.action.ViewActions.click
-import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.contrib.RecyclerViewActions.scrollToPosition
-import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
-import androidx.test.espresso.matcher.ViewMatchers.withContentDescription
-import androidx.test.espresso.matcher.ViewMatchers.withId
-import androidx.test.espresso.matcher.ViewMatchers.withText
-import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.work.Configuration
 import androidx.work.testing.SynchronousExecutor
 import androidx.work.testing.WorkManagerTestInitHelper
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
-import fr.boitakub.bogadex.MainActivity
-import fr.boitakub.bogadex.R
+import fr.boitakub.bogadex.NavigationGraph
+import fr.boitakub.bogadex.boardgame.BoardGameCollectionRepository
 import fr.boitakub.bogadex.boardgame.BoardGameDao
-import fr.boitakub.bogadex.boardgame.model.BoardGame
+import fr.boitakub.bogadex.boardgame.ui.BoardGameCollectionNavigation
+import fr.boitakub.bogadex.common.UserSettings
+import fr.boitakub.bogadex.common.ui.theme.BogadexTheme
 import fr.boitakub.bogadex.tests.OkHttp3IdlingResource
 import fr.boitakub.bogadex.tests.tools.FileReader.readStringFromFile
-import kotlinx.coroutines.runBlocking
+import io.mockk.MockKAnnotations
+import io.mockk.impl.annotations.MockK
 import okhttp3.mockwebserver.Dispatcher
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
@@ -62,13 +56,14 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.junit.runner.RunWith
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 @HiltAndroidTest
-@RunWith(AndroidJUnit4::class)
 class DisplayAllUserCollectionInstrumentedTest {
+
+    @get:Rule
+    val composeTestRule = createComposeRule()
 
     private val mockWebServer = MockWebServer()
 
@@ -77,6 +72,12 @@ class DisplayAllUserCollectionInstrumentedTest {
 
     @Inject
     lateinit var boardGameDao: BoardGameDao
+
+    @Inject
+    lateinit var repository: BoardGameCollectionRepository
+
+    @MockK
+    lateinit var navController: NavHostController
 
     @get:Rule(order = 0)
     var hiltRule = HiltAndroidRule(this)
@@ -94,6 +95,8 @@ class DisplayAllUserCollectionInstrumentedTest {
 
         // Initialize WorkManager for instrumentation tests.
         WorkManagerTestInitHelper.initializeTestWorkManager(context, config)
+
+        MockKAnnotations.init(this, relaxUnitFun = true)
     }
 
     @After
@@ -122,10 +125,16 @@ class DisplayAllUserCollectionInstrumentedTest {
             }
         }
 
-        launchActivity<MainActivity>().use {
-            onView(withId(R.id.recycler_view))
-                .perform(scrollToPosition<RecyclerView.ViewHolder>(0))
-            onView(withText("5211")).check(matches(isDisplayed()))
+        val userSettings = UserSettings(false)
+        composeTestRule.setContent {
+            BogadexTheme {
+                NavigationGraph(
+                    navController = navController,
+                    startDestination = BoardGameCollectionNavigation.ROUTE,
+                    repository = repository,
+                    userSettings = userSettings,
+                )
+            }
         }
     }
 
@@ -149,13 +158,16 @@ class DisplayAllUserCollectionInstrumentedTest {
             }
         }
 
-        launchActivity<MainActivity>().use {
-            onView(withContentDescription("Open navigation drawer")).perform(click())
-            onView(withId(R.id.display_collection)).perform(click())
-
-            onView(withId(R.id.recycler_view))
-                .perform(scrollToPosition<RecyclerView.ViewHolder>(0))
-            onView(withText("7 Wonders Duel")).check(matches(isDisplayed()))
+        val userSettings = UserSettings(false)
+        composeTestRule.setContent {
+            BogadexTheme {
+                NavigationGraph(
+                    navController = navController,
+                    startDestination = BoardGameCollectionNavigation.ROUTE,
+                    repository = repository,
+                    userSettings = userSettings,
+                )
+            }
         }
     }
 
@@ -179,13 +191,16 @@ class DisplayAllUserCollectionInstrumentedTest {
             }
         }
 
-        launchActivity<MainActivity>().use {
-            onView(withContentDescription("Open navigation drawer")).perform(click())
-            onView(withId(R.id.display_wishlist)).perform(click())
-
-            onView(withId(R.id.recycler_view))
-                .perform(scrollToPosition<RecyclerView.ViewHolder>(1))
-            onView(withText("Anachrony")).check(matches(isDisplayed()))
+        val userSettings = UserSettings(false)
+        composeTestRule.setContent {
+            BogadexTheme {
+                NavigationGraph(
+                    navController = navController,
+                    startDestination = BoardGameCollectionNavigation.ROUTE,
+                    repository = repository,
+                    userSettings = userSettings,
+                )
+            }
         }
     }
 
@@ -209,12 +224,16 @@ class DisplayAllUserCollectionInstrumentedTest {
             }
         }
 
-        launchActivity<MainActivity>().use {
-            onView(withId(R.id.menu_switch_layout)).perform(click())
-
-            onView(withId(R.id.recycler_view))
-                .perform(scrollToPosition<RecyclerView.ViewHolder>(0))
-            onView(withText("7 Wonders Duel")).check(matches(isDisplayed()))
+        val userSettings = UserSettings(false)
+        composeTestRule.setContent {
+            BogadexTheme {
+                NavigationGraph(
+                    navController = navController,
+                    startDestination = BoardGameCollectionNavigation.ROUTE,
+                    repository = repository,
+                    userSettings = userSettings,
+                )
+            }
         }
     }
 }

@@ -48,7 +48,7 @@ class RefreshGameDetails @Inject constructor(@ApplicationContext val context: Co
     var scheduledRefresh = SCHEDULED_REFRESH_START
 
     override fun apply(input: CollectionItemWithDetails): Void? {
-        if (input.details == null || input.details!!.isOutdated() && scheduledRefresh < SCHEDULED_REFRESH_MAX) {
+        if (scheduledRefresh < SCHEDULED_REFRESH_MAX) {
             val data = Data.Builder()
             data.putString("bggId", input.item.bggId)
 
@@ -56,7 +56,7 @@ class RefreshGameDetails @Inject constructor(@ApplicationContext val context: Co
                 .addTag("Sync")
                 .setInputData(data.build())
                 .setConstraints(
-                    Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build()
+                    Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build(),
                 )
                 .build()
 

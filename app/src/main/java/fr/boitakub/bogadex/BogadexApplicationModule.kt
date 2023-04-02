@@ -47,7 +47,7 @@ open class BogadexApplicationModule {
     open fun baseUrl() = "https://www.boardgamegeek.com/".toHttpUrl()
 
     open fun imageLoader(context: Context): ImageLoader {
-        return ImageLoader.invoke(context)
+        return ImageLoader.Builder(context).build()
     }
 
     @Provides

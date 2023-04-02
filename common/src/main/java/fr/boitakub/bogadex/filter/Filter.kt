@@ -28,9 +28,4 @@
  */
 package fr.boitakub.bogadex.filter
 
-data class Filter(
-    val minRatingValue: Float = 0.0f,
-    val maxRatingValue: Float = 10.0f,
-    val minWeightValue: Float = 0.0f,
-    val maxWeightValue: Float = 5.0f
-)
+abstract class Filter

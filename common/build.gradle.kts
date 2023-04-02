@@ -31,7 +31,6 @@ android {
     }
     buildFeatures {
         compose = true
-        viewBinding = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.4.2"
@@ -49,11 +48,9 @@ android {
 dependencies {
     val lifecycleVersion: String by project
     val preferencesVersion: String by project
-    val recyclerviewVersion: String by project
     val daggerVersion: String by project
     val hiltVersion: String by project
     val materialVersion: String by project
-    val materialComposeVersion: String by project
     val composeVersion: String by project
     val junitVersion: String by project
     val espressoVersion: String by project
@@ -66,9 +63,7 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion")
 
     //region UI
-    implementation("androidx.compose.material:material:$materialComposeVersion")
-    implementation("androidx.recyclerview:recyclerview:$recyclerviewVersion")
-    implementation("com.google.android.material:material:$materialVersion")
+    implementation("androidx.compose.material3:material3:$materialVersion")
 
     //region Compose
 

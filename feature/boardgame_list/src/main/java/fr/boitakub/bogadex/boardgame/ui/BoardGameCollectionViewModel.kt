@@ -28,6 +28,7 @@
  */
 package fr.boitakub.bogadex.boardgame.ui
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -40,20 +41,24 @@ import fr.boitakub.bogadex.boardgame.usecase.ListCollection
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onCompletion
+import kotlinx.coroutines.flow.onEach
 
 class BoardGameCollectionViewModel @AssistedInject constructor(
-    @Assisted private val repository: ListCollection,
+    @Assisted private val collection: ListCollection,
     provideExampleBggAccount: String,
 ) :
     ViewModel(), Presenter {
 
     @AssistedFactory
-    interface BoardGameCollectionViewModelFactory {
+    interface Factory {
         fun create(repository: ListCollection): BoardGameCollectionViewModel
     }
 
     val gameList: Flow<List<CollectionItemWithDetails>> =
-        repository.apply(provideExampleBggAccount)
+        collection.apply(provideExampleBggAccount)
+            .onEach {
+                Log.d("TEST", it.toString())
+            }
             .catch { e ->
                 e.message?.let { onError(it) }
             }
@@ -72,13 +77,12 @@ class BoardGameCollectionViewModel @AssistedInject constructor(
     @Suppress("UNCHECKED_CAST")
     companion object {
         fun provideFactory(
-            assistedFactory: BoardGameCollectionViewModelFactory,
-            repository: ListCollection
-        ): ViewModelProvider.Factory =
-            object : ViewModelProvider.Factory {
-                override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                    return assistedFactory.create(repository) as T
-                }
+            assistedFactory: Factory,
+            collection: ListCollection,
+        ): ViewModelProvider.Factory = object : ViewModelProvider.Factory {
+            override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                return assistedFactory.create(collection) as T
             }
+        }
     }
 }

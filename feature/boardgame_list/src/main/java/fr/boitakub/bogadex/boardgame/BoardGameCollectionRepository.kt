@@ -42,6 +42,7 @@ import fr.boitakub.bogadex.boardgame.usecase.RefreshGameDetails
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.onEach
 import okio.buffer
 import okio.sink
 import java.io.File
@@ -52,11 +53,17 @@ class BoardGameCollectionRepository @Inject constructor(
     override val local: BoardGameListDao,
     override val remote: BggService,
     private val mapper: CollectionMapper,
-    private val refreshGameDetails: RefreshGameDetails
+    private val refreshGameDetails: RefreshGameDetails,
 ) : Repository {
 
     fun get(user: String): Flow<List<CollectionItemWithDetails>> =
-        local.getCollectionWithDetails().combine(getAllRemoteResorts(user)) { local, remote ->
+        local.getCollectionWithDetails().onEach { collection ->
+            collection.forEach {
+                if (it.details?.isOutdated() == true) {
+                    refreshGameDetails.apply(it)
+                }
+            }
+        }.combine(getAllRemoteResorts(user)) { local, remote ->
             toUiModel(local, remote)
         }
 
@@ -71,16 +78,13 @@ class BoardGameCollectionRepository @Inject constructor(
 
     private fun toUiModel(
         localList: List<CollectionItemWithDetails>,
-        remoteList: List<CollectionItem>
+        remoteList: List<CollectionItem>,
     ):
         List<CollectionItemWithDetails> {
-        return if (localList.isEmpty()) {
+        return localList.ifEmpty {
             remoteList.map {
                 CollectionItemWithDetails(it, BoardGame())
             }
-        } else {
-            localList.forEach { refreshGameDetails.apply(it) }
-            localList
         }
     }
 

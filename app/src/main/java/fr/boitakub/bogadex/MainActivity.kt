@@ -28,32 +28,100 @@
  */
 package fr.boitakub.bogadex
 
+import android.app.Activity
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.NavController
-import androidx.navigation.findNavController
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import dagger.hilt.EntryPoint
+import dagger.hilt.InstallIn
 import dagger.hilt.android.AndroidEntryPoint
-import fr.boitakub.bogadex.databinding.ActivityMainBinding
+import dagger.hilt.android.EntryPointAccessors
+import dagger.hilt.android.components.ActivityComponent
+import fr.boitakub.bogadex.boardgame.BoardGameCollectionRepository
+import fr.boitakub.bogadex.boardgame.ui.BoardGameCollectionNavigation
+import fr.boitakub.bogadex.boardgame.ui.BoardGameCollectionViewModel
+import fr.boitakub.bogadex.boardgame.ui.BoardGameDetailNavigation
+import fr.boitakub.bogadex.common.UserSettings
+import fr.boitakub.bogadex.common.ui.theme.BogadexTheme
+import javax.inject.Inject
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
+class MainActivity : ComponentActivity() {
 
-    private lateinit var binding: ActivityMainBinding
-    private lateinit var navController: NavController
+    @Inject
+    lateinit var repository: BoardGameCollectionRepository
+
+    @Inject
+    lateinit var userSettings: UserSettings
+
+    @EntryPoint
+    @InstallIn(ActivityComponent::class)
+    interface ViewModelFactoryProvider {
+        fun boardGameCollectionViewModelFactory(): BoardGameCollectionViewModel.Factory
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-        setupNavigation()
+        setContent {
+            val navHostController = rememberNavController()
+
+            BogadexTheme {
+                NavigationGraph(
+                    navController = navHostController,
+                    startDestination = BoardGameCollectionNavigation.ROUTE,
+                    repository = repository,
+                    userSettings = userSettings,
+                )
+            }
+        }
     }
+}
 
-    // Setting Up One Time Navigation
+@Composable
+fun NavigationGraph(
+    navController: NavHostController,
+    startDestination: String,
+    repository: BoardGameCollectionRepository,
+    userSettings: UserSettings,
+) {
+    val factory = EntryPointAccessors.fromActivity(
+        LocalContext.current as Activity,
+        MainActivity.ViewModelFactoryProvider::class.java,
+    ).boardGameCollectionViewModelFactory()
 
-    private fun setupNavigation() {
-        navController = findNavController(R.id.nav_host_fragment)
+    NavHost(
+        navController = navController,
+        startDestination = startDestination,
+    ) {
+        composable(
+            route = BoardGameCollectionNavigation.ROUTE,
+            arguments = BoardGameCollectionNavigation.ARGUMENTS,
+            content = {
+                BoardGameCollectionNavigation.onNavigation(
+                    navController = navController,
+                    navBackStackEntry = it,
+                    factory = factory,
+                    repository = repository,
+                    userSettings = userSettings,
+                )
+            },
+        )
+        composable(
+            route = BoardGameDetailNavigation.ROUTE,
+            arguments = BoardGameDetailNavigation.ARGUMENTS,
+            content = {
+                BoardGameDetailNavigation.onNavigation(
+                    navController = navController,
+                    navBackStackEntry = it,
+                )
+            },
+        )
     }
-
-    //endregion
 }

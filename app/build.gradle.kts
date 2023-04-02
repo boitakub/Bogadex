@@ -73,6 +73,9 @@ android {
             signingConfig = signingConfigs.getByName("release")
         }
     }
+    packagingOptions {
+        resources.excludes.add("META-INF/*")
+    }
     buildFeatures {
         compose = true
         viewBinding = true
@@ -102,20 +105,22 @@ dependencies {
     val androidCoreVersion: String by project
     val appcompatVersion: String by project
     val preferencesVersion: String by project
+    val activityVersion: String by project
+    val coilVersion: String by project
     val navigationVersion: String by project
     val daggerVersion: String by project
     val hiltVersion: String by project
-    val coilVersion: String by project
-    val materialComposeVersion: String by project
+    val composeVersion: String by project
+    val materialVersion: String by project
     val okhttpVersion: String by project
     val retrofitVersion: String by project
     val roomVersion: String by project
     val workVersion: String by project
     val firebaseVersion: String by project
     val junitVersion: String by project
-    val junitExtVersion: String by project
     val testCoreVersion: String by project
     val espressoVersion: String by project
+    val mockkVersion: String by project
 
     implementation(project(":common"))
     implementation(project(":shared:architecture"))
@@ -142,9 +147,15 @@ dependencies {
 
     //region UI
 
-    implementation("androidx.compose.material:material:$materialComposeVersion")
-    implementation("androidx.navigation:navigation-ui-ktx:$navigationVersion")
-    implementation("androidx.navigation:navigation-fragment-ktx:$navigationVersion")
+    implementation("androidx.compose.material3:material3:$materialVersion")
+    implementation("androidx.activity:activity-compose:$activityVersion")
+    implementation("androidx.navigation:navigation-compose:$navigationVersion")
+    implementation("io.coil-kt:coil-compose:$coilVersion")
+
+    // UI - Tooling
+    implementation("androidx.compose.ui:ui-tooling-preview:$composeVersion")
+    debugImplementation("androidx.compose.ui:ui-tooling:$composeVersion")
+    debugImplementation("androidx.compose.ui:ui-test-manifest:$composeVersion")
 
     //endregion
 
@@ -153,7 +164,6 @@ dependencies {
     implementation("com.squareup.okhttp3:okhttp:$okhttpVersion")
     implementation("com.squareup.okhttp3:logging-interceptor:$okhttpVersion")
     implementation("com.squareup.retrofit2:retrofit:$retrofitVersion")
-    implementation("io.coil-kt:coil:$coilVersion")
 
     //endregion
 
@@ -184,6 +194,9 @@ dependencies {
     //region Test
 
     testImplementation("junit:junit:$junitVersion")
+    testImplementation("io.mockk:mockk-android:$mockkVersion")
+    testImplementation("io.mockk:mockk-agent:$mockkVersion")
+    testImplementation("io.coil-kt:coil-test:$coilVersion")
 
     //endregion
 
@@ -192,14 +205,17 @@ dependencies {
     androidTestImplementation(project(":shared:tests_tools"))
 
     androidTestImplementation("androidx.test:core-ktx:$testCoreVersion")
-    androidTestImplementation("androidx.test.ext:junit:$junitExtVersion")
     androidTestImplementation("androidx.test.espresso:espresso-core:$espressoVersion")
     androidTestImplementation("androidx.test.espresso:espresso-contrib:$espressoVersion") {
         exclude(module = "protobuf-lite")
     }
+    androidTestImplementation("io.mockk:mockk-android:$mockkVersion")
+    androidTestImplementation("io.mockk:mockk-agent:$mockkVersion")
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4:$composeVersion")
     androidTestImplementation("com.google.dagger:hilt-android-testing:$daggerVersion")
     kaptAndroidTest("com.google.dagger:hilt-compiler:$daggerVersion")
     androidTestImplementation("androidx.work:work-testing:$workVersion")
+    androidTestImplementation("io.coil-kt:coil-test:$coilVersion")
     androidTestImplementation("com.squareup.okhttp3:mockwebserver:$okhttpVersion")
 
     //endregion

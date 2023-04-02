@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021, Boitakub
+ * Copyright (c) 2021-2022, Boitakub
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,47 +26,20 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package fr.boitakub.bogadex.boardgame.ui
+package fr.boitakub.bogadex.filter
 
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.compose.runtime.collectAsState
-import androidx.compose.ui.platform.ComposeView
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
-import dagger.hilt.android.AndroidEntryPoint
-
-@AndroidEntryPoint
-class BoardGameDetailFragment :
-    Fragment(),
-    fr.boitakub.architecture.View<BoardGameDetailViewModel> {
-
-    override val presenter: BoardGameDetailViewModel by viewModels()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        return ComposeView(requireContext()).apply {
-            setContent {
-                arguments?.getString("bggId")
-                    ?.let { BoardGameDetailScreen(presenter.load(it).collectAsState(initial = null).value) }
-            }
-        }
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
-        menu.clear()
-    }
-}
+data class FilterState(
+    val searchTerms: String = "",
+    val ratingFilter: Pair<FilterRange, FilterRangeOption> = Pair(
+        FilterRange(0.0f, 10.0f, 9),
+        FilterRangeOption(0.0f, 10.0f),
+    ),
+    val weightFilter: Pair<FilterRange, FilterRangeOption> = Pair(
+        FilterRange(0.0f, 10.0f, 19),
+        FilterRangeOption(0.0f, 10.0f),
+    ),
+    val durationFilter: Pair<FilterRange, FilterRangeOption> = Pair(
+        FilterRange(0.0f, 300.0f, 19),
+        FilterRangeOption(0.0f, 300.0f),
+    ),
+)

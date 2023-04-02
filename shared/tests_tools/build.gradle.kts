@@ -36,12 +36,10 @@ android {
 
 dependencies {
     val espressoVersion: String by project
-    val coilVersion: String by project
 
     //region AndroidTest
 
     implementation("androidx.test.espresso:espresso-core:$espressoVersion")
-    implementation("io.coil-kt:coil:$coilVersion")
 
     //endregion
 }

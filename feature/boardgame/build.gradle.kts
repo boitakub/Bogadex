@@ -25,18 +25,15 @@ android {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                "proguard-rules.pro",
             )
         }
     }
     packagingOptions {
-        resources {
-            excludes += setOf("META-INF/LGPL2.1", "META-INF/AL2.0")
-        }
+        resources.excludes.add("META-INF/*")
     }
     buildFeatures {
         compose = true
-        viewBinding = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.4.2"
@@ -57,19 +54,20 @@ android {
 dependencies {
     val androidCoreVersion: String by project
     val appcompatVersion: String by project
-    val fragmentVersion: String by project
-    val coilVersion: String by project
+    val okioVersion: String by project
+    val navigationVersion: String by project
     val lifecycleVersion: String by project
     val daggerVersion: String by project
     val hiltVersion: String by project
-    val materialComposeVersion: String by project
+    val materialVersion: String by project
     val composeVersion: String by project
+    val coilVersion: String by project
     val roomVersion: String by project
     val workVersion: String by project
     val junitVersion: String by project
-    val junitExtVersion: String by project
     val testCoreVersion: String by project
     val espressoVersion: String by project
+    val mockkVersion: String by project
 
     implementation(project(":common"))
     implementation(project(":shared:architecture"))
@@ -79,7 +77,7 @@ dependencies {
 
     implementation("androidx.core:core-ktx:$androidCoreVersion")
     implementation("androidx.appcompat:appcompat:$appcompatVersion")
-    implementation("androidx.fragment:fragment-ktx:$fragmentVersion")
+    implementation("com.squareup.okio:okio:$okioVersion")
 
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:$lifecycleVersion")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion")
@@ -96,24 +94,20 @@ dependencies {
     //endregion
 
     //region UI
-    implementation("androidx.compose.material:material:$materialComposeVersion")
-
-    //region Compose
 
     implementation("androidx.compose.foundation:foundation:$composeVersion")
     implementation("androidx.compose.ui:ui:$composeVersion")
+    implementation("androidx.compose.material3:material3:$materialVersion")
+    implementation("androidx.navigation:navigation-compose:$navigationVersion")
+    implementation("androidx.hilt:hilt-navigation-compose:$hiltVersion")
+    implementation("io.coil-kt:coil-compose:$coilVersion")
 
-    // Android Studio Preview support
+    // UI - Tooling
     implementation("androidx.compose.ui:ui-tooling-preview:$composeVersion")
     debugImplementation("androidx.compose.ui:ui-tooling:$composeVersion")
 
     //endregion
 
-    //region UI
-
-    implementation("io.coil-kt:coil-compose:$coilVersion")
-
-    //endregion
 
     //region Service & Worker
 
@@ -131,6 +125,8 @@ dependencies {
     //region Test
 
     testImplementation("junit:junit:$junitVersion")
+    testImplementation("io.mockk:mockk-android:$mockkVersion")
+    testImplementation("io.mockk:mockk-agent:$mockkVersion")
 
     //endregion
 
@@ -140,12 +136,13 @@ dependencies {
 
     androidTestImplementation("androidx.test:core-ktx:$testCoreVersion")
     androidTestImplementation("androidx.test.espresso:espresso-core:$espressoVersion")
-    androidTestImplementation("androidx.test.ext:junit:$junitExtVersion")
+
+    androidTestImplementation("io.mockk:mockk-android:$mockkVersion")
+    androidTestImplementation("io.mockk:mockk-agent:$mockkVersion")
 
     androidTestImplementation("androidx.compose.ui:ui-test-junit4:$composeVersion")
     debugImplementation("androidx.compose.ui:ui-test-manifest:$composeVersion")
 
-    androidTestImplementation("io.mockk:mockk-android:1.12.3")
     androidTestImplementation("androidx.work:work-testing:$workVersion")
 
     //endregion

@@ -28,6 +28,10 @@
  */
 package fr.boitakub.bogadex.common.ui.application
 
-import fr.boitakub.bogadex.filter.Filter
+import fr.boitakub.bogadex.filter.FilterState
 
-data class ApplicationState(val collection: String = "all", val viewType: Int = 1, val filters: Filter = Filter())
+data class ApplicationState(
+    val collection: String = "all",
+    val viewType: Int = 1,
+    val filters: FilterState = FilterState(),
+)

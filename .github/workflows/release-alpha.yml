@@ -1,12 +1,7 @@
 name: Publish Alpha
 
 on:
-  push:
-    branches-ignore:
-      - 'develop'
-      - 'main'
-    tags:
-      - 'v*-alpha'
+  workflow_dispatch:
 
 jobs:
   generate-release-apk:

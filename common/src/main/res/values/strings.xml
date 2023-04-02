@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="decorative_image" translatable="false">@null</string>
 
     <!-- region Theme -->
     <string name="pref_key_night" translatable="false">key_night_mode</string>
@@ -13,7 +14,15 @@
     <string name="night_mode_on">Night mode</string>
     <string name="night_mode_off">Day mode</string>
     <!-- endregion -->
+
+    <string name="error">Error</string>
+    <string name="retry">Retry</string>
+    <string name="loading">Loading</string>
+    <string name="no_content">No content found</string>
+
     <string name="searchbar_hint">Search game</string>
+    <string name="searchbar_clear">Clear search term</string>
+    <string name="expansion_icon">Expansion icon</string>
     <string name="settings">Settings</string>
     <string name="content_settings">Personalize your application experience</string>
 
@@ -40,6 +49,7 @@
     <string name="filters_desc">Display filter screen with different parameters</string>
     <string name="rs_min_rating">Rate between</string>
     <string name="rs_min_weight">Weight between</string>
+    <string name="rs_min_duration">Duration between</string>
 
     <string name="description">Description</string>
 

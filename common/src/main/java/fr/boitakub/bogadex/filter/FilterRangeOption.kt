@@ -26,9 +26,9 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package fr.boitakub.bogadex.common.ui
+package fr.boitakub.bogadex.filter
 
-import androidx.recyclerview.widget.RecyclerView
-import androidx.viewbinding.ViewBinding
-
-abstract class CommonListViewHolder(binding: ViewBinding) : RecyclerView.ViewHolder(binding.root)
+data class FilterRangeOption(
+    val minValue: Float,
+    val maxValue: Float
+)

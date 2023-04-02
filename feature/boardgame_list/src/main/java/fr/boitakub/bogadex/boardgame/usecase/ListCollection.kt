@@ -44,20 +44,30 @@ open class ListCollection @Inject constructor(
 ) : UseCase<Flow<List<CollectionItemWithDetails>>, String> {
     override fun apply(input: String): Flow<List<CollectionItemWithDetails>> {
         return repository.get(input)
-            .combine(filterViewModel.get()) { collectionList, filter ->
+            .combine(filterViewModel.filter) { collectionList, filter ->
                 // Apply session filters
                 collectionList.filter { item ->
-                    item.averageRating() in filter.minRatingValue..filter.maxRatingValue &&
-                        item.averageWeight() in filter.minWeightValue..filter.maxWeightValue
-                }
-                    .filter {
-                        // Apply global app filters
-                        if (!userSettings.displayPreviouslyOwned) {
-                            !it.item.status.previouslyOwned
-                        } else {
-                            true
-                        }
+                    item.averageRating() in filter.ratingFilter.second.minValue..filter.ratingFilter.second.maxValue
+                }.filter { item ->
+                    item.averageWeight() in filter.weightFilter.second.minValue..filter.weightFilter.second.maxValue
+                }.filter { item ->
+                    item.averageDuration() in filter.durationFilter.second.minValue..filter.durationFilter.second.maxValue
+                }.filter {
+                    // Apply global app filters
+                    if (!userSettings.displayPreviouslyOwned) {
+                        !it.item.status.previouslyOwned
+                    } else {
+                        true
                     }
+                }.filter { item ->
+                    if (filter.searchTerms.isNotBlank()) {
+                        item.item.title?.contains(filter.searchTerms.lowercase()) == true || item.details?.title?.contains(
+                                filter.searchTerms.lowercase(),
+                            ) == true
+                    } else {
+                        true
+                    }
+                }
                 // Apply grouping
             }
     }

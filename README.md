@@ -48,17 +48,15 @@ This project takes advantage of best practices, and many popular libraries and t
 - ViewModel - UI related data holder, lifecycle aware.
 - [Hilt-Dagger](https://dagger.dev/hilt/) for dependency injection.
 - [JetPack](https://developer.android.com/jetpack)
-  * 🚧 [Compose](https://developer.android.com/jetpack/compose?hl=fr) to build UI
+  * [Compose](https://developer.android.com/jetpack/compose?hl=fr) to build 100% of UI
   * [WorkManager](https://developer.android.com/topic/libraries/architecture/workmanager) - Updating and maintaining data up-to-date periodically and asynchronous
   * 🚧 [DataStore](https://developer.android.com/topic/libraries/architecture/datastore) - for light storage
   * [Room](https://developer.android.com/training/data-storage/room) - Database for rich storage
 
-- [Material You](https://m3.material.io/) - Using Material Design 3
-  * [App bars: bottom](https://material.io/components/app-bars-bottom)
-  * [Dark Mode](https://developer.android.com/guide/topics/ui/look-and-feel/darktheme) - Generate theme trough [Material Theme Builder](https://material-foundation.github.io/material-theme-builder/#/dynamic)
+- [Material 3](https://m3.material.io/) - Using Material Design 3
+  * [Dark Mode](https://developer.android.com/guide/topics/ui/look-and-feel/darktheme) - Generate theme trough [Material Theme Builder](https://m3.material.io/theme-builder#/dynamic)
 - [Retrofit2 & OkHttp3](https://github.com/square/retrofit) - construct the REST APIs and paging network data.
-- [Coil](https://github.com/coil-kt/coil) - loading images.
-- [Material-Components](https://github.com/material-components/material-components-android) - Material design components like ripple animation, cardView.
+- [Coil](https://github.com/coil-kt/coil) - Async images management.
 
 
 - [SonarCloud](https://sonarcloud.io/project/overview?id=boitakub_Bogadex) - Code quality and coverage analysis
@@ -103,6 +101,7 @@ Bogadex is based on MVVM architecture and a repository pattern with a modular ap
 - MVVM Architecture (View - DataBinding - ViewModel - Model)
 - Business oriented with UseCases pattern - [By layer or feature? Why not both?! Guide to Android app modularization](https://www.youtube.com/watch?v=16SwTvzDO0A)
 - Repository pattern
+- UI 100% Jetpack compose
 
 Concerns are separate by modules containing feature
 ![Design by features](docs/assets/design_by_feature.png)

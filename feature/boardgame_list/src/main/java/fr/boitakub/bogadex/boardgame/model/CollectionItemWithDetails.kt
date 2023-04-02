@@ -36,15 +36,20 @@ data class CollectionItemWithDetails(
     @Relation(
         entity = BoardGame::class,
         parentColumn = "bgg_id",
-        entityColumn = "bgg_id"
-    ) var details: BoardGame?
+        entityColumn = "bgg_id",
+    ) var details: BoardGame?,
 ) {
+
     fun averageRating(): Float {
         return details?.statistic?.average ?: 0.0f
     }
 
     fun averageWeight(): Float {
         return details?.statistic?.averageWeight ?: 0.0f
+    }
+
+    fun averageDuration(): Float {
+        return minPlayTime() + maxPlayTime() / 2.0f
     }
 
     fun minPlayTime(): Int {
