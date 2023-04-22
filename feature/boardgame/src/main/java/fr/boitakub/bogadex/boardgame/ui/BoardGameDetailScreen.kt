@@ -33,6 +33,7 @@ import android.content.Intent
 import android.net.Uri
 import android.util.Log
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -44,7 +45,13 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -57,6 +64,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat.startActivity
+import androidx.navigation.NavHostController
 import coil.compose.rememberImagePainter
 import fr.boitakub.bogadex.boardgame.R
 import fr.boitakub.bogadex.boardgame.model.BoardGame
@@ -64,20 +72,58 @@ import fr.boitakub.bogadex.common.ui.navigation.RatingBar
 
 @Composable
 fun BoardGameDetailScreen(
+    navController: NavHostController,
     boardGame: BoardGame? = BoardGame()
 ) {
-    Column(
+    Scaffold(
+        topBar = { TopBar(navigator = navController, title = boardGame?.title ?: "") },
+    ) { innerPadding ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding)
+                .verticalScroll(rememberScrollState())
+                .background(MaterialTheme.colorScheme.background),
+        ) {
+            GameDetailHeader(boardGame)
+
+            GameDetailSummary(boardGame)
+
+            GameDetailLinks(boardGame)
+
+            Spacer(modifier = Modifier.height(24.dp))
+        }
+    }
+}
+
+@Composable
+fun TopBar(
+    title: String,
+    navigator: NavHostController,
+) {
+    Row(
         modifier = Modifier
-            .verticalScroll(rememberScrollState())
-            .fillMaxSize(),
+            .fillMaxWidth()
+            .padding(8.dp),
+        verticalAlignment = Alignment.CenterVertically,
     ) {
-        GameDetailHeader(boardGame)
-
-        GameDetailSummary(boardGame)
-
-        GameDetailLinks(boardGame)
-
-        Spacer(modifier = Modifier.height(24.dp))
+        IconButton(onClick = {
+            navigator.popBackStack()
+        }) {
+            Icon(
+                imageVector = Icons.Default.ArrowBack,
+                contentDescription = stringResource(id = R.string.back),
+                tint = MaterialTheme.colorScheme.primary,
+            )
+        }
+        Text(
+            text = title,
+            style = MaterialTheme.typography.titleLarge,
+            textAlign = TextAlign.Start,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+            color = MaterialTheme.colorScheme.onPrimaryContainer,
+        )
     }
 }
 
@@ -95,19 +141,6 @@ private fun GameDetailHeader(
                 .height(280.dp),
         )
 
-        Spacer(modifier = Modifier.height(25.dp))
-
-        Text(
-            text = boardGame?.title ?: "",
-            textAlign = TextAlign.Center,
-            maxLines = 2,
-            overflow = TextOverflow.Ellipsis,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 8.dp),
-        )
-
         Spacer(modifier = Modifier.height(6.dp))
 
         Text(
@@ -115,6 +148,7 @@ private fun GameDetailHeader(
             textAlign = TextAlign.Center,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
+            color = MaterialTheme.colorScheme.onBackground,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 8.dp),
@@ -194,6 +228,7 @@ private fun GameDetailSummary(
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
             fontWeight = FontWeight.Bold,
+            color = MaterialTheme.colorScheme.onBackground,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 15.dp),
@@ -203,6 +238,7 @@ private fun GameDetailSummary(
 
         Text(
             text = boardGame?.description ?: "",
+            color = MaterialTheme.colorScheme.onBackground,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 15.dp),

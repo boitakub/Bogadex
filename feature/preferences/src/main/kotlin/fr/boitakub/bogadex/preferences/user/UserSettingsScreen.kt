@@ -390,6 +390,7 @@ fun TopBar(
             Icon(
                 imageVector = Icons.Default.ArrowBack,
                 contentDescription = stringResource(id = R.string.back),
+                tint = MaterialTheme.colorScheme.primary,
             )
         }
         Text(

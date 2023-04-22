@@ -75,6 +75,7 @@ object BoardGameDetailNavigation {
         }
 
         BoardGameDetailScreen(
+            navController = navController,
             boardGame = boardGame.value,
         )
     }

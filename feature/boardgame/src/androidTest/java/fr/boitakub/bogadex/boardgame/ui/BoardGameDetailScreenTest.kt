@@ -32,6 +32,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
+import androidx.navigation.NavHostController
 import fr.boitakub.bgg.client.BggService
 import fr.boitakub.bogadex.boardgame.BoardGameDao
 import fr.boitakub.bogadex.boardgame.model.BoardGame
@@ -48,6 +49,9 @@ class BoardGameDetailScreenTest {
     val composeTestRule = createComposeRule()
 
     @MockK
+    lateinit var navHostController: NavHostController
+
+    @MockK
     lateinit var dao: BoardGameDao
 
     @MockK
@@ -62,7 +66,10 @@ class BoardGameDetailScreenTest {
     fun boardGameDetailScreen_shouldDisplayEmptyScreen() {
         composeTestRule.setContent {
             MaterialTheme {
-                BoardGameDetailScreen(BoardGame())
+                BoardGameDetailScreen(
+                    navController = navHostController,
+                    BoardGame()
+                )
             }
         }
 
@@ -74,6 +81,7 @@ class BoardGameDetailScreenTest {
         composeTestRule.setContent {
             MaterialTheme {
                 BoardGameDetailScreen(
+                    navController = navHostController,
                     BoardGame(
                         title = "BoardGame Title",
                         yearPublished = 2005,
