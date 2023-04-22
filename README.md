@@ -98,7 +98,7 @@ Before committing your code, run `./gradlew app:spotlessApply` to automatically 
 ## Architecture 📐
 
 Bogadex is based on MVVM architecture and a repository pattern with a modular approach.
-- MVVM Architecture (View - DataBinding - ViewModel - Model)
+- MVVM -> MVI Architecture (View - ViewModel - Model)
 - Business oriented with UseCases pattern - [By layer or feature? Why not both?! Guide to Android app modularization](https://www.youtube.com/watch?v=16SwTvzDO0A)
 - Repository pattern
 - UI 100% Jetpack compose

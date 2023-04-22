@@ -59,7 +59,7 @@ import kotlin.random.Random
 class FakeDataServiceModule : BogadexApplicationModule() {
 
     override fun baseUrl(): HttpUrl {
-        return "http://localhost:8080/".toHttpUrl()
+        return "http://127.0.0.1:8080".toHttpUrl()
     }
 
     override fun imageLoader(context: Context): ImageLoader {

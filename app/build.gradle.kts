@@ -78,7 +78,6 @@ android {
     }
     buildFeatures {
         compose = true
-        viewBinding = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.4.2"
@@ -221,9 +220,6 @@ dependencies {
 
     androidTestImplementation("androidx.test:core-ktx:$testCoreVersion")
     androidTestImplementation("androidx.test.espresso:espresso-core:$espressoVersion")
-    androidTestImplementation("androidx.test.espresso:espresso-contrib:$espressoVersion") {
-        exclude(module = "protobuf-lite")
-    }
     androidTestImplementation("io.mockk:mockk-android:$mockkVersion")
     androidTestImplementation("io.mockk:mockk-agent:$mockkVersion")
     androidTestImplementation("androidx.compose.ui:ui-test-junit4:$composeVersion")

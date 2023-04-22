@@ -2,7 +2,7 @@ plugins {
     id("io.gitlab.arturbosch.detekt") version "1.19.0"
     id("com.diffplug.spotless") version "6.3.0"
     id("nl.neotech.plugin.rootcoverage") version "1.6.0"
-    id("org.sonarqube") version "3.4.0.2513"
+    id("org.sonarqube") version "3.5.0.2730"
 }
 
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
