@@ -48,13 +48,13 @@ This project takes advantage of best practices, and many popular libraries and t
 - ViewModel - UI related data holder, lifecycle aware.
 - [Hilt-Dagger](https://dagger.dev/hilt/) for dependency injection.
 - [JetPack](https://developer.android.com/jetpack)
-  * [Compose](https://developer.android.com/jetpack/compose?hl=fr) to build 100% of UI
-  * [WorkManager](https://developer.android.com/topic/libraries/architecture/workmanager) - Updating and maintaining data up-to-date periodically and asynchronous
-  * [DataStore](https://developer.android.com/topic/libraries/architecture/datastore) - for shared preferences
-  * [Room](https://developer.android.com/training/data-storage/room) - Database for rich storage
+* [Compose](https://developer.android.com/jetpack/compose?hl=fr) to build 100% of UI
+* [WorkManager](https://developer.android.com/topic/libraries/architecture/workmanager) - Updating and maintaining data up-to-date periodically and asynchronous
+* [DataStore](https://developer.android.com/topic/libraries/architecture/datastore) - for shared preferences
+* [Room](https://developer.android.com/training/data-storage/room) - Database for rich storage
 
 - [Material 3](https://m3.material.io/) - Using Material Design 3
-  * [Dark Mode](https://developer.android.com/guide/topics/ui/look-and-feel/darktheme) - Generate theme trough [Material Theme Builder](https://m3.material.io/theme-builder#/dynamic)
+* [Dark Mode](https://developer.android.com/guide/topics/ui/look-and-feel/darktheme) - Generate theme trough [Material Theme Builder](https://m3.material.io/theme-builder#/dynamic)
 - [Retrofit2 & OkHttp3](https://github.com/square/retrofit) - construct the REST APIs and paging network data.
 - [Coil](https://github.com/coil-kt/coil) - Async images management.
 
@@ -70,13 +70,13 @@ Release a build version triggers in the following scenarios:
 - You push a version tag to the repository.
 - You create a pull request targeting the main branch.
 - Check on pre-commit [Article](https://medium.com/@anjani.kjoshi/android-lint-pre-commit-hook-for-clean-code-747edfe57abf)
-  * lint - for Android critical issues
-  * KtLint - for kotlin file quality
+* lint - for Android critical issues
+* KtLint - for kotlin file quality
 - Auto version from git tag [Article](https://dev.to/ychescale9/git-based-android-app-versioning-with-agp-4-0-24ip) [Plugin](https://github.com/ReactiveCircus/app-versioning)
 - Auto delivery from git tag
-  * on GitHub Release
-  * on Firebase App Distribution
-  * 🚧 on Google Play Store - Beta & Production
+* on GitHub Release
+* on Firebase App Distribution
+* 🚧 on Google Play Store - Beta & Production
 - Release signing [Article](https://proandroiddev.com/how-to-securely-build-and-sign-your-android-app-with-github-actions-ad5323452ce)
 
 ## Code formatting
