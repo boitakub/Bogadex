@@ -1,7 +1,6 @@
 plugins {
     id("io.gitlab.arturbosch.detekt") version "1.19.0"
     id("com.diffplug.spotless") version "6.3.0"
-    id("com.autonomousapps.dependency-analysis") version "1.13.1"
     id("nl.neotech.plugin.rootcoverage") version "1.6.0"
     id("org.sonarqube") version "3.4.0.2513"
 }
@@ -83,7 +82,7 @@ allprojects {
         ratchetFrom = "origin/main"
 
         format("misc") {
-            target("*.gradle", "*.md", ".gitignore")
+            target("*.gradle", ".gitignore")
 
             trimTrailingWhitespace()
             indentWithTabs()
