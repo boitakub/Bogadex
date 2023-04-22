@@ -49,6 +49,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -58,6 +60,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import fr.boitakub.boardgame_list.R
 import fr.boitakub.bogadex.boardgame.model.CollectionType
@@ -77,6 +80,7 @@ fun BoardGameCollectionScreen(
 ) {
     val activeCollection = rememberSaveable { mutableStateOf(activeCollection) }
     val searchedTerms = rememberSaveable { mutableStateOf(filterViewModel.filter.value.searchTerms) }
+    val filterState by filterViewModel.get().collectAsStateWithLifecycle()
     val isGridView = rememberSaveable { mutableStateOf(false) }
 
     var openBottomSheet = rememberSaveable { mutableStateOf(false) }
@@ -88,41 +92,12 @@ fun BoardGameCollectionScreen(
 
     Scaffold(
         topBar = {
-            TopBar(
-                collectionAvailableList = CollectionType.values().toList(),
-                activeCollection = activeCollection.value,
-                onCollectionChanged = {
-                    activeCollection.value = it
-                    navController.navigate(
-                        BoardGameCollectionNavigation.navigateTo(
-                            it,
-                            isGridView.value,
-                        ),
-                    )
-                },
-                currentTerm = searchedTerms.value,
-                onSearchTermChange = {
-                    filterViewModel.mutate(
-                        filterViewModel.filter.value.copy(
-                            searchTerms = Regex("[^A-Za-z0-9]").replace(
-                                it,
-                                "",
-                            ),
-                        ),
-                    )
-                },
-                onToggleViewClick = {
-                    isGridView.value = !isGridView.value
-                    navController.navigate(
-                        BoardGameCollectionNavigation.navigateTo(
-                            activeCollection.value,
-                            isGridView.value,
-                        ),
-                    )
-                },
-                onSettingButtonClick = {
-                    navController.navigate("preferences")
-                }
+            CollectionScreenTopBar(
+                activeCollection,
+                navController,
+                isGridView,
+                searchedTerms,
+                filterViewModel,
             )
         },
         floatingActionButton = {
@@ -154,7 +129,7 @@ fun BoardGameCollectionScreen(
             sheetState = bottomSheetState,
         ) {
             FilterLayout(
-                filterState = filterViewModel.get().value,
+                filterState = filterState,
                 updateFilter = {
                     filterViewModel.mutate(it.copy(searchTerms = filterViewModel.filter.value.searchTerms))
                 },
@@ -162,6 +137,51 @@ fun BoardGameCollectionScreen(
         }
     }
 }
+
+@Composable
+private fun CollectionScreenTopBar(
+    activeCollection: MutableState<CollectionType>,
+    navController: NavController,
+    isGridView: MutableState<Boolean>,
+    searchedTerms: MutableState<String>,
+    filterViewModel: FilterViewModel,
+) =
+    TopBar(
+        collectionAvailableList = CollectionType.values().toList(),
+        activeCollection = activeCollection.value,
+        onCollectionChanged = {
+            activeCollection.value = it
+            navController.navigate(
+                BoardGameCollectionNavigation.navigateTo(
+                    it,
+                    isGridView.value,
+                ),
+            )
+        },
+        currentTerm = searchedTerms.value,
+        onSearchTermChange = {
+            filterViewModel.mutate(
+                filterViewModel.filter.value.copy(
+                    searchTerms = Regex("[^A-Za-z0-9]").replace(
+                        it,
+                        "",
+                    ),
+                ),
+            )
+        },
+        onToggleViewClick = {
+            isGridView.value = !isGridView.value
+            navController.navigate(
+                BoardGameCollectionNavigation.navigateTo(
+                    activeCollection.value,
+                    isGridView.value,
+                ),
+            )
+        },
+        onSettingButtonClick = {
+            navController.navigate("preferences")
+        },
+    )
 
 @Composable
 private fun TopBar(

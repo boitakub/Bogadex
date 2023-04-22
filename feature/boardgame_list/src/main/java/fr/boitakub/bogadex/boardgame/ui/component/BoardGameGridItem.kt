@@ -108,44 +108,49 @@ fun BoardGameGridItem(
                     )
                 }
             }
-            Row(
-                modifier = Modifier.padding(bottom = 8.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-            ) {
-                item.details?.let {
-                    BoardGameInfo(
-                        titleRes = R.string.players,
-                        iconRes = R.drawable.ic_people_group_duotone,
-                        minValue = it.minPlayer,
-                        maxValue = it.maxPlayer,
-                    )
-                }
-                item.details?.recommendedPlayers?.let { values ->
-                    if (values.isNotEmpty()) {
-                        BoardGameRecommendInfo(
-                            iconRes = R.drawable.ic_people_group_duotone,
-                            recommendedValue = values[0],
-                        )
-                    }
-                }
-                item.details?.let {
-                    BoardGameInfo(
-                        titleRes = R.string.players,
-                        iconRes = R.drawable.ic_watch_duotone,
-                        minValue = it.minPlayTime,
-                        maxValue = it.maxPlayTime,
-                    )
-                }
-                BoardGameWeightInfo(
-                    titleRes = R.string.weight,
-                    iconRes = R.drawable.ic_weight,
-                    value = item.details?.statistic?.averageWeight,
-                    iconSize = 16.dp,
-                    tintColor = getWeightColor(averageWeight = item.details?.statistic?.averageWeight),
+            GameInfoSection(item)
+        }
+    }
+}
+
+@Composable
+private fun GameInfoSection(item: CollectionItemWithDetails) {
+    Row(
+        modifier = Modifier.padding(bottom = 8.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+    ) {
+        item.details?.let {
+            BoardGameInfo(
+                titleRes = R.string.players,
+                iconRes = R.drawable.ic_people_group_duotone,
+                minValue = it.minPlayer,
+                maxValue = it.maxPlayer,
+            )
+        }
+        item.details?.recommendedPlayers?.let { values ->
+            if (values.isNotEmpty()) {
+                BoardGameRecommendInfo(
+                    iconRes = R.drawable.ic_people_group_duotone,
+                    recommendedValue = values[0],
                 )
             }
         }
+        item.details?.let {
+            BoardGameInfo(
+                titleRes = R.string.players,
+                iconRes = R.drawable.ic_watch_duotone,
+                minValue = it.minPlayTime,
+                maxValue = it.maxPlayTime,
+            )
+        }
+        BoardGameWeightInfo(
+            titleRes = R.string.weight,
+            iconRes = R.drawable.ic_weight,
+            value = item.details?.statistic?.averageWeight,
+            iconSize = 16.dp,
+            tintColor = getWeightColor(averageWeight = item.details?.statistic?.averageWeight),
+        )
     }
 }
 

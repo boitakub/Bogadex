@@ -125,82 +125,92 @@ fun BoardGameListItem(
                     overflow = TextOverflow.Ellipsis,
                 )
             }
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-            ) {
-                item.details?.let {
-                    BoardGameInfo(
-                        titleRes = R.string.players,
-                        iconRes = R.drawable.ic_people_group_duotone,
-                        minValue = it.minPlayer,
-                        maxValue = it.minPlayer,
-                    )
-                }
-                Box(
-                    modifier = Modifier
-                        .fillMaxHeight()
-                        .width(0.5.dp)
-                        .background(color = MaterialTheme.colorScheme.secondary),
-                )
-                item.details?.recommendedPlayers?.let { values ->
-                    if (values.isNotEmpty()) {
-                        BoardGameRecommendInfo(
-                            iconRes = R.drawable.ic_people_group_duotone,
-                            recommendedValue = values[0],
-                        )
-                    }
-                }
-                Box(
-                    modifier = Modifier
-                        .fillMaxHeight()
-                        .width(0.5.dp)
-                        .background(color = MaterialTheme.colorScheme.secondary),
-                )
-                item.details?.let {
-                    BoardGameInfo(
-                        titleRes = R.string.players,
-                        iconRes = R.drawable.ic_watch_duotone,
-                        minValue = it.minPlayTime,
-                        maxValue = it.maxPlayTime,
-                    )
-                }
-                Box(
-                    modifier = Modifier
-                        .fillMaxHeight()
-                        .width(0.5.dp)
-                        .background(color = MaterialTheme.colorScheme.secondary),
+            GameInfoSection(item)
+        }
+        RatingSection(item)
+    }
+}
+
+@Composable
+private fun GameInfoSection(item: CollectionItemWithDetails) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+    ) {
+        item.details?.let {
+            BoardGameInfo(
+                titleRes = R.string.players,
+                iconRes = R.drawable.ic_people_group_duotone,
+                minValue = it.minPlayer,
+                maxValue = it.minPlayer,
+            )
+        }
+        Box(
+            modifier = Modifier
+                .fillMaxHeight()
+                .width(0.5.dp)
+                .background(color = MaterialTheme.colorScheme.secondary),
+        )
+        item.details?.recommendedPlayers?.let { values ->
+            if (values.isNotEmpty()) {
+                BoardGameRecommendInfo(
+                    iconRes = R.drawable.ic_people_group_duotone,
+                    recommendedValue = values[0],
                 )
             }
         }
-        Row(
-            modifier = Modifier.padding(8.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-        ) {
-            BoardGameWeightInfo(
-                titleRes = R.string.weight,
-                iconRes = R.drawable.ic_weight,
-                value = item.details?.statistic?.averageWeight,
-                tintColor = getWeightColor(averageWeight = item.details?.statistic?.averageWeight),
+        Box(
+            modifier = Modifier
+                .fillMaxHeight()
+                .width(0.5.dp)
+                .background(color = MaterialTheme.colorScheme.secondary),
+        )
+        item.details?.let {
+            BoardGameInfo(
+                titleRes = R.string.players,
+                iconRes = R.drawable.ic_watch_duotone,
+                minValue = it.minPlayTime,
+                maxValue = it.maxPlayTime,
             )
-            item.details?.statistic?.let {
-                Surface(
-                    modifier = Modifier.padding(horizontal = 8.dp),
-                    color = MaterialTheme.colorScheme.tertiaryContainer,
-                    shape = PolyShape(it.average.toInt(), 85.0f),
-                    shadowElevation = 6.dp,
-                ) {
-                    Text(
-                        modifier = Modifier.padding(8.dp),
-                        text = "%.1f".format(it.average),
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.Bold,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                        color = MaterialTheme.colorScheme.onTertiaryContainer,
-                    )
-                }
+        }
+        Box(
+            modifier = Modifier
+                .fillMaxHeight()
+                .width(0.5.dp)
+                .background(color = MaterialTheme.colorScheme.secondary),
+        )
+    }
+}
+
+@Composable
+private fun RatingSection(item: CollectionItemWithDetails) {
+    Row(
+        modifier = Modifier.padding(8.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+    ) {
+        BoardGameWeightInfo(
+            titleRes = R.string.weight,
+            iconRes = R.drawable.ic_weight,
+            value = item.details?.statistic?.averageWeight,
+            tintColor = getWeightColor(averageWeight = item.details?.statistic?.averageWeight),
+        )
+        item.details?.statistic?.let {
+            Surface(
+                modifier = Modifier.padding(horizontal = 8.dp),
+                color = MaterialTheme.colorScheme.tertiaryContainer,
+                shape = PolyShape(it.average.toInt(), 85.0f),
+                shadowElevation = 6.dp,
+            ) {
+                Text(
+                    modifier = Modifier.padding(8.dp),
+                    text = "%.1f".format(it.average),
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    color = MaterialTheme.colorScheme.onTertiaryContainer,
+                )
             }
         }
     }

@@ -9,7 +9,7 @@
 - [ ] 🧪 I added tests (unit or instrumentation)
 - [ ] 📓 I have documented interfaces and public methods
 - [ ] 🔍️ I inspected the quality of my code ([sonar](https://sonarcloud.io/project/overview?id=boitakub_Bogadex) / lint)
-- [ ] 🌳 I checked my commits and branch naming [conventional commits](https://www.conventionalcommits.org/en/v1.0.0/)
+- [ ] 🌳 I checked my commits and branch naming [gitmoji](https://gitmoji.dev/)
 - [ ] 💬 I have linked issues on this pull request
 
 ## 🔎 Are there any points of attention for reviewers ?

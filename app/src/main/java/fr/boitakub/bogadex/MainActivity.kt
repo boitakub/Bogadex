@@ -144,7 +144,6 @@ fun NavigationGraph(
             content = {
                 PreferencesNavigation.onNavigation(
                     navController = navController,
-                    navBackStackEntry = it,
                 )
             },
         )

@@ -32,11 +32,11 @@ import fr.boitakub.architecture.UseCase
 import fr.boitakub.bogadex.boardgame.BoardGameCollectionRepository
 import fr.boitakub.bogadex.boardgame.model.CollectionItemWithDetails
 import fr.boitakub.bogadex.common.UserSettings
+import fr.boitakub.bogadex.filter.FilterState
 import fr.boitakub.bogadex.filter.FilterViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.flatMapMerge
 import javax.inject.Inject
 
 open class ListCollection @Inject constructor(
@@ -51,11 +51,11 @@ open class ListCollection @Inject constructor(
                     .combine(filterViewModel.filter) { collectionList, filter ->
                         // Apply session filters
                         collectionList.asSequence().filter { item ->
-                            item.averageRating() in filter.ratingFilter.second.minValue..filter.ratingFilter.second.maxValue
+                            ratingFilter(item, filter)
                         }.filter { item ->
-                            item.averageWeight() in filter.weightFilter.second.minValue..filter.weightFilter.second.maxValue
+                            weightFilter(item, filter)
                         }.filter { item ->
-                            item.averageDuration() in filter.durationFilter.second.minValue..filter.durationFilter.second.maxValue
+                            durationFilter(item, filter)
                         }.filter {
                             // Apply global app filters
                             if (!userSettings.displayPreviouslyOwned) {
@@ -64,16 +64,36 @@ open class ListCollection @Inject constructor(
                                 true
                             }
                         }.filter { item ->
-                            if (filter.searchTerms.isNotBlank()) {
-                                item.item.title?.contains(filter.searchTerms.lowercase()) == true || item.details?.title?.contains(
-                                    filter.searchTerms.lowercase(),
-                                ) == true
-                            } else {
-                                true
-                            }
+                            searchTermFilter(filter, item)
                         }.toList()
                         // Apply grouping
                     }
             }
     }
+
+    private fun searchTermFilter(
+        filter: FilterState,
+        item: CollectionItemWithDetails,
+    ) = if (filter.searchTerms.isNotBlank()) {
+        item.item.title?.contains(filter.searchTerms.lowercase()) == true || item.details?.title?.contains(
+            filter.searchTerms.lowercase(),
+        ) == true
+    } else {
+        true
+    }
+
+    private fun ratingFilter(
+        item: CollectionItemWithDetails,
+        filter: FilterState,
+    ) = item.averageRating() in filter.ratingFilter.second.minValue..filter.ratingFilter.second.maxValue
+
+    private fun weightFilter(
+        item: CollectionItemWithDetails,
+        filter: FilterState,
+    ) = item.averageWeight() in filter.weightFilter.second.minValue..filter.weightFilter.second.maxValue
+
+    private fun durationFilter(
+        item: CollectionItemWithDetails,
+        filter: FilterState,
+    ) = item.averageDuration() in filter.durationFilter.second.minValue..filter.durationFilter.second.maxValue
 }

@@ -36,6 +36,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -74,6 +75,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
+import fr.boitakub.bogadex.common.UserSettings
 import fr.boitakub.bogadex.common.ui.theme.Theme
 import fr.boitakub.preferences.R
 
@@ -111,37 +113,50 @@ fun UserSettingsScreen(
                 onDismiss = { isThemeDialogVisible = false },
             )
         }
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(MaterialTheme.colorScheme.background)
-                .padding(innerPadding),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
-            content = {
-                ClickableLineComponent(
-                    iconRes = R.drawable.ic_user_solid,
-                    titleRes = R.string.bgg_username,
-                    subtitleRes = R.string.bgg_username_summary,
-                    onClick = { isBggUsernameDialogVisible = true },
-                )
-                SwitchComponent(
-                    iconRes = R.drawable.ic_person_carry_box_solid,
-                    titleRes = R.string.filter_previously_own,
-                    subtitleRes = R.string.filter_previously_own_summary,
-                    previousState = state.displayPreviouslyOwned,
-                    updateSelection = {
-                        viewModel.updateFilterPreviouslyOwned(it)
-                    },
-                )
-                ClickableLineComponent(
-                    iconRes = R.drawable.ic_eclipse_solid,
-                    titleRes = R.string.pref_night_title,
-                    subtitleRes = R.string.pref_night_summary,
-                    onClick = { isThemeDialogVisible = true },
-                )
-            },
-        )
+        SettingsContent(innerPadding, isBggUsernameDialogVisible, state, viewModel, isThemeDialogVisible)
     }
+}
+
+@Composable
+private fun SettingsContent(
+    innerPadding: PaddingValues,
+    isBggUsernameDialogVisible: Boolean,
+    state: UserSettings,
+    viewModel: UserSettingsViewModel,
+    isThemeDialogVisible: Boolean
+) {
+    var isBggUsernameDialogVisible1 = isBggUsernameDialogVisible
+    var isThemeDialogVisible1 = isThemeDialogVisible
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background)
+            .padding(innerPadding),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+        content = {
+            ClickableLineComponent(
+                iconRes = R.drawable.ic_user_solid,
+                titleRes = R.string.bgg_username,
+                subtitleRes = R.string.bgg_username_summary,
+                onClick = { isBggUsernameDialogVisible1 = true },
+            )
+            SwitchComponent(
+                iconRes = R.drawable.ic_person_carry_box_solid,
+                titleRes = R.string.filter_previously_own,
+                subtitleRes = R.string.filter_previously_own_summary,
+                previousState = state.displayPreviouslyOwned,
+                updateSelection = {
+                    viewModel.updateFilterPreviouslyOwned(it)
+                },
+            )
+            ClickableLineComponent(
+                iconRes = R.drawable.ic_eclipse_solid,
+                titleRes = R.string.pref_night_title,
+                subtitleRes = R.string.pref_night_summary,
+                onClick = { isThemeDialogVisible1 = true },
+            )
+        },
+    )
 }
 
 @Composable

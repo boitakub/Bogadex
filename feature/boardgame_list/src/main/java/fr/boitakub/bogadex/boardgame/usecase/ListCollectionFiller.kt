@@ -41,7 +41,8 @@ class ListCollectionFiller @Inject constructor(
     private val repository: BoardGameCollectionRepository,
     private val filterViewModel: FilterViewModel,
     private val userSettingsFlow: Flow<UserSettings>,
-) : UseCase<Flow<List<CollectionItemWithDetails>>, String>, ListCollection(repository, filterViewModel, userSettingsFlow) {
+) : UseCase<Flow<List<CollectionItemWithDetails>>, String>,
+    ListCollection(repository, filterViewModel, userSettingsFlow) {
     override fun apply(): Flow<List<CollectionItemWithDetails>> {
         return super.apply().map {
             it.filter { item ->
