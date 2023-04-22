@@ -32,16 +32,19 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import fr.boitakub.architecture.Presenter
 import fr.boitakub.bogadex.boardgame.model.CollectionItemWithDetails
 import fr.boitakub.bogadex.boardgame.usecase.ListCollection
-import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.stateIn
 
 class BoardGameCollectionViewModel @AssistedInject constructor(
     @Assisted private val collection: ListCollection,
@@ -53,7 +56,7 @@ class BoardGameCollectionViewModel @AssistedInject constructor(
         fun create(repository: ListCollection): BoardGameCollectionViewModel
     }
 
-    val gameList: Flow<List<CollectionItemWithDetails>> =
+    val gameList: StateFlow<List<CollectionItemWithDetails>> =
         collection.apply()
             .onEach {
                 Log.d("TEST", it.toString())
@@ -64,6 +67,11 @@ class BoardGameCollectionViewModel @AssistedInject constructor(
             .onCompletion {
                 loading.value = false
             }
+            .stateIn(
+                scope = viewModelScope,
+                started = SharingStarted.WhileSubscribed(5_000),
+                initialValue = emptyList(),
+            )
 
     val loading = MutableLiveData<Boolean>()
     val errorMessage = MutableLiveData<String>()

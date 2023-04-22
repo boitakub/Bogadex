@@ -142,7 +142,7 @@ fun BoardGameCollectionScreen(
         BoardGameListScreen(
             modifier = Modifier.padding(padding),
             navController = navController,
-            gameList = viewModel.gameList,
+            viewModel = viewModel,
             gridMode = gridMode,
         )
     }

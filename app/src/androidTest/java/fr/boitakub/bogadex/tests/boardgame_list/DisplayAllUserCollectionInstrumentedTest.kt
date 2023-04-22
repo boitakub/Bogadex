@@ -28,27 +28,39 @@
  */
 package fr.boitakub.bogadex.tests.boardgame_list
 
+import android.app.Activity
 import android.util.Log
-import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.activity.compose.setContent
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.test.ExperimentalTestApi
+import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.hasText
+import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.test.onNodeWithText
 import androidx.navigation.NavHostController
-import androidx.test.espresso.IdlingRegistry
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.work.Configuration
 import androidx.work.testing.SynchronousExecutor
 import androidx.work.testing.WorkManagerTestInitHelper
+import dagger.hilt.android.EntryPointAccessors
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
-import fr.boitakub.bogadex.NavigationGraph
+import fr.boitakub.bogadex.MainActivity
 import fr.boitakub.bogadex.boardgame.BoardGameCollectionRepository
-import fr.boitakub.bogadex.boardgame.BoardGameDao
-import fr.boitakub.bogadex.boardgame.ui.BoardGameCollectionNavigation
+import fr.boitakub.bogadex.boardgame.model.CollectionType
+import fr.boitakub.bogadex.boardgame.ui.BoardGameCollectionScreen
+import fr.boitakub.bogadex.boardgame.usecase.ListCollection
+import fr.boitakub.bogadex.boardgame.usecase.ListCollectionFiller
+import fr.boitakub.bogadex.boardgame.usecase.ListCollectionItemOwned
+import fr.boitakub.bogadex.boardgame.usecase.ListCollectionItemSolo
+import fr.boitakub.bogadex.boardgame.usecase.ListCollectionItemWanted
 import fr.boitakub.bogadex.common.UserSettings
 import fr.boitakub.bogadex.common.ui.theme.BogadexTheme
-import fr.boitakub.bogadex.tests.OkHttp3IdlingResource
+import fr.boitakub.bogadex.filter.FilterViewModel
 import fr.boitakub.bogadex.tests.tools.FileReader.readStringFromFile
 import io.mockk.MockKAnnotations
 import io.mockk.impl.annotations.MockK
-import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.Flow
 import okhttp3.mockwebserver.Dispatcher
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
@@ -57,37 +69,49 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 @HiltAndroidTest
+@OptIn(ExperimentalTestApi::class)
 class DisplayAllUserCollectionInstrumentedTest {
-
-    @get:Rule
-    val composeTestRule = createComposeRule()
-
-    private val mockWebServer = MockWebServer()
-
-    @Inject
-    lateinit var okHttp3IdlingResource: OkHttp3IdlingResource
-
-    @Inject
-    lateinit var boardGameDao: BoardGameDao
-
-    @Inject
-    lateinit var repository: BoardGameCollectionRepository
-
-    @MockK
-    lateinit var navController: NavHostController
 
     @get:Rule(order = 0)
     var hiltRule = HiltAndroidRule(this)
 
+    @get:Rule(order = 1)
+    val composeTestRule = createAndroidComposeRule<MainActivity>()
+
+    private val mockWebServer = MockWebServer()
+
+    @Inject
+    lateinit var userSettingsFlow: Flow<UserSettings>
+
+    @Inject
+    lateinit var repository: BoardGameCollectionRepository
+
+    @MockK(relaxed = true)
+    lateinit var navController: NavHostController
+
     @Before
     fun setUp() {
         hiltRule.inject()
+        mockWebServer.dispatcher = object : Dispatcher() {
+            override fun dispatch(request: RecordedRequest): MockResponse {
+                var response: MockResponse = MockResponse().setResponseCode(404)
+                if (request.path!!.contains("/xmlapi2/collection")) {
+                    response = MockResponse()
+                        .setResponseCode(200)
+                        .setBody(readStringFromFile("Cubenbois.xml"))
+                } else if (request.path!!.contains("/xmlapi2/thing")) {
+                    response = MockResponse()
+                        .setResponseCode(200)
+                        .setBody(readStringFromFile("86246.xml"))
+                }
+                return response
+            }
+        }
         mockWebServer.start(8080)
-        IdlingRegistry.getInstance().register(okHttp3IdlingResource)
+
         val context = InstrumentationRegistry.getInstrumentation().targetContext
         val config = Configuration.Builder()
             .setMinimumLoggingLevel(Log.DEBUG)
@@ -103,138 +127,156 @@ class DisplayAllUserCollectionInstrumentedTest {
     @After
     fun teardown() {
         mockWebServer.shutdown()
-        IdlingRegistry.getInstance().unregister(okHttp3IdlingResource)
+    }
+
+    private fun getCollection(
+        collectionType: CollectionType,
+        repository: BoardGameCollectionRepository,
+        filterViewModel: FilterViewModel,
+        userSettingsFlow: Flow<UserSettings>,
+    ): ListCollection {
+        return when (collectionType) {
+            CollectionType.FILLER -> ListCollectionFiller(repository, filterViewModel, userSettingsFlow)
+            CollectionType.MY_COLLECTION -> ListCollectionItemOwned(repository, filterViewModel, userSettingsFlow)
+            CollectionType.WISHLIST -> ListCollectionItemWanted(repository, filterViewModel, userSettingsFlow)
+            CollectionType.SOLO -> ListCollectionItemSolo(repository, filterViewModel, userSettingsFlow)
+            CollectionType.ALL -> ListCollection(repository, filterViewModel, userSettingsFlow)
+        }
     }
 
     @Test
     fun has_homeList_displayed() {
-        mockWebServer.dispatcher = object : Dispatcher() {
-            override fun dispatch(request: RecordedRequest): MockResponse {
-                var response: MockResponse = MockResponse().setResponseCode(404)
-                if (request.path!!.contains("/xmlapi2/collection")) {
-                    response = MockResponse()
-                        .setResponseCode(200)
-                        .setBody(readStringFromFile("Cubenbois.xml"))
-                        .setBodyDelay(1, TimeUnit.SECONDS)
-                } else if (request.path!!.contains("/xmlapi2/thing")) {
-                    response = MockResponse()
-                        .setResponseCode(200)
-                        .setBody(readStringFromFile("86246.xml"))
-                        .setBodyDelay(1, TimeUnit.SECONDS)
+        val collectionType: CollectionType = CollectionType.MY_COLLECTION
+        val filterViewModel = FilterViewModel()
+        val gridMode = false
+        composeTestRule.activity.setContent {
+            BogadexTheme {
+                val factory = EntryPointAccessors.fromActivity(
+                    LocalContext.current as Activity,
+                    MainActivity.ViewModelFactoryProvider::class.java,
+                ).boardGameCollectionViewModelFactory()
+
+                BogadexTheme {
+                    BoardGameCollectionScreen(
+                        navController = navController,
+                        activeCollection = collectionType,
+                        viewModel = factory.create(
+                            getCollection(
+                                collectionType,
+                                repository,
+                                filterViewModel,
+                                userSettingsFlow,
+                            ),
+                        ),
+                        filterViewModel = filterViewModel,
+                        gridMode = gridMode,
+                    )
                 }
-                return response
             }
         }
 
-        val userSettingsFlow = flow<UserSettings> { UserSettings() }
-        composeTestRule.setContent {
-            BogadexTheme {
-                NavigationGraph(
-                    navController = navController,
-                    startDestination = BoardGameCollectionNavigation.ROUTE,
-                    repository = repository,
-                    userSettingsFlow = userSettingsFlow,
-                )
-            }
-        }
+        composeTestRule.waitUntilExactlyOneExists(hasText("7 Wonders Duel"), timeoutMillis = 20000)
+        composeTestRule.onNodeWithText("7 Wonders Duel").assertIsDisplayed()
     }
 
     @Test
     fun has_collectionList_displayed() {
-        mockWebServer.dispatcher = object : Dispatcher() {
-            override fun dispatch(request: RecordedRequest): MockResponse {
-                var response: MockResponse = MockResponse().setResponseCode(404)
-                if (request.path!!.contains("/xmlapi2/collection")) {
-                    response = MockResponse()
-                        .setResponseCode(200)
-                        .setBody(readStringFromFile("Cubenbois.xml"))
-                        .setBodyDelay(1, TimeUnit.SECONDS)
-                } else if (request.path!!.contains("/xmlapi2/thing")) {
-                    response = MockResponse()
-                        .setResponseCode(200)
-                        .setBody(readStringFromFile("86246.xml"))
-                        .setBodyDelay(1, TimeUnit.SECONDS)
+        val collectionType: CollectionType = CollectionType.MY_COLLECTION
+        val filterViewModel = FilterViewModel()
+        val gridMode = false
+        composeTestRule.activity.setContent {
+            BogadexTheme {
+                val factory = EntryPointAccessors.fromActivity(
+                    LocalContext.current as Activity,
+                    MainActivity.ViewModelFactoryProvider::class.java,
+                ).boardGameCollectionViewModelFactory()
+
+                BogadexTheme {
+                    BoardGameCollectionScreen(
+                        navController = navController,
+                        activeCollection = collectionType,
+                        viewModel = factory.create(
+                            getCollection(
+                                collectionType,
+                                repository,
+                                filterViewModel,
+                                userSettingsFlow,
+                            ),
+                        ),
+                        filterViewModel = filterViewModel,
+                        gridMode = gridMode,
+                    )
                 }
-                return response
             }
         }
 
-        val userSettingsFlow = flow<UserSettings> { UserSettings() }
-        composeTestRule.setContent {
-            BogadexTheme {
-                NavigationGraph(
-                    navController = navController,
-                    startDestination = BoardGameCollectionNavigation.ROUTE,
-                    repository = repository,
-                    userSettingsFlow = userSettingsFlow,
-                )
-            }
-        }
+        composeTestRule.waitUntilExactlyOneExists(hasText("7 Wonders Duel"), timeoutMillis = 20000)
+        composeTestRule.onNodeWithText("7 Wonders Duel").assertIsDisplayed()
     }
 
     @Test
     fun has_wishList_displayed() {
-        mockWebServer.dispatcher = object : Dispatcher() {
-            override fun dispatch(request: RecordedRequest): MockResponse {
-                var response: MockResponse = MockResponse().setResponseCode(404)
-                if (request.path!!.contains("/xmlapi2/collection")) {
-                    response = MockResponse()
-                        .setResponseCode(200)
-                        .setBody(readStringFromFile("Cubenbois.xml"))
-                        .setBodyDelay(1, TimeUnit.SECONDS)
-                } else if (request.path!!.contains("/xmlapi2/thing")) {
-                    response = MockResponse()
-                        .setResponseCode(200)
-                        .setBody(readStringFromFile("86246.xml"))
-                        .setBodyDelay(1, TimeUnit.SECONDS)
-                }
-                return response
-            }
-        }
+        val collectionType: CollectionType = CollectionType.WISHLIST
+        val filterViewModel = FilterViewModel()
+        val gridMode = false
+        composeTestRule.activity.setContent {
+            val factory = EntryPointAccessors.fromActivity(
+                LocalContext.current as Activity,
+                MainActivity.ViewModelFactoryProvider::class.java,
+            ).boardGameCollectionViewModelFactory()
 
-        val userSettingsFlow = flow<UserSettings> { UserSettings() }
-        composeTestRule.setContent {
             BogadexTheme {
-                NavigationGraph(
+                BoardGameCollectionScreen(
                     navController = navController,
-                    startDestination = BoardGameCollectionNavigation.ROUTE,
-                    repository = repository,
-                    userSettingsFlow = userSettingsFlow,
+                    activeCollection = collectionType,
+                    viewModel = factory.create(
+                        getCollection(
+                            collectionType,
+                            repository,
+                            filterViewModel,
+                            userSettingsFlow,
+                        ),
+                    ),
+                    filterViewModel = filterViewModel,
+                    gridMode = gridMode,
                 )
             }
         }
+
+        composeTestRule.waitUntilExactlyOneExists(hasText("7 Wonders Duel"), timeoutMillis = 20000)
+        composeTestRule.onNodeWithText("7 Wonders Duel").assertIsDisplayed()
     }
 
     @Test
     fun has_collectionList_displayedOnGrid() {
-        mockWebServer.dispatcher = object : Dispatcher() {
-            override fun dispatch(request: RecordedRequest): MockResponse {
-                var response: MockResponse = MockResponse().setResponseCode(404)
-                if (request.path!!.contains("/xmlapi2/collection")) {
-                    response = MockResponse()
-                        .setResponseCode(200)
-                        .setBody(readStringFromFile("Cubenbois.xml"))
-                        .setBodyDelay(1, TimeUnit.SECONDS)
-                } else if (request.path!!.contains("/xmlapi2/thing")) {
-                    response = MockResponse()
-                        .setResponseCode(200)
-                        .setBody(readStringFromFile("86246.xml"))
-                        .setBodyDelay(1, TimeUnit.SECONDS)
-                }
-                return response
-            }
-        }
+        val collectionType: CollectionType = CollectionType.MY_COLLECTION
+        val filterViewModel = FilterViewModel()
+        val gridMode = false
+        composeTestRule.activity.setContent {
+            val factory = EntryPointAccessors.fromActivity(
+                LocalContext.current as Activity,
+                MainActivity.ViewModelFactoryProvider::class.java,
+            ).boardGameCollectionViewModelFactory()
 
-        val userSettingsFlow = flow<UserSettings> { UserSettings() }
-        composeTestRule.setContent {
             BogadexTheme {
-                NavigationGraph(
+                BoardGameCollectionScreen(
                     navController = navController,
-                    startDestination = BoardGameCollectionNavigation.ROUTE,
-                    repository = repository,
-                    userSettingsFlow = userSettingsFlow,
+                    activeCollection = collectionType,
+                    viewModel = factory.create(
+                        getCollection(
+                            collectionType,
+                            repository,
+                            filterViewModel,
+                            userSettingsFlow,
+                        ),
+                    ),
+                    filterViewModel = filterViewModel,
+                    gridMode = gridMode,
                 )
             }
         }
+
+        composeTestRule.waitUntilExactlyOneExists(hasText("7 Wonders Duel"), timeoutMillis = 20000)
+        composeTestRule.onNodeWithText("7 Wonders Duel").assertIsDisplayed()
     }
 }

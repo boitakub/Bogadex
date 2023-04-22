@@ -34,36 +34,28 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import fr.boitakub.bogadex.boardgame.model.CollectionItemWithDetails
 import fr.boitakub.bogadex.boardgame.ui.component.BoardGameGridItem
 import fr.boitakub.bogadex.boardgame.ui.component.BoardGameListItem
-import kotlinx.coroutines.flow.Flow
 
 @Composable
 fun BoardGameListScreen(
     modifier: Modifier = Modifier,
     navController: NavController,
-    gameList: Flow<List<CollectionItemWithDetails>>,
+    viewModel: BoardGameCollectionViewModel,
     gridMode: Boolean = false,
 ) {
-    val viewState = remember { mutableStateOf(BoardGameListState("0", listOf())) }
-
-    LaunchedEffect(Unit) {
-        gameList.collect {
-            viewState.value = viewState.value.copy(list = it)
-        }
-    }
+    val state by viewModel.gameList.collectAsStateWithLifecycle()
 
     if (gridMode) {
         BoardGameListGrid(
             modifier = modifier,
-            games = viewState.value.list,
+            games = state,
             onClick = {
                 openGameDetails(navController, it)
             },
@@ -71,7 +63,7 @@ fun BoardGameListScreen(
     } else {
         BoardGameList(
             modifier = modifier,
-            games = viewState.value.list,
+            games = state,
             onClick = {
                 openGameDetails(navController, it)
             },

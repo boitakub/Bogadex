@@ -31,23 +31,30 @@ package fr.boitakub.bogadex.tests
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.PreferenceDataStoreFactory
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.preferencesDataStoreFile
 import coil.Coil
 import coil.ImageLoader
 import coil.test.FakeImageLoaderEngine
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import dagger.hilt.testing.TestInstallIn
 import fr.boitakub.bogadex.BogadexApplicationModule
+import fr.boitakub.bogadex.preferences.PreferencesModule
+import fr.boitakub.bogadex.preferences.user.UserSettingsRepository
 import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrl
-import okhttp3.OkHttpClient
 import javax.inject.Singleton
+import kotlin.random.Random
 
 @Module
 @TestInstallIn(
     components = [SingletonComponent::class],
-    replaces = [BogadexApplicationModule::class]
+    replaces = [BogadexApplicationModule::class, PreferencesModule::class]
 )
 class FakeDataServiceModule : BogadexApplicationModule() {
 
@@ -68,12 +75,22 @@ class FakeDataServiceModule : BogadexApplicationModule() {
         return imageLoader
     }
 
-    @Provides
     @Singleton
-    fun provideIdlingResource(okHttpClient: OkHttpClient): OkHttp3IdlingResource {
-        return OkHttp3IdlingResource.create(
-            "okhttp",
-            okHttpClient
-        )
+    @Provides
+    fun provideFakePreferences(
+        @ApplicationContext context: Context,
+    ): DataStore<Preferences> {
+        val random = Random.nextInt()
+        return PreferenceDataStoreFactory
+            .create(
+                produceFile = {
+                    // creating a new file for every test case and finally
+                    // deleting them all
+                    context.preferencesDataStoreFile("test_pref_file-$random")
+                }
+            )
     }
+
+    @Provides
+    fun provideUserSetting(userSettingsRepository: UserSettingsRepository) = userSettingsRepository.userSettings()
 }

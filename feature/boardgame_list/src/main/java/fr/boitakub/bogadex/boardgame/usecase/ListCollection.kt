@@ -35,7 +35,8 @@ import fr.boitakub.bogadex.common.UserSettings
 import fr.boitakub.bogadex.filter.FilterViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.flatMapConcat
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flatMapMerge
 import javax.inject.Inject
 
 open class ListCollection @Inject constructor(
@@ -45,7 +46,7 @@ open class ListCollection @Inject constructor(
 ) : UseCase<Flow<List<CollectionItemWithDetails>>, String> {
     override fun apply(): Flow<List<CollectionItemWithDetails>> {
         return userSettingsFlow
-            .flatMapConcat { userSettings ->
+            .flatMapLatest { userSettings ->
                 repository.get(userSettings.bggUserName)
                     .combine(filterViewModel.filter) { collectionList, filter ->
                         // Apply session filters

@@ -98,6 +98,13 @@ android {
         htmlReport = true
         htmlOutput = file("${project.rootDir}/build/reports/android-lint.html")
     }
+    testOptions {
+        packagingOptions {
+            jniLibs {
+                useLegacyPackaging = true
+            }
+        }
+    }
     namespace = "fr.boitakub.bogadex"
 }
 
@@ -114,6 +121,7 @@ dependencies {
     val materialVersion: String by project
     val okhttpVersion: String by project
     val retrofitVersion: String by project
+    val dataStoreVersion: String by project
     val roomVersion: String by project
     val workVersion: String by project
     val firebaseVersion: String by project
@@ -172,6 +180,12 @@ dependencies {
 
     implementation("androidx.work:work-runtime:$workVersion")
     implementation("androidx.work:work-runtime-ktx:$workVersion")
+
+    //endregion
+
+    // DataStore (SharedPreferences)
+
+    implementation("androidx.datastore:datastore-preferences:$dataStoreVersion")
 
     //endregion
 
