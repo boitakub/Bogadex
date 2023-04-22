@@ -48,6 +48,7 @@ import fr.boitakub.bogadex.tests.OkHttp3IdlingResource
 import fr.boitakub.bogadex.tests.tools.FileReader.readStringFromFile
 import io.mockk.MockKAnnotations
 import io.mockk.impl.annotations.MockK
+import kotlinx.coroutines.flow.flow
 import okhttp3.mockwebserver.Dispatcher
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
@@ -125,14 +126,14 @@ class DisplayAllUserCollectionInstrumentedTest {
             }
         }
 
-        val userSettings = UserSettings(false)
+        val userSettingsFlow = flow<UserSettings> { UserSettings() }
         composeTestRule.setContent {
             BogadexTheme {
                 NavigationGraph(
                     navController = navController,
                     startDestination = BoardGameCollectionNavigation.ROUTE,
                     repository = repository,
-                    userSettings = userSettings,
+                    userSettingsFlow = userSettingsFlow,
                 )
             }
         }
@@ -158,14 +159,14 @@ class DisplayAllUserCollectionInstrumentedTest {
             }
         }
 
-        val userSettings = UserSettings(false)
+        val userSettingsFlow = flow<UserSettings> { UserSettings() }
         composeTestRule.setContent {
             BogadexTheme {
                 NavigationGraph(
                     navController = navController,
                     startDestination = BoardGameCollectionNavigation.ROUTE,
                     repository = repository,
-                    userSettings = userSettings,
+                    userSettingsFlow = userSettingsFlow,
                 )
             }
         }
@@ -191,14 +192,14 @@ class DisplayAllUserCollectionInstrumentedTest {
             }
         }
 
-        val userSettings = UserSettings(false)
+        val userSettingsFlow = flow<UserSettings> { UserSettings() }
         composeTestRule.setContent {
             BogadexTheme {
                 NavigationGraph(
                     navController = navController,
                     startDestination = BoardGameCollectionNavigation.ROUTE,
                     repository = repository,
-                    userSettings = userSettings,
+                    userSettingsFlow = userSettingsFlow,
                 )
             }
         }
@@ -224,14 +225,14 @@ class DisplayAllUserCollectionInstrumentedTest {
             }
         }
 
-        val userSettings = UserSettings(false)
+        val userSettingsFlow = flow<UserSettings> { UserSettings() }
         composeTestRule.setContent {
             BogadexTheme {
                 NavigationGraph(
                     navController = navController,
                     startDestination = BoardGameCollectionNavigation.ROUTE,
                     repository = repository,
-                    userSettings = userSettings,
+                    userSettingsFlow = userSettingsFlow,
                 )
             }
         }

@@ -129,12 +129,14 @@ fun BoardGameListItem(
                         .width(0.5.dp)
                         .background(color = MaterialTheme.colorScheme.secondary),
                 )
+                item.details?.let {
                 BoardGameInfo(
                     titleRes = R.string.players,
                     iconRes = R.drawable.ic_watch_duotone,
-                    minValue = item.details?.minPlayTime,
-                    maxValue = item.details?.maxPlayTime,
+                    minValue = it.minPlayTime,
+                    maxValue = it.maxPlayTime,
                 )
+            }
                 Box(
                     modifier = Modifier
                         .fillMaxHeight()

@@ -8,6 +8,7 @@
     <string name="night_mode_on">Théme sombre</string>
     <string name="night_mode_off">Théme clair</string>
     <!-- endregion -->
+    <string name="back">Retour</string>
     <string name="settings">Paramétres</string>
     <string name="error">Erreur</string>
     <string name="retry">Réessayer</string>

@@ -15,6 +15,7 @@ import fr.boitakub.bogadex.boardgame.usecase.ListCollectionItemSolo
 import fr.boitakub.bogadex.boardgame.usecase.ListCollectionItemWanted
 import fr.boitakub.bogadex.common.UserSettings
 import fr.boitakub.bogadex.filter.FilterViewModel
+import kotlinx.coroutines.flow.Flow
 
 object BoardGameCollectionNavigation {
 
@@ -48,14 +49,14 @@ object BoardGameCollectionNavigation {
         factory: BoardGameCollectionViewModel.Factory,
         repository: BoardGameCollectionRepository,
         filterViewModel: FilterViewModel = hiltViewModel(),
-        userSettings: UserSettings,
+        userSettingsFlow: Flow<UserSettings>,
     ) {
         val collectionType: CollectionType = CollectionType.from(navBackStackEntry.arguments?.getString("collection"))
         val gridMode: Boolean = navBackStackEntry.arguments?.getBoolean("isGridView") ?: false
         BoardGameCollectionScreen(
             navController = navController,
             activeCollection = collectionType,
-            viewModel = factory.create(getCollection(collectionType, repository, filterViewModel, userSettings)),
+            viewModel = factory.create(getCollection(collectionType, repository, filterViewModel, userSettingsFlow)),
             filterViewModel = filterViewModel,
             gridMode = gridMode,
         )
@@ -65,14 +66,14 @@ object BoardGameCollectionNavigation {
         collectionType: CollectionType,
         repository: BoardGameCollectionRepository,
         filterViewModel: FilterViewModel,
-        userSettings: UserSettings,
+        userSettingsFlow: Flow<UserSettings>,
     ): ListCollection {
         return when (collectionType) {
-            CollectionType.FILLER -> ListCollectionFiller(repository, filterViewModel, userSettings)
-            CollectionType.MY_COLLECTION -> ListCollectionItemOwned(repository, filterViewModel, userSettings)
-            CollectionType.WISHLIST -> ListCollectionItemWanted(repository, filterViewModel, userSettings)
-            CollectionType.SOLO -> ListCollectionItemSolo(repository, filterViewModel, userSettings)
-            CollectionType.ALL -> ListCollection(repository, filterViewModel, userSettings)
+            CollectionType.FILLER -> ListCollectionFiller(repository, filterViewModel, userSettingsFlow)
+            CollectionType.MY_COLLECTION -> ListCollectionItemOwned(repository, filterViewModel, userSettingsFlow)
+            CollectionType.WISHLIST -> ListCollectionItemWanted(repository, filterViewModel, userSettingsFlow)
+            CollectionType.SOLO -> ListCollectionItemSolo(repository, filterViewModel, userSettingsFlow)
+            CollectionType.ALL -> ListCollection(repository, filterViewModel, userSettingsFlow)
         }
     }
 }

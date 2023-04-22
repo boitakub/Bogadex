@@ -50,7 +50,7 @@ This project takes advantage of best practices, and many popular libraries and t
 - [JetPack](https://developer.android.com/jetpack)
   * [Compose](https://developer.android.com/jetpack/compose?hl=fr) to build 100% of UI
   * [WorkManager](https://developer.android.com/topic/libraries/architecture/workmanager) - Updating and maintaining data up-to-date periodically and asynchronous
-  * 🚧 [DataStore](https://developer.android.com/topic/libraries/architecture/datastore) - for light storage
+  * [DataStore](https://developer.android.com/topic/libraries/architecture/datastore) - for shared preferences
   * [Room](https://developer.android.com/training/data-storage/room) - Database for rich storage
 
 - [Material 3](https://m3.material.io/) - Using Material Design 3

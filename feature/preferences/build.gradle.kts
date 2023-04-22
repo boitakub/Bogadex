@@ -42,36 +42,27 @@ android {
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_11.toString()
     }
-    namespace = "fr.boitakub.bogadex.common"
+    namespace = "fr.boitakub.preferences"
 }
 
 dependencies {
+    val androidCoreVersion: String by project
     val lifecycleVersion: String by project
     val daggerVersion: String by project
     val hiltVersion: String by project
-    val materialVersion: String by project
     val composeVersion: String by project
+    val materialVersion: String by project
+    val navigationVersion: String by project
+    val dataStoreVersion: String by project
     val junitVersion: String by project
     val espressoVersion: String by project
 
-    implementation(project(":shared:architecture"))
+    implementation(project(":common"))
 
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:$lifecycleVersion")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion")
+    //region Core & Lifecycle
 
-    //region UI
-    implementation("androidx.compose.material3:material3:$materialVersion")
-
-    //region Compose
-
-    implementation("androidx.compose.foundation:foundation:$composeVersion")
-    implementation("androidx.compose.ui:ui:$composeVersion")
-
-    // Android Studio Preview support
-    implementation("androidx.compose.ui:ui-tooling-preview:$composeVersion")
-    debugImplementation("androidx.compose.ui:ui-tooling:$composeVersion")
-
-    //endregion
+    implementation("androidx.core:core-ktx:$androidCoreVersion")
+    implementation("androidx.lifecycle:lifecycle-runtime-compose:$lifecycleVersion")
 
     //endregion
 
@@ -81,6 +72,31 @@ dependencies {
     kapt("com.google.dagger:hilt-compiler:$daggerVersion")
     implementation("androidx.hilt:hilt-work:$hiltVersion")
     kapt("androidx.hilt:hilt-compiler:$hiltVersion")
+
+    //endregion
+
+    //region UI
+
+    implementation("androidx.compose.foundation:foundation:$composeVersion")
+    implementation("androidx.compose.ui:ui:$composeVersion")
+    implementation("androidx.compose.material3:material3:$materialVersion")
+
+    // UI - Tooling
+    implementation("androidx.compose.ui:ui-tooling-preview:$composeVersion")
+    debugImplementation("androidx.compose.ui:ui-tooling:$composeVersion")
+
+    //endregion
+
+    // Navigation
+
+    implementation("androidx.navigation:navigation-compose:$navigationVersion")
+    implementation("androidx.hilt:hilt-navigation-compose:$hiltVersion")
+
+    //endregion
+
+    // DataStore (SharedPreferences)
+
+    implementation("androidx.datastore:datastore-preferences:$dataStoreVersion")
 
     //endregion
 

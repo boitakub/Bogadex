@@ -31,8 +31,8 @@ import fr.boitakub.bogadex.common.ui.theme.BogadexTheme
 fun BoardGameInfo(
     @StringRes titleRes: Int,
     @DrawableRes iconRes: Int,
-    minValue: Int? = null,
-    maxValue: Int? = null,
+    minValue: Int,
+    maxValue: Int,
     tintColor: Color = MaterialTheme.colorScheme.secondary,
 ) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {

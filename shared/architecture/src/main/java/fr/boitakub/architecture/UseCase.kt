@@ -37,5 +37,5 @@ package fr.boitakub.architecture
  */
 interface UseCase<O, I> {
 
-    fun apply(input: I): O
+    fun apply(): O
 }

@@ -35,40 +35,44 @@ import fr.boitakub.bogadex.common.UserSettings
 import fr.boitakub.bogadex.filter.FilterViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flatMapConcat
 import javax.inject.Inject
 
 open class ListCollection @Inject constructor(
     private val repository: BoardGameCollectionRepository,
     private val filterViewModel: FilterViewModel,
-    private val userSettings: UserSettings,
+    private val userSettingsFlow: Flow<UserSettings>,
 ) : UseCase<Flow<List<CollectionItemWithDetails>>, String> {
-    override fun apply(input: String): Flow<List<CollectionItemWithDetails>> {
-        return repository.get(input)
-            .combine(filterViewModel.filter) { collectionList, filter ->
-                // Apply session filters
-                collectionList.filter { item ->
-                    item.averageRating() in filter.ratingFilter.second.minValue..filter.ratingFilter.second.maxValue
-                }.filter { item ->
-                    item.averageWeight() in filter.weightFilter.second.minValue..filter.weightFilter.second.maxValue
-                }.filter { item ->
-                    item.averageDuration() in filter.durationFilter.second.minValue..filter.durationFilter.second.maxValue
-                }.filter {
-                    // Apply global app filters
-                    if (!userSettings.displayPreviouslyOwned) {
-                        !it.item.status.previouslyOwned
-                    } else {
-                        true
+    override fun apply(): Flow<List<CollectionItemWithDetails>> {
+        return userSettingsFlow
+            .flatMapConcat { userSettings ->
+                repository.get(userSettings.bggUserName)
+                    .combine(filterViewModel.filter) { collectionList, filter ->
+                        // Apply session filters
+                        collectionList.asSequence().filter { item ->
+                            item.averageRating() in filter.ratingFilter.second.minValue..filter.ratingFilter.second.maxValue
+                        }.filter { item ->
+                            item.averageWeight() in filter.weightFilter.second.minValue..filter.weightFilter.second.maxValue
+                        }.filter { item ->
+                            item.averageDuration() in filter.durationFilter.second.minValue..filter.durationFilter.second.maxValue
+                        }.filter {
+                            // Apply global app filters
+                            if (!userSettings.displayPreviouslyOwned) {
+                                !it.item.status.previouslyOwned
+                            } else {
+                                true
+                            }
+                        }.filter { item ->
+                            if (filter.searchTerms.isNotBlank()) {
+                                item.item.title?.contains(filter.searchTerms.lowercase()) == true || item.details?.title?.contains(
+                                    filter.searchTerms.lowercase(),
+                                ) == true
+                            } else {
+                                true
+                            }
+                        }.toList()
+                        // Apply grouping
                     }
-                }.filter { item ->
-                    if (filter.searchTerms.isNotBlank()) {
-                        item.item.title?.contains(filter.searchTerms.lowercase()) == true || item.details?.title?.contains(
-                                filter.searchTerms.lowercase(),
-                            ) == true
-                    } else {
-                        true
-                    }
-                }
-                // Apply grouping
             }
     }
 }

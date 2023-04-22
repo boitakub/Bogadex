@@ -103,8 +103,8 @@ android {
 
 dependencies {
     val androidCoreVersion: String by project
+    val lifecycleVersion: String by project
     val appcompatVersion: String by project
-    val preferencesVersion: String by project
     val activityVersion: String by project
     val coilVersion: String by project
     val navigationVersion: String by project
@@ -127,12 +127,13 @@ dependencies {
     implementation(project(":shared:bgg_api_client"))
     implementation(project(":feature:boardgame"))
     implementation(project(":feature:boardgame_list"))
+    implementation(project(":feature:preferences"))
 
     //region Core & Lifecycle
 
     implementation("androidx.core:core-ktx:$androidCoreVersion")
     implementation("androidx.appcompat:appcompat:$appcompatVersion")
-    implementation("androidx.preference:preference-ktx:$preferencesVersion")
+    implementation("androidx.lifecycle:lifecycle-runtime-compose:$lifecycleVersion")
 
     //endregion
 

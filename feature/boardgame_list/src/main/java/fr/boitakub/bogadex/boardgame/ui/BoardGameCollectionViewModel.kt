@@ -45,7 +45,6 @@ import kotlinx.coroutines.flow.onEach
 
 class BoardGameCollectionViewModel @AssistedInject constructor(
     @Assisted private val collection: ListCollection,
-    provideExampleBggAccount: String,
 ) :
     ViewModel(), Presenter {
 
@@ -55,7 +54,7 @@ class BoardGameCollectionViewModel @AssistedInject constructor(
     }
 
     val gameList: Flow<List<CollectionItemWithDetails>> =
-        collection.apply(provideExampleBggAccount)
+        collection.apply()
             .onEach {
                 Log.d("TEST", it.toString())
             }

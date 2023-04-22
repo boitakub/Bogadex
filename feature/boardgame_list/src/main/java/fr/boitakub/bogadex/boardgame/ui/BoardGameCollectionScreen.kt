@@ -91,6 +91,9 @@ fun BoardGameCollectionScreen(
                         ),
                     )
                 },
+                onSettingButtonClick = {
+                    navController.navigate("preferences")
+                }
             )
         },
         floatingActionButton = {
@@ -139,6 +142,7 @@ private fun TopBar(
     currentTerm: String,
     onSearchTermChange: (String) -> Unit,
     onToggleViewClick: () -> Unit,
+    onSettingButtonClick: () -> Unit,
 ) {
     Column(
         modifier = Modifier.wrapContentSize(),
@@ -164,7 +168,7 @@ private fun TopBar(
                 )
             }
             IconButton(onClick = {
-                // TODO: Settings navHostController.navigate()
+                onSettingButtonClick()
             }) {
                 Icon(
                     imageVector = Icons.Default.Settings,

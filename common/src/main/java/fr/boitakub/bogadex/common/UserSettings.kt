@@ -28,4 +28,10 @@
  */
 package fr.boitakub.bogadex.common
 
-data class UserSettings(val displayPreviouslyOwned: Boolean)
+import fr.boitakub.bogadex.common.ui.theme.Theme
+
+data class UserSettings(
+    val bggUserName: String = "cubenbois",
+    val activeTheme: Theme = Theme.System,
+    val displayPreviouslyOwned: Boolean = false,
+)

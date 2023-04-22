@@ -59,7 +59,7 @@ class BoardGameCollectionRepository @Inject constructor(
     fun get(user: String): Flow<List<CollectionItemWithDetails>> =
         local.getCollectionWithDetails().onEach { collection ->
             collection.forEach {
-                if (it.details?.isOutdated() == true) {
+                if (it.details == null || it.details?.isOutdated() == true) {
                     refreshGameDetails.apply(it)
                 }
             }

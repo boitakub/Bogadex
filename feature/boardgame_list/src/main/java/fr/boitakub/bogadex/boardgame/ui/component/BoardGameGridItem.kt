@@ -85,12 +85,14 @@ fun BoardGameGridItem(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
             ) {
-                BoardGameInfo(
-                    titleRes = R.string.players,
-                    iconRes = R.drawable.ic_people_group_duotone,
-                    minValue = item.details?.minPlayer,
-                    maxValue = item.details?.minPlayer,
-                )
+                item.details?.let {
+                    BoardGameInfo(
+                        titleRes = R.string.players,
+                        iconRes = R.drawable.ic_people_group_duotone,
+                        minValue = it.minPlayer,
+                        maxValue = it.maxPlayer,
+                    )
+                }
                 item.details?.recommendedPlayers?.let { values ->
                     if (values.isNotEmpty()) {
                         BoardGameRecommendInfo(
@@ -99,12 +101,14 @@ fun BoardGameGridItem(
                         )
                     }
                 }
-                BoardGameInfo(
-                    titleRes = R.string.players,
-                    iconRes = R.drawable.ic_watch_duotone,
-                    minValue = item.details?.minPlayTime,
-                    maxValue = item.details?.maxPlayTime,
-                )
+                item.details?.let {
+                    BoardGameInfo(
+                        titleRes = R.string.players,
+                        iconRes = R.drawable.ic_watch_duotone,
+                        minValue = it.minPlayTime,
+                        maxValue = it.maxPlayTime,
+                    )
+                }
                 BoardGameWeightInfo(
                     titleRes = R.string.weight,
                     iconRes = R.drawable.ic_weight,

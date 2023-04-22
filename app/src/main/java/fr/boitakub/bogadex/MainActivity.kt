@@ -32,8 +32,11 @@ import android.app.Activity
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -49,6 +52,9 @@ import fr.boitakub.bogadex.boardgame.ui.BoardGameCollectionViewModel
 import fr.boitakub.bogadex.boardgame.ui.BoardGameDetailNavigation
 import fr.boitakub.bogadex.common.UserSettings
 import fr.boitakub.bogadex.common.ui.theme.BogadexTheme
+import fr.boitakub.bogadex.common.ui.theme.Theme
+import fr.boitakub.bogadex.preferences.PreferencesNavigation
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -58,7 +64,7 @@ class MainActivity : ComponentActivity() {
     lateinit var repository: BoardGameCollectionRepository
 
     @Inject
-    lateinit var userSettings: UserSettings
+    lateinit var userSettingsFlow: Flow<UserSettings>
 
     @EntryPoint
     @InstallIn(ActivityComponent::class)
@@ -70,14 +76,24 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            val navHostController = rememberNavController()
+            val settingsState by userSettingsFlow.collectAsStateWithLifecycle(
+                lifecycle = lifecycle,
+                initialValue = UserSettings(),
+            )
 
-            BogadexTheme {
+            val navHostController = rememberNavController()
+            val useDarkTheme = when (settingsState.activeTheme) {
+                Theme.Dark -> true
+                Theme.Light -> false
+                else -> isSystemInDarkTheme()
+            }
+
+            BogadexTheme(useDarkTheme = useDarkTheme) {
                 NavigationGraph(
                     navController = navHostController,
                     startDestination = BoardGameCollectionNavigation.ROUTE,
                     repository = repository,
-                    userSettings = userSettings,
+                    userSettingsFlow = userSettingsFlow,
                 )
             }
         }
@@ -89,7 +105,7 @@ fun NavigationGraph(
     navController: NavHostController,
     startDestination: String,
     repository: BoardGameCollectionRepository,
-    userSettings: UserSettings,
+    userSettingsFlow: Flow<UserSettings>,
 ) {
     val factory = EntryPointAccessors.fromActivity(
         LocalContext.current as Activity,
@@ -109,7 +125,7 @@ fun NavigationGraph(
                     navBackStackEntry = it,
                     factory = factory,
                     repository = repository,
-                    userSettings = userSettings,
+                    userSettingsFlow = userSettingsFlow,
                 )
             },
         )
@@ -118,6 +134,15 @@ fun NavigationGraph(
             arguments = BoardGameDetailNavigation.ARGUMENTS,
             content = {
                 BoardGameDetailNavigation.onNavigation(
+                    navController = navController,
+                    navBackStackEntry = it,
+                )
+            },
+        )
+        composable(
+            route = PreferencesNavigation.ROUTE,
+            content = {
+                PreferencesNavigation.onNavigation(
                     navController = navController,
                     navBackStackEntry = it,
                 )

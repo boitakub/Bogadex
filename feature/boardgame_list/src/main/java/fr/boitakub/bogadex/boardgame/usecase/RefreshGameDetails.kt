@@ -35,19 +35,17 @@ import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import dagger.hilt.android.qualifiers.ApplicationContext
-import fr.boitakub.architecture.UseCase
 import fr.boitakub.bogadex.boardgame.UpdateBoardGameIntentWorker
 import fr.boitakub.bogadex.boardgame.model.CollectionItemWithDetails
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class RefreshGameDetails @Inject constructor(@ApplicationContext val context: Context) :
-    UseCase<Void?, CollectionItemWithDetails> {
+class RefreshGameDetails @Inject constructor(@ApplicationContext val context: Context) {
 
     var scheduledRefresh = SCHEDULED_REFRESH_START
 
-    override fun apply(input: CollectionItemWithDetails): Void? {
+    fun apply(input: CollectionItemWithDetails): Void? {
         if (scheduledRefresh < SCHEDULED_REFRESH_MAX) {
             val data = Data.Builder()
             data.putString("bggId", input.item.bggId)

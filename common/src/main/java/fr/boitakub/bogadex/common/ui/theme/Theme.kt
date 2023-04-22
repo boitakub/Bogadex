@@ -1,10 +1,12 @@
 package fr.boitakub.bogadex.common.ui.theme
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import fr.boitakub.bogadex.common.R
 
 private val LightColors = lightColorScheme(
     primary = md_theme_light_primary,
@@ -70,10 +72,23 @@ private val DarkColors = darkColorScheme(
     scrim = md_theme_dark_scrim,
 )
 
+enum class Theme(val value: String, @StringRes val titleRes : Int) {
+    System("", R.string.night_mode_auto),
+    Light("light", R.string.night_mode_off),
+    Dark("dark", R.string.night_mode_on),
+    ;
+
+    companion object {
+        fun getValueOf(activeTheme: String, default: Theme = System): Theme {
+            return values().firstOrNull { it.value == activeTheme } ?: default
+        }
+    }
+}
+
 @Composable
 fun BogadexTheme(
     useDarkTheme: Boolean = isSystemInDarkTheme(),
-    content: @Composable() () -> Unit,
+    content: @Composable () -> Unit,
 ) {
     val colors = if (!useDarkTheme) {
         LightColors
