@@ -12,7 +12,9 @@
         android:supportsRtl="true"
         android:usesCleartextTraffic="false"
         android:networkSecurityConfig="@xml/network_security_config"
-        android:theme="@style/NoTheme">
+        android:theme="@style/NoTheme"
+        android:allowBackup="false"
+        android:fullBackupContent="@xml/backup">
 
         <provider
             android:name="androidx.startup.InitializationProvider"

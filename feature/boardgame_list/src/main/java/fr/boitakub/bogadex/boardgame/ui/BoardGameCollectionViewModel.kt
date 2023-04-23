@@ -52,7 +52,7 @@ class BoardGameCollectionViewModel @AssistedInject constructor(
     ViewModel(), Presenter {
 
     @AssistedFactory
-    interface Factory {
+    fun interface Factory {
         fun create(repository: ListCollection): BoardGameCollectionViewModel
     }
 

@@ -45,7 +45,7 @@ class RefreshGameDetails @Inject constructor(@ApplicationContext val context: Co
 
     var scheduledRefresh = SCHEDULED_REFRESH_START
 
-    fun apply(input: CollectionItemWithDetails): Void? {
+    fun apply(input: CollectionItemWithDetails) {
         if (scheduledRefresh < SCHEDULED_REFRESH_MAX) {
             val data = Data.Builder()
             data.putString("bggId", input.item.bggId)
@@ -61,7 +61,6 @@ class RefreshGameDetails @Inject constructor(@ApplicationContext val context: Co
             scheduledRefresh++
             WorkManager.getInstance(context).enqueue(request)
         }
-        return null
     }
 
     companion object {

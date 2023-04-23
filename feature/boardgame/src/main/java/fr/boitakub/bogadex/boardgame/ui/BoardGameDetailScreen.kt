@@ -32,7 +32,6 @@ import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
 import android.util.Log
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -65,7 +64,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat.startActivity
 import androidx.navigation.NavHostController
-import coil.compose.rememberImagePainter
+import coil.compose.AsyncImage
 import fr.boitakub.bogadex.boardgame.R
 import fr.boitakub.bogadex.boardgame.model.BoardGame
 import fr.boitakub.bogadex.common.ui.navigation.RatingBar
@@ -132,13 +131,13 @@ private fun GameDetailHeader(
     boardGame: BoardGame?,
 ) {
     Column {
-        Image(
-            painter = rememberImagePainter(boardGame?.image),
-            contentDescription = "",
+        AsyncImage(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(top = 16.dp)
                 .height(280.dp),
+            model = boardGame?.image,
+            contentDescription = null,
         )
 
         Spacer(modifier = Modifier.height(6.dp))

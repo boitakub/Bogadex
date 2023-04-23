@@ -68,7 +68,7 @@ class MainActivity : ComponentActivity() {
 
     @EntryPoint
     @InstallIn(ActivityComponent::class)
-    interface ViewModelFactoryProvider {
+    fun interface ViewModelFactoryProvider {
         fun boardGameCollectionViewModelFactory(): BoardGameCollectionViewModel.Factory
     }
 

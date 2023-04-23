@@ -35,7 +35,7 @@ package fr.boitakub.architecture
  * - Use Case : Re-direct the parcel which are not on my area
  * - Use Case : Destroy dangerous parcels (and notify the customer in a customer usecase)
  */
-interface UseCase<O, I> {
+fun interface UseCase<O, I> {
 
     fun apply(): O
 }
