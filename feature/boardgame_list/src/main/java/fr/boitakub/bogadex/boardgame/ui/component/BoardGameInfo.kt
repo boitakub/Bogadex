@@ -97,7 +97,7 @@ fun BoardGameRecommendInfo(
             Icon(
                 modifier = Modifier.size(16.dp),
                 imageVector = ImageVector.vectorResource(id = iconRes),
-                contentDescription = "Recommandé",
+                contentDescription = stringResource(id = R.string.recommended_players),
                 tint = tintColor,
             )
             Text(

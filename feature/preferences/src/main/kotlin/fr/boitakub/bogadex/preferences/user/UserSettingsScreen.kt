@@ -113,20 +113,24 @@ fun UserSettingsScreen(
                 onDismiss = { isThemeDialogVisible = false },
             )
         }
-        SettingsContent(innerPadding, isBggUsernameDialogVisible, state, viewModel, isThemeDialogVisible)
+        SettingsContent(
+            innerPadding,
+            state,
+            viewModel,
+            onBggUsernameClick = { isBggUsernameDialogVisible = true },
+            onThemeSelectionClick = { isThemeDialogVisible = true },
+        )
     }
 }
 
 @Composable
 private fun SettingsContent(
     innerPadding: PaddingValues,
-    isBggUsernameDialogVisible: Boolean,
     state: UserSettings,
     viewModel: UserSettingsViewModel,
-    isThemeDialogVisible: Boolean
+    onBggUsernameClick: () -> Unit,
+    onThemeSelectionClick: () -> Unit,
 ) {
-    var isBggUsernameDialogVisible1 = isBggUsernameDialogVisible
-    var isThemeDialogVisible1 = isThemeDialogVisible
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -138,7 +142,7 @@ private fun SettingsContent(
                 iconRes = R.drawable.ic_user_solid,
                 titleRes = R.string.bgg_username,
                 subtitleRes = R.string.bgg_username_summary,
-                onClick = { isBggUsernameDialogVisible1 = true },
+                onClick = onBggUsernameClick,
             )
             SwitchComponent(
                 iconRes = R.drawable.ic_person_carry_box_solid,
@@ -153,7 +157,7 @@ private fun SettingsContent(
                 iconRes = R.drawable.ic_eclipse_solid,
                 titleRes = R.string.pref_night_title,
                 subtitleRes = R.string.pref_night_summary,
-                onClick = { isThemeDialogVisible1 = true },
+                onClick = onThemeSelectionClick,
             )
         },
     )

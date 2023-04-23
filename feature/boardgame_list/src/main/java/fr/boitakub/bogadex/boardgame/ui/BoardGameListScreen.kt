@@ -33,6 +33,9 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -50,12 +53,13 @@ fun BoardGameListScreen(
     viewModel: BoardGameCollectionViewModel,
     gridMode: Boolean = false,
 ) {
-    val state by viewModel.gameList.collectAsStateWithLifecycle()
+    val state by viewModel.uiState.collectAsStateWithLifecycle()
 
     if (gridMode) {
         BoardGameListGrid(
             modifier = modifier,
-            games = state,
+            games = state.collection,
+            error = state.error,
             onClick = {
                 openGameDetails(navController, it)
             },
@@ -63,7 +67,8 @@ fun BoardGameListScreen(
     } else {
         BoardGameList(
             modifier = modifier,
-            games = state,
+            games = state.collection,
+            error = state.error,
             onClick = {
                 openGameDetails(navController, it)
             },
@@ -83,16 +88,23 @@ private fun openGameDetails(navController: NavController, item: CollectionItemWi
 fun BoardGameListGrid(
     modifier: Modifier,
     games: List<CollectionItemWithDetails>,
+    error: Throwable? = null,
     onClick: (CollectionItemWithDetails) -> Unit,
     columns: Int = 2,
 ) {
     LazyVerticalGrid(
         modifier = modifier,
         columns = GridCells.Fixed(columns),
+        state = rememberLazyGridState(),
         verticalArrangement = Arrangement.spacedBy(8.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         contentPadding = PaddingValues(8.dp),
         content = {
+            error?.let {
+                item {
+                    Text(text = error.message ?: "Unknown error")
+                }
+            }
             items(games.size) { index ->
                 BoardGameGridItem(games[index], onClick)
             }
@@ -104,11 +116,18 @@ fun BoardGameListGrid(
 fun BoardGameList(
     modifier: Modifier,
     games: List<CollectionItemWithDetails>,
+    error: Throwable? = null,
     onClick: (CollectionItemWithDetails) -> Unit,
 ) {
     LazyColumn(
         modifier = modifier,
+        state = rememberLazyListState(),
         content = {
+            error?.let {
+                item {
+                    Text(text = error.message ?: "Unknown error")
+                }
+            }
             items(games.size) { index ->
                 BoardGameListItem(games[index], onClick)
             }

@@ -31,12 +31,12 @@ package fr.boitakub.bogadex.filter
 data class FilterState(
     val searchTerms: String = "",
     val ratingFilter: Pair<FilterRange, FilterRangeOption> = Pair(
-        FilterRange(0.0f, 10.0f, 9),
+        FilterRange(0.0f, 10.0f, 19),
         FilterRangeOption(0.0f, 10.0f),
     ),
     val weightFilter: Pair<FilterRange, FilterRangeOption> = Pair(
-        FilterRange(0.0f, 10.0f, 19),
-        FilterRangeOption(0.0f, 10.0f),
+        FilterRange(0.0f, 5.0f, 9),
+        FilterRangeOption(0.0f, 5.0f),
     ),
     val durationFilter: Pair<FilterRange, FilterRangeOption> = Pair(
         FilterRange(0.0f, 300.0f, 19),

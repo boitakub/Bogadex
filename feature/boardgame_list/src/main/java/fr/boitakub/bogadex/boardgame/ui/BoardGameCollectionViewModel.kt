@@ -28,22 +28,17 @@
  */
 package fr.boitakub.bogadex.boardgame.ui
 
-import android.util.Log
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import fr.boitakub.architecture.Presenter
-import fr.boitakub.bogadex.boardgame.model.CollectionItemWithDetails
 import fr.boitakub.bogadex.boardgame.usecase.ListCollection
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.onCompletion
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 
 class BoardGameCollectionViewModel @AssistedInject constructor(
@@ -56,40 +51,17 @@ class BoardGameCollectionViewModel @AssistedInject constructor(
         fun create(repository: ListCollection): BoardGameCollectionViewModel
     }
 
-    val gameList: StateFlow<List<CollectionItemWithDetails>> =
+    val uiState: StateFlow<BoardGameListState> =
         collection.apply()
-            .onEach {
-                Log.d("TEST", it.toString())
+            .map {
+                BoardGameListState(collection = it, error = null)
             }
-            .catch { e ->
-                e.message?.let { onError(it) }
-            }
-            .onCompletion {
-                loading.value = false
+            .catch {
+                BoardGameListState(error = null)
             }
             .stateIn(
                 scope = viewModelScope,
                 started = SharingStarted.WhileSubscribed(5_000),
-                initialValue = emptyList(),
+                initialValue = BoardGameListState(),
             )
-
-    val loading = MutableLiveData<Boolean>()
-    val errorMessage = MutableLiveData<String>()
-
-    private fun onError(message: String) {
-        errorMessage.value = message
-        loading.value = false
-    }
-
-    @Suppress("UNCHECKED_CAST")
-    companion object {
-        fun provideFactory(
-            assistedFactory: Factory,
-            collection: ListCollection,
-        ): ViewModelProvider.Factory = object : ViewModelProvider.Factory {
-            override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                return assistedFactory.create(collection) as T
-            }
-        }
-    }
 }

@@ -142,7 +142,7 @@ private fun GameInfoSection(item: CollectionItemWithDetails) {
                 titleRes = R.string.players,
                 iconRes = R.drawable.ic_people_group_duotone,
                 minValue = it.minPlayer,
-                maxValue = it.minPlayer,
+                maxValue = it.maxPlayer,
             )
         }
         Box(
@@ -199,7 +199,7 @@ private fun RatingSection(item: CollectionItemWithDetails) {
             Surface(
                 modifier = Modifier.padding(horizontal = 8.dp),
                 color = MaterialTheme.colorScheme.tertiaryContainer,
-                shape = PolyShape(it.average.toInt(), 85.0f),
+                shape = PolyShape(it.average.toInt(), 80.0f),
                 shadowElevation = 6.dp,
             ) {
                 Text(

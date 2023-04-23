@@ -85,15 +85,36 @@ open class ListCollection @Inject constructor(
     private fun ratingFilter(
         item: CollectionItemWithDetails,
         filter: FilterState,
-    ) = item.averageRating() in filter.ratingFilter.second.minValue..filter.ratingFilter.second.maxValue
+    ): Boolean {
+        if (filter.ratingFilter.second.minValue == filter.ratingFilter.first.minValueRange &&
+            filter.ratingFilter.second.maxValue == filter.ratingFilter.first.maxValueRange
+        ) {
+            return true
+        }
+        return item.averageRating() in filter.ratingFilter.second.minValue..filter.ratingFilter.second.maxValue
+    }
 
     private fun weightFilter(
         item: CollectionItemWithDetails,
         filter: FilterState,
-    ) = item.averageWeight() in filter.weightFilter.second.minValue..filter.weightFilter.second.maxValue
+    ): Boolean {
+        if (filter.weightFilter.second.minValue == filter.weightFilter.first.minValueRange &&
+            filter.weightFilter.second.maxValue == filter.weightFilter.first.maxValueRange
+        ) {
+            return true
+        }
+        return item.averageWeight() in filter.weightFilter.second.minValue..filter.weightFilter.second.maxValue
+    }
 
     private fun durationFilter(
         item: CollectionItemWithDetails,
         filter: FilterState,
-    ) = item.averageDuration() in filter.durationFilter.second.minValue..filter.durationFilter.second.maxValue
+    ): Boolean {
+        if (filter.durationFilter.second.minValue == filter.durationFilter.first.minValueRange &&
+            filter.durationFilter.second.maxValue == filter.durationFilter.first.maxValueRange
+        ) {
+            return true
+        }
+        return item.averageDuration() in filter.durationFilter.second.minValue..filter.durationFilter.second.maxValue
+    }
 }

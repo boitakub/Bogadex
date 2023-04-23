@@ -44,6 +44,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import fr.boitakub.bogadex.common.R
 import fr.boitakub.bogadex.common.ui.theme.BogadexTheme
+import java.text.DecimalFormat
 
 @Composable
 fun RangeSliderComponent(
@@ -54,12 +55,17 @@ fun RangeSliderComponent(
 ) {
     val minValue = remember { mutableStateOf(state.minValue) }
     val maxValue = remember { mutableStateOf(state.maxValue) }
+    val formatter = DecimalFormat("#,###,##0.0")
 
     Column(
         modifier = Modifier.padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
-        Text(text = stringResource(id = titleRes) + " ${minValue.value} - ${maxValue.value} ")
+        Text(
+            text = stringResource(id = titleRes) + " ${formatter.format(minValue.value).replace(".0", "")} - ${
+            formatter.format(maxValue.value).replace(".0", "")
+            } ",
+        )
         RangeSlider(
             valueRange = filter.minValueRange..filter.maxValueRange,
             value = minValue.value..maxValue.value,
