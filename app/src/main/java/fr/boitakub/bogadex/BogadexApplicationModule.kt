@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021-2022, Boitakub
+ * Copyright (c) 2021-2023, Boitakub
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,14 +29,12 @@
 package fr.boitakub.bogadex
 
 import android.content.Context
-import androidx.preference.PreferenceManager
 import coil.ImageLoader
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import fr.boitakub.bogadex.common.UserSettings
 import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrl
 
@@ -47,19 +45,7 @@ open class BogadexApplicationModule {
     open fun baseUrl() = "https://www.boardgamegeek.com/".toHttpUrl()
 
     open fun imageLoader(context: Context): ImageLoader {
-        return ImageLoader.invoke(context)
-    }
-
-    @Provides
-    open fun provideExampleBggAccount(@ApplicationContext context: Context): String {
-        return PreferenceManager.getDefaultSharedPreferences(context).getString("bgg_username", "cubenbois").orEmpty()
-    }
-
-    @Provides
-    open fun provideUserSettings(@ApplicationContext context: Context): UserSettings {
-        return UserSettings(
-            PreferenceManager.getDefaultSharedPreferences(context).getBoolean("display_previously_own", true)
-        )
+        return ImageLoader.Builder(context).build()
     }
 
     @Provides

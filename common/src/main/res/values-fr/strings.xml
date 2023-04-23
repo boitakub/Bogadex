@@ -8,9 +8,17 @@
     <string name="night_mode_on">Théme sombre</string>
     <string name="night_mode_off">Théme clair</string>
     <!-- endregion -->
+    <string name="back">Retour</string>
     <string name="settings">Paramétres</string>
+    <string name="error">Erreur</string>
+    <string name="retry">Réessayer</string>
+    <string name="loading">Chargement</string>
+    <string name="no_content">Aucun contenu trouvé</string>
+    <string name="expansion_icon">Icone extension</string>
+
     <string name="content_settings">Personaliser votre expérience</string>
     <string name="searchbar_hint">Rechercher un jeu</string>
+    <string name="searchbar_clear">Supprimer la recherche</string>
     <string name="display_all">Afficher tout</string>
     <string name="display_collection">Ma collection</string>
     <string name="display_wishlist">Ma liste de souhait</string>
@@ -30,5 +38,6 @@
     <string name="filters_desc">Afficher une liste de paramétres pour filtrer la liste de jeux</string>
     <string name="rs_min_rating">Note comprise entre</string>
     <string name="rs_min_weight">Poids comprise entre</string>
+    <string name="rs_min_duration">Durée entre</string>
     <string name="description">Description</string>
 </resources>

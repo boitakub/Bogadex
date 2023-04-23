@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021-2022, Boitakub
+ * Copyright (c) 2021-2023, Boitakub
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,18 +29,14 @@
 package fr.boitakub.bogadex.tests.boardgame_list
 
 import android.util.Log
-import androidx.recyclerview.widget.RecyclerView
-import androidx.test.core.app.launchActivity
-import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.IdlingRegistry
-import androidx.test.espresso.action.ViewActions.click
-import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.contrib.RecyclerViewActions.scrollToPosition
-import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
-import androidx.test.espresso.matcher.ViewMatchers.withContentDescription
-import androidx.test.espresso.matcher.ViewMatchers.withId
-import androidx.test.espresso.matcher.ViewMatchers.withText
-import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.activity.compose.setContent
+import androidx.compose.ui.test.ExperimentalTestApi
+import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.hasText
+import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.performClick
+import androidx.navigation.compose.rememberNavController
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.work.Configuration
 import androidx.work.testing.SynchronousExecutor
@@ -48,44 +44,46 @@ import androidx.work.testing.WorkManagerTestInitHelper
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import fr.boitakub.bogadex.MainActivity
-import fr.boitakub.bogadex.R
-import fr.boitakub.bogadex.boardgame.BoardGameDao
-import fr.boitakub.bogadex.boardgame.model.BoardGame
-import fr.boitakub.bogadex.tests.OkHttp3IdlingResource
-import fr.boitakub.bogadex.tests.tools.FileReader.readStringFromFile
-import kotlinx.coroutines.runBlocking
-import okhttp3.mockwebserver.Dispatcher
-import okhttp3.mockwebserver.MockResponse
+import fr.boitakub.bogadex.NavigationGraph
+import fr.boitakub.bogadex.boardgame.BoardGameCollectionRepository
+import fr.boitakub.bogadex.boardgame.model.CollectionType
+import fr.boitakub.bogadex.boardgame.ui.BoardGameCollectionNavigation
+import fr.boitakub.bogadex.common.UserSettings
+import fr.boitakub.bogadex.common.ui.theme.BogadexTheme
+import fr.boitakub.bogadex.tests.MockedWebResponseDispatcher
+import io.mockk.MockKAnnotations
+import kotlinx.coroutines.InternalCoroutinesApi
+import kotlinx.coroutines.flow.Flow
 import okhttp3.mockwebserver.MockWebServer
-import okhttp3.mockwebserver.RecordedRequest
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.junit.runner.RunWith
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 @HiltAndroidTest
-@RunWith(AndroidJUnit4::class)
+@OptIn(ExperimentalTestApi::class)
 class DisplayAllUserCollectionInstrumentedTest {
 
-    private val mockWebServer = MockWebServer()
-
-    @Inject
-    lateinit var okHttp3IdlingResource: OkHttp3IdlingResource
-
-    @Inject
-    lateinit var boardGameDao: BoardGameDao
-
-    @get:Rule(order = 0)
+    @get:Rule
     var hiltRule = HiltAndroidRule(this)
+
+    @get:Rule
+    val composeTestRule = createAndroidComposeRule<MainActivity>()
+
+    val mockWebServer by lazy { MockWebServer() }
+
+    @Inject
+    lateinit var userSettingsFlow: Flow<UserSettings>
+
+    @Inject
+    lateinit var repository: BoardGameCollectionRepository
 
     @Before
     fun setUp() {
         hiltRule.inject()
         mockWebServer.start(8080)
-        IdlingRegistry.getInstance().register(okHttp3IdlingResource)
+
         val context = InstrumentationRegistry.getInstrumentation().targetContext
         val config = Configuration.Builder()
             .setMinimumLoggingLevel(Log.DEBUG)
@@ -94,127 +92,109 @@ class DisplayAllUserCollectionInstrumentedTest {
 
         // Initialize WorkManager for instrumentation tests.
         WorkManagerTestInitHelper.initializeTestWorkManager(context, config)
+
+        MockKAnnotations.init(this, relaxUnitFun = true)
     }
 
     @After
     fun teardown() {
         mockWebServer.shutdown()
-        IdlingRegistry.getInstance().unregister(okHttp3IdlingResource)
     }
 
     @Test
+    @InternalCoroutinesApi
     fun has_homeList_displayed() {
-        mockWebServer.dispatcher = object : Dispatcher() {
-            override fun dispatch(request: RecordedRequest): MockResponse {
-                var response: MockResponse = MockResponse().setResponseCode(404)
-                if (request.path!!.contains("/xmlapi2/collection")) {
-                    response = MockResponse()
-                        .setResponseCode(200)
-                        .setBody(readStringFromFile("Cubenbois.xml"))
-                        .setBodyDelay(1, TimeUnit.SECONDS)
-                } else if (request.path!!.contains("/xmlapi2/thing")) {
-                    response = MockResponse()
-                        .setResponseCode(200)
-                        .setBody(readStringFromFile("86246.xml"))
-                        .setBodyDelay(1, TimeUnit.SECONDS)
-                }
-                return response
+        mockWebServer.dispatcher = MockedWebResponseDispatcher()
+        composeTestRule.activity.setContent {
+            val navController = rememberNavController()
+
+            BogadexTheme(false) {
+                NavigationGraph(
+                    navController = navController,
+                    startDestination = BoardGameCollectionNavigation.ROUTE,
+                    repository = repository,
+                    userSettingsFlow = userSettingsFlow,
+                )
             }
         }
 
-        launchActivity<MainActivity>().use {
-            onView(withId(R.id.recycler_view))
-                .perform(scrollToPosition<RecyclerView.ViewHolder>(0))
-            onView(withText("5211")).check(matches(isDisplayed()))
-        }
+        composeTestRule.waitUntilExactlyOneExists(hasText("7 Wonders Duel"), timeoutMillis = 20000)
+        composeTestRule.onNodeWithText("Display all").performClick()
+        composeTestRule.waitUntilExactlyOneExists(hasText("7 Wonders Duel"), timeoutMillis = 20000)
+        composeTestRule.onNodeWithText("7 Wonders Duel").assertIsDisplayed()
     }
 
     @Test
+    @InternalCoroutinesApi
     fun has_collectionList_displayed() {
-        mockWebServer.dispatcher = object : Dispatcher() {
-            override fun dispatch(request: RecordedRequest): MockResponse {
-                var response: MockResponse = MockResponse().setResponseCode(404)
-                if (request.path!!.contains("/xmlapi2/collection")) {
-                    response = MockResponse()
-                        .setResponseCode(200)
-                        .setBody(readStringFromFile("Cubenbois.xml"))
-                        .setBodyDelay(1, TimeUnit.SECONDS)
-                } else if (request.path!!.contains("/xmlapi2/thing")) {
-                    response = MockResponse()
-                        .setResponseCode(200)
-                        .setBody(readStringFromFile("86246.xml"))
-                        .setBodyDelay(1, TimeUnit.SECONDS)
-                }
-                return response
+        mockWebServer.dispatcher = MockedWebResponseDispatcher()
+        composeTestRule.activity.setContent {
+            val navController = rememberNavController()
+
+            BogadexTheme(false) {
+                NavigationGraph(
+                    navController = navController,
+                    startDestination = BoardGameCollectionNavigation.ROUTE,
+                    repository = repository,
+                    userSettingsFlow = userSettingsFlow,
+                )
             }
         }
 
-        launchActivity<MainActivity>().use {
-            onView(withContentDescription("Open navigation drawer")).perform(click())
-            onView(withId(R.id.display_collection)).perform(click())
-
-            onView(withId(R.id.recycler_view))
-                .perform(scrollToPosition<RecyclerView.ViewHolder>(0))
-            onView(withText("7 Wonders Duel")).check(matches(isDisplayed()))
-        }
+        composeTestRule.waitUntilExactlyOneExists(hasText("7 Wonders Duel"), timeoutMillis = 20000)
+        composeTestRule.onNodeWithText("My collection").performClick()
+        composeTestRule.waitUntilExactlyOneExists(hasText("7 Wonders Duel"), timeoutMillis = 20000)
+        composeTestRule.onNodeWithText("7 Wonders Duel").assertIsDisplayed()
     }
 
     @Test
+    @InternalCoroutinesApi
     fun has_wishList_displayed() {
-        mockWebServer.dispatcher = object : Dispatcher() {
-            override fun dispatch(request: RecordedRequest): MockResponse {
-                var response: MockResponse = MockResponse().setResponseCode(404)
-                if (request.path!!.contains("/xmlapi2/collection")) {
-                    response = MockResponse()
-                        .setResponseCode(200)
-                        .setBody(readStringFromFile("Cubenbois.xml"))
-                        .setBodyDelay(1, TimeUnit.SECONDS)
-                } else if (request.path!!.contains("/xmlapi2/thing")) {
-                    response = MockResponse()
-                        .setResponseCode(200)
-                        .setBody(readStringFromFile("86246.xml"))
-                        .setBodyDelay(1, TimeUnit.SECONDS)
-                }
-                return response
+        mockWebServer.dispatcher = MockedWebResponseDispatcher()
+        composeTestRule.activity.setContent {
+            val navController = rememberNavController()
+
+            BogadexTheme(false) {
+                NavigationGraph(
+                    navController = navController,
+                    startDestination = BoardGameCollectionNavigation.ROUTE,
+                    repository = repository,
+                    userSettingsFlow = userSettingsFlow,
+                )
             }
         }
 
-        launchActivity<MainActivity>().use {
-            onView(withContentDescription("Open navigation drawer")).perform(click())
-            onView(withId(R.id.display_wishlist)).perform(click())
-
-            onView(withId(R.id.recycler_view))
-                .perform(scrollToPosition<RecyclerView.ViewHolder>(1))
-            onView(withText("Anachrony")).check(matches(isDisplayed()))
-        }
+        composeTestRule.waitUntilExactlyOneExists(hasText("My wishlist"))
+        composeTestRule.onNodeWithText("My wishlist").performClick()
+        composeTestRule.waitUntilExactlyOneExists(hasText("Anachrony"), timeoutMillis = 20000)
+        composeTestRule.onNodeWithText("Anachrony").assertIsDisplayed()
     }
 
     @Test
+    @InternalCoroutinesApi
     fun has_collectionList_displayedOnGrid() {
-        mockWebServer.dispatcher = object : Dispatcher() {
-            override fun dispatch(request: RecordedRequest): MockResponse {
-                var response: MockResponse = MockResponse().setResponseCode(404)
-                if (request.path!!.contains("/xmlapi2/collection")) {
-                    response = MockResponse()
-                        .setResponseCode(200)
-                        .setBody(readStringFromFile("Cubenbois.xml"))
-                        .setBodyDelay(1, TimeUnit.SECONDS)
-                } else if (request.path!!.contains("/xmlapi2/thing")) {
-                    response = MockResponse()
-                        .setResponseCode(200)
-                        .setBody(readStringFromFile("86246.xml"))
-                        .setBodyDelay(1, TimeUnit.SECONDS)
-                }
-                return response
+        mockWebServer.dispatcher = MockedWebResponseDispatcher()
+        composeTestRule.activity.setContent {
+            val navController = rememberNavController()
+
+            BogadexTheme(false) {
+                NavigationGraph(
+                    navController = navController,
+                    startDestination = BoardGameCollectionNavigation.ROUTE,
+                    repository = repository,
+                    userSettingsFlow = userSettingsFlow,
+                )
             }
+
+            navController.navigate(
+                BoardGameCollectionNavigation.navigateTo(
+                    CollectionType.MY_COLLECTION,
+                    true,
+                ),
+            )
         }
 
-        launchActivity<MainActivity>().use {
-            onView(withId(R.id.menu_switch_layout)).perform(click())
-
-            onView(withId(R.id.recycler_view))
-                .perform(scrollToPosition<RecyclerView.ViewHolder>(0))
-            onView(withText("7 Wonders Duel")).check(matches(isDisplayed()))
-        }
+        composeTestRule.waitUntilExactlyOneExists(hasText("7 Wonders Duel"), timeoutMillis = 20000)
+        composeTestRule.onNodeWithText("7 Wonders Duel").assertIsDisplayed()
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021-2022, Boitakub
+ * Copyright (c) 2021-2023, Boitakub
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -35,20 +35,18 @@ import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import dagger.hilt.android.qualifiers.ApplicationContext
-import fr.boitakub.architecture.UseCase
 import fr.boitakub.bogadex.boardgame.UpdateBoardGameIntentWorker
 import fr.boitakub.bogadex.boardgame.model.CollectionItemWithDetails
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class RefreshGameDetails @Inject constructor(@ApplicationContext val context: Context) :
-    UseCase<Void?, CollectionItemWithDetails> {
+class RefreshGameDetails @Inject constructor(@ApplicationContext val context: Context) {
 
     var scheduledRefresh = SCHEDULED_REFRESH_START
 
-    override fun apply(input: CollectionItemWithDetails): Void? {
-        if (input.details == null || input.details!!.isOutdated() && scheduledRefresh < SCHEDULED_REFRESH_MAX) {
+    fun apply(input: CollectionItemWithDetails) {
+        if (scheduledRefresh < SCHEDULED_REFRESH_MAX) {
             val data = Data.Builder()
             data.putString("bggId", input.item.bggId)
 
@@ -56,14 +54,13 @@ class RefreshGameDetails @Inject constructor(@ApplicationContext val context: Co
                 .addTag("Sync")
                 .setInputData(data.build())
                 .setConstraints(
-                    Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build()
+                    Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build(),
                 )
                 .build()
 
             scheduledRefresh++
             WorkManager.getInstance(context).enqueue(request)
         }
-        return null
     }
 
     companion object {

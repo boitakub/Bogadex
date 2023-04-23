@@ -4,7 +4,7 @@ on:
   push:
     branches: [ main ] # Build on merge or push on main branch
   pull_request:
-    types: [ opened, synchronize, reopened ] # Check on Pull Request interactions
+    types: [ opened, synchronize, reopened, ready_for_review ] # Check on Pull Request interactions
 
 jobs:
   build-and-test:
@@ -94,6 +94,8 @@ jobs:
 
       - name: 🛎️ Checkout
         uses: actions/checkout@v3
+        with:
+            fetch-depth: 0
 
       - name: 🏭 Set up our JDK environment
         uses: actions/setup-java@v3
@@ -139,6 +141,8 @@ jobs:
 
       - name: 🛎️ Checkout
         uses: actions/checkout@v3
+        with:
+            fetch-depth: 0
 
       - name: 🏭 Set up our JDK environment
         uses: actions/setup-java@v3

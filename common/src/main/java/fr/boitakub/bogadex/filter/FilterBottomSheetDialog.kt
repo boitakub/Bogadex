@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022, Boitakub
+ * Copyright (c) 2022-2023, Boitakub
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -28,41 +28,44 @@
  */
 package fr.boitakub.bogadex.filter
 
-import android.content.Context
-import com.google.android.material.bottomsheet.BottomSheetDialog
-import fr.boitakub.bogadex.common.databinding.MbsFiltersBinding
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import fr.boitakub.bogadex.common.R
 
-class FilterBottomSheetDialog(context: Context, filterViewModel: FilterViewModel) : BottomSheetDialog(context) {
-    init {
-        val binding: MbsFiltersBinding = MbsFiltersBinding.inflate(layoutInflater, null, false)
-        setContentView(binding.root)
-        binding.rsMinRating.setValues(
-            filterViewModel.get().value.minRatingValue,
-            filterViewModel.get().value.maxRatingValue
+@Composable
+fun FilterLayout(
+    filterState: FilterState,
+    updateFilter: (FilterState) -> Unit,
+) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
+    ) {
+        RangeSliderComponent(
+            titleRes = R.string.rs_min_duration,
+            filter = filterState.durationFilter.first,
+            state = filterState.durationFilter.second,
+            updateSelection = {
+                updateFilter(filterState.copy(durationFilter = Pair(filterState.durationFilter.first, it)))
+            },
         )
-        binding.rsMinRating.addOnChangeListener { slider, _, _ ->
-            filterViewModel.mutate(
-                Filter(
-                    slider.values[0],
-                    slider.values[1],
-                    filterViewModel.get().value.minWeightValue,
-                    filterViewModel.get().value.maxWeightValue
-                )
-            )
-        }
-        binding.rsMinWeight.setValues(
-            filterViewModel.get().value.minWeightValue,
-            filterViewModel.get().value.maxWeightValue
+        RangeSliderComponent(
+            titleRes = R.string.rs_min_rating,
+            filter = filterState.ratingFilter.first,
+            state = filterState.ratingFilter.second,
+            updateSelection = {
+                updateFilter(filterState.copy(ratingFilter = Pair(filterState.ratingFilter.first, it)))
+            },
         )
-        binding.rsMinWeight.addOnChangeListener { slider, _, _ ->
-            filterViewModel.mutate(
-                Filter(
-                    filterViewModel.get().value.minRatingValue,
-                    filterViewModel.get().value.maxRatingValue,
-                    slider.values[0],
-                    slider.values[1]
-                )
-            )
-        }
+        RangeSliderComponent(
+            titleRes = R.string.rs_min_weight,
+            filter = filterState.weightFilter.first,
+            state = filterState.weightFilter.second,
+            updateSelection = {
+                updateFilter(filterState.copy(weightFilter = Pair(filterState.weightFilter.first, it)))
+            },
+        )
     }
 }

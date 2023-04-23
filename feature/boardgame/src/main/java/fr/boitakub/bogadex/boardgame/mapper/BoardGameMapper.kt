@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021-2022, Boitakub
+ * Copyright (c) 2021-2023, Boitakub
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -31,6 +31,7 @@ package fr.boitakub.bogadex.boardgame.mapper
 import fr.boitakub.architecture.Mapper
 import fr.boitakub.bgg.client.BoardGameHelper
 import fr.boitakub.bgg.client.Poll
+import fr.boitakub.bgg.client.PollResult
 import fr.boitakub.bgg.client.Statistics
 import fr.boitakub.bogadex.boardgame.model.BoardGame
 import fr.boitakub.bogadex.boardgame.model.BoardGameBggStatistic
@@ -87,49 +88,66 @@ class BoardGameMapper @Inject constructor() :
     }
 
     private fun mapRecommendedPlayer(source: List<Poll>?, maxPlayers: Int, minVote: Int = 10): List<Int> {
-        var intermediate = mutableMapOf<Int?, Int>()
+        val intermediate = mutableMapOf<Int?, Int>()
         source?.forEach { poll ->
             if (poll.name == "suggested_numplayers" && poll.totalvotes > minVote) {
                 poll.results?.forEach { pollResult ->
-                    val numPlayers = pollResult.numplayers.ifPlus(maxPlayers)
-                    val bestScore = pollResult.results?.singleOrNull { it.value == BEST_AT_VALUE }?.numvotes
-                    val recommendedScore =
-                        pollResult.results?.singleOrNull { it.value == RECOMMENDED_AT_VALUE }?.numvotes
-                    val notRecommendedScore =
-                        pollResult.results?.singleOrNull { it.value == NOT_RECOMMENDED_AT_VALUE }?.numvotes
-
-                    var score = 0
-                    if (bestScore != null) {
-                        score += (bestScore * 5)
-                    }
-                    if (recommendedScore != null) {
-                        score += (recommendedScore * 3)
-                    }
-                    if (notRecommendedScore != null) {
-                        score += (notRecommendedScore * -1)
-                    }
-                    intermediate[numPlayers!!.toIntOrNull()] = score
+                    mapNumPlayers(pollResult, maxPlayers, intermediate)
                 }
             }
         }
         return intermediate.toList().sortedByDescending { it.second }.map { it.first }.filterNotNull()
     }
 
+    private fun mapNumPlayers(
+        pollResult: PollResult,
+        maxPlayers: Int,
+        intermediate: MutableMap<Int?, Int>,
+    ) {
+        val numPlayers = pollResult.numplayers.ifPlus(maxPlayers)
+        val bestScore = pollResult.results?.singleOrNull { it.value == BEST_AT_VALUE }?.numvotes
+        val recommendedScore =
+            pollResult.results?.singleOrNull { it.value == RECOMMENDED_AT_VALUE }?.numvotes
+        val notRecommendedScore =
+            pollResult.results?.singleOrNull { it.value == NOT_RECOMMENDED_AT_VALUE }?.numvotes
+
+        var score = 0
+        if (bestScore != null) {
+            score += (bestScore * 5)
+        }
+        if (recommendedScore != null) {
+            score += (recommendedScore * 3)
+        }
+        if (notRecommendedScore != null) {
+            score += (notRecommendedScore * -1)
+        }
+        intermediate[numPlayers!!.toIntOrNull()] = score
+    }
+
     private fun mapRecommendedAge(source: List<Poll>?, minVote: Int = 10): List<Int> {
         var table = listOf<Int>()
         source?.forEach { poll ->
             if (poll.name == "suggested_playerage" && poll.totalvotes > minVote) {
-                poll.results?.forEach { result ->
-                    result.results?.let { results ->
-                        table = results
-                            .sortedByDescending { it.numvotes }
-                            .filter { !it.value.isNullOrBlank() }
-                            .mapNotNull { tryParse(it.value) }
-                    }
-                }
+                table = mapPlayerAge(poll, table)
             }
         }
         return table
+    }
+
+    private fun mapPlayerAge(
+        poll: Poll,
+        table: List<Int>
+    ): List<Int> {
+        var table1 = table
+        poll.results?.forEach { result ->
+            result.results?.let { results ->
+                table1 = results
+                    .sortedByDescending { it.numvotes }
+                    .filter { !it.value.isNullOrBlank() }
+                    .mapNotNull { tryParse(it.value) }
+            }
+        }
+        return table1
     }
 
     private fun tryParse(stringValue: String?): Int? {

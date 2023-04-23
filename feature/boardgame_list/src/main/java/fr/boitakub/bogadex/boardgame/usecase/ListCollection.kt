@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021-2022, Boitakub
+ * Copyright (c) 2021-2023, Boitakub
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -32,33 +32,68 @@ import fr.boitakub.architecture.UseCase
 import fr.boitakub.bogadex.boardgame.BoardGameCollectionRepository
 import fr.boitakub.bogadex.boardgame.model.CollectionItemWithDetails
 import fr.boitakub.bogadex.common.UserSettings
+import fr.boitakub.bogadex.filter.FilterState
 import fr.boitakub.bogadex.filter.FilterViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flatMapLatest
 import javax.inject.Inject
 
 open class ListCollection @Inject constructor(
     private val repository: BoardGameCollectionRepository,
     private val filterViewModel: FilterViewModel,
-    private val userSettings: UserSettings,
+    private val userSettingsFlow: Flow<UserSettings>,
 ) : UseCase<Flow<List<CollectionItemWithDetails>>, String> {
-    override fun apply(input: String): Flow<List<CollectionItemWithDetails>> {
-        return repository.get(input)
-            .combine(filterViewModel.get()) { collectionList, filter ->
-                // Apply session filters
-                collectionList.filter { item ->
-                    item.averageRating() in filter.minRatingValue..filter.maxRatingValue &&
-                        item.averageWeight() in filter.minWeightValue..filter.maxWeightValue
-                }
-                    .filter {
-                        // Apply global app filters
-                        if (!userSettings.displayPreviouslyOwned) {
-                            !it.item.status.previouslyOwned
-                        } else {
-                            true
-                        }
+    override fun apply(): Flow<List<CollectionItemWithDetails>> {
+        return userSettingsFlow
+            .flatMapLatest { userSettings ->
+                repository.get(userSettings.bggUserName)
+                    .combine(filterViewModel.filter) { collectionList, filter ->
+                        // Apply session filters
+                        collectionList.asSequence().filter { item ->
+                            ratingFilter(item, filter)
+                        }.filter { item ->
+                            weightFilter(item, filter)
+                        }.filter { item ->
+                            durationFilter(item, filter)
+                        }.filter {
+                            // Apply global app filters
+                            if (!userSettings.displayPreviouslyOwned) {
+                                !it.item.status.previouslyOwned
+                            } else {
+                                true
+                            }
+                        }.filter { item ->
+                            searchTermFilter(filter, item)
+                        }.toList()
+                        // Apply grouping
                     }
-                // Apply grouping
             }
     }
+
+    private fun searchTermFilter(
+        filter: FilterState,
+        item: CollectionItemWithDetails,
+    ) = if (filter.searchTerms.isNotBlank()) {
+        item.item.title?.contains(filter.searchTerms.lowercase()) == true || item.details?.title?.contains(
+            filter.searchTerms.lowercase(),
+        ) == true
+    } else {
+        true
+    }
+
+    private fun ratingFilter(
+        item: CollectionItemWithDetails,
+        filter: FilterState,
+    ) = item.averageRating() in filter.ratingFilter.second.minValue..filter.ratingFilter.second.maxValue
+
+    private fun weightFilter(
+        item: CollectionItemWithDetails,
+        filter: FilterState,
+    ) = item.averageWeight() in filter.weightFilter.second.minValue..filter.weightFilter.second.maxValue
+
+    private fun durationFilter(
+        item: CollectionItemWithDetails,
+        filter: FilterState,
+    ) = item.averageDuration() in filter.durationFilter.second.minValue..filter.durationFilter.second.maxValue
 }

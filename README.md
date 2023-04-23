@@ -27,7 +27,7 @@ Also dealing with data (from <a href="https://www.boardgamegeek.com/">BoardGameG
 </br>
 
 <p align="center">
-<img src="/docs/assets/screenshot.png" height="300" alt="Bogadex - Screenshot"/>
+<img src="/docs/assets/capture_1.gif" height="500" alt="Bogadex - Screenshot"/>
 </p>
 
 ## Download 📲
@@ -42,23 +42,21 @@ Go to the [Releases](https://github.com/boitakub/Bogadex/releases) to download t
 ## Tech Stack & Libraries 🧬
 
 This project takes advantage of best practices, and many popular libraries and tools in the Android ecosystem.
-- [Kotlin](https://kotlinlang.org/)
+- [Kotlin](https://kotlinlang.org/) - 100% Kotlin - Code and Scripts
 - [Flow](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/) for asynchronous.
 - Lifecycle - dispose of observing data when lifecycle state changes.
 - ViewModel - UI related data holder, lifecycle aware.
 - [Hilt-Dagger](https://dagger.dev/hilt/) for dependency injection.
 - [JetPack](https://developer.android.com/jetpack)
-  * 🚧 [Compose](https://developer.android.com/jetpack/compose?hl=fr) to build UI
+  * [Compose](https://developer.android.com/jetpack/compose?hl=fr) - UI build 100% with Jetpack Compose
   * [WorkManager](https://developer.android.com/topic/libraries/architecture/workmanager) - Updating and maintaining data up-to-date periodically and asynchronous
-  * 🚧 [DataStore](https://developer.android.com/topic/libraries/architecture/datastore) - for light storage
-  * [Room](https://developer.android.com/training/data-storage/room) - Database for rich storage
+  * [DataStore](https://developer.android.com/topic/libraries/architecture/datastore) - for shared preferences
+  * [Room](https://developer.android.com/training/data-storage/room) - Database for cache / offline storage
 
-- [Material You](https://m3.material.io/) - Using Material Design 3
-  * [App bars: bottom](https://material.io/components/app-bars-bottom)
-  * [Dark Mode](https://developer.android.com/guide/topics/ui/look-and-feel/darktheme) - Generate theme trough [Material Theme Builder](https://material-foundation.github.io/material-theme-builder/#/dynamic)
+- [Material 3](https://m3.material.io/) - Using Material Design 3
+  * [Dark Mode](https://developer.android.com/guide/topics/ui/look-and-feel/darktheme) - Generate theme trough [Material Theme Builder](https://m3.material.io/theme-builder#/dynamic)
 - [Retrofit2 & OkHttp3](https://github.com/square/retrofit) - construct the REST APIs and paging network data.
-- [Coil](https://github.com/coil-kt/coil) - loading images.
-- [Material-Components](https://github.com/material-components/material-components-android) - Material design components like ripple animation, cardView.
+- [Coil](https://github.com/coil-kt/coil) - Async images management.
 
 
 - [SonarCloud](https://sonarcloud.io/project/overview?id=boitakub_Bogadex) - Code quality and coverage analysis
@@ -100,9 +98,10 @@ Before committing your code, run `./gradlew app:spotlessApply` to automatically 
 ## Architecture 📐
 
 Bogadex is based on MVVM architecture and a repository pattern with a modular approach.
-- MVVM Architecture (View - DataBinding - ViewModel - Model)
+- MVVM -> MVI Architecture (View - ViewModel - Model)
 - Business oriented with UseCases pattern - [By layer or feature? Why not both?! Guide to Android app modularization](https://www.youtube.com/watch?v=16SwTvzDO0A)
 - Repository pattern
+- UI 100% Jetpack compose
 
 Concerns are separate by modules containing feature
 ![Design by features](docs/assets/design_by_feature.png)

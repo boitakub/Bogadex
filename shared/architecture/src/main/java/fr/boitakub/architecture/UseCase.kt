@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021, Boitakub
+ * Copyright (c) 2021-2023, Boitakub
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -35,7 +35,7 @@ package fr.boitakub.architecture
  * - Use Case : Re-direct the parcel which are not on my area
  * - Use Case : Destroy dangerous parcels (and notify the customer in a customer usecase)
  */
-interface UseCase<O, I> {
+fun interface UseCase<O, I> {
 
-    fun apply(input: I): O
+    fun apply(): O
 }

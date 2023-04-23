@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021-2022, Boitakub
+ * Copyright (c) 2021-2023, Boitakub
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,39 +29,68 @@
 package fr.boitakub.bogadex.tests
 
 import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.PreferenceDataStoreFactory
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.preferencesDataStoreFile
+import coil.Coil
 import coil.ImageLoader
+import coil.test.FakeImageLoaderEngine
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import dagger.hilt.testing.TestInstallIn
 import fr.boitakub.bogadex.BogadexApplicationModule
-import fr.boitakub.bogadex.tests.tools.CoilFakeImageLoader
+import fr.boitakub.bogadex.preferences.PreferencesModule
+import fr.boitakub.bogadex.preferences.user.UserSettingsRepository
 import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrl
-import okhttp3.OkHttpClient
 import javax.inject.Singleton
+import kotlin.random.Random
 
 @Module
 @TestInstallIn(
     components = [SingletonComponent::class],
-    replaces = [BogadexApplicationModule::class]
+    replaces = [BogadexApplicationModule::class, PreferencesModule::class]
 )
 class FakeDataServiceModule : BogadexApplicationModule() {
 
     override fun baseUrl(): HttpUrl {
-        return "http://localhost:8080/".toHttpUrl()
+        return "http://127.0.0.1:8080".toHttpUrl()
     }
 
     override fun imageLoader(context: Context): ImageLoader {
-        return CoilFakeImageLoader(context)
+        val engine = FakeImageLoaderEngine.Builder()
+            .intercept("https://www.example.com/image.jpg", ColorDrawable(Color.RED))
+            .intercept({ it is String && it.endsWith("test.png") }, ColorDrawable(Color.GREEN))
+            .default(ColorDrawable(Color.BLUE))
+            .build()
+        val imageLoader = ImageLoader.Builder(context)
+            .components { add(engine) }
+            .build()
+        Coil.setImageLoader(imageLoader)
+        return imageLoader
+    }
+
+    @Singleton
+    @Provides
+    fun provideFakePreferences(
+        @ApplicationContext context: Context,
+    ): DataStore<Preferences> {
+        val random = Random.nextInt()
+        return PreferenceDataStoreFactory
+            .create(
+                produceFile = {
+                    // creating a new file for every test case and finally
+                    // deleting them all
+                    context.preferencesDataStoreFile("test_pref_file-$random")
+                }
+            )
     }
 
     @Provides
-    @Singleton
-    fun provideIdlingResource(okHttpClient: OkHttpClient): OkHttp3IdlingResource {
-        return OkHttp3IdlingResource.create(
-            "okhttp",
-            okHttpClient
-        )
-    }
+    fun provideUserSetting(userSettingsRepository: UserSettingsRepository) = userSettingsRepository.userSettings()
 }

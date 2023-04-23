@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022, Boitakub
+ * Copyright (c) 2022-2023, Boitakub
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -40,10 +40,11 @@ import javax.inject.Inject
 class ListCollectionFiller @Inject constructor(
     private val repository: BoardGameCollectionRepository,
     private val filterViewModel: FilterViewModel,
-    private val userSettings: UserSettings,
-) : UseCase<Flow<List<CollectionItemWithDetails>>, String>, ListCollection(repository, filterViewModel, userSettings) {
-    override fun apply(input: String): Flow<List<CollectionItemWithDetails>> {
-        return super.apply(input).map {
+    private val userSettingsFlow: Flow<UserSettings>,
+) : UseCase<Flow<List<CollectionItemWithDetails>>, String>,
+    ListCollection(repository, filterViewModel, userSettingsFlow) {
+    override fun apply(): Flow<List<CollectionItemWithDetails>> {
+        return super.apply().map {
             it.filter { item ->
                 item.minPlayTime() in 5..45 &&
                     item.maxPlayTime() in 5..45 &&
