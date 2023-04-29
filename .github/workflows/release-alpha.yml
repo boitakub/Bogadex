@@ -59,9 +59,7 @@ jobs:
         uses: marvinpinto/action-automatic-releases@latest
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          prerelease: true
-          title: "[Alpha] Bogadex"
-          automatic_release_tag: "alpha"
+          title: "Bogadex"
           files: |
             **/release/*-release.apk
             **/release/*-release.aab
