@@ -66,6 +66,6 @@ data class BoardGame(
     }
 
     companion object {
-        const val MAX_DIFF_IN_DAYS = 15
+        const val MAX_DIFF_IN_DAYS = 7
     }
 }
