@@ -30,6 +30,7 @@ package fr.boitakub.bogadex.boardgame.ui.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -217,27 +218,18 @@ private fun RatingSection(item: CollectionItemWithDetails) {
 }
 
 @Composable
-fun getWeightColor(averageWeight: Float?): Color {
+fun getWeightColor(averageWeight: Float?, isLight: Boolean = isSystemInDarkTheme()): Color {
     if (averageWeight == null) {
         return MaterialTheme.colorScheme.secondary
     }
-    var color = colorResource(android.R.color.white)
-    if (averageWeight in 0F..1.2F) {
-        color = colorResource(R.color.weight_very_easy)
+    return when (averageWeight) {
+        in 0F..1.2F -> colorResource(R.color.weight_very_easy)
+        in 1.2F..2.4F -> colorResource(R.color.weight_easy)
+        in 2.4F..3.0F -> colorResource(R.color.weight_normal)
+        in 3.0F..3.9F -> colorResource(R.color.weight_hard)
+        in 3.9F..5F -> if (isLight) colorResource(android.R.color.white) else colorResource(android.R.color.black)
+        else -> if (isLight) colorResource(android.R.color.white) else colorResource(android.R.color.black)
     }
-    if (averageWeight in 1.2F..2.4F) {
-        color = colorResource(R.color.weight_easy)
-    }
-    if (averageWeight in 2.4F..3.0F) {
-        color = colorResource(R.color.weight_normal)
-    }
-    if (averageWeight in 3.0F..3.9F) {
-        color = colorResource(R.color.weight_hard)
-    }
-    if (averageWeight in 3.9F..5F) {
-        color = colorResource(R.color.weight_very_hard)
-    }
-    return color
 }
 
 class PolyShape(private val sides: Int, private val radius: Float) : Shape {
