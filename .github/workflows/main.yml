@@ -28,7 +28,7 @@ jobs:
         uses: actions/setup-java@v3
         with:
           distribution: 'adopt'
-          java-version: '11'
+          java-version: '17'
 
       - name: 🏭 Cache SonarCloud packages
         uses: actions/cache@v3
@@ -101,7 +101,7 @@ jobs:
         uses: actions/setup-java@v3
         with:
           distribution: 'adopt'
-          java-version: '11'
+          java-version: '17'
 
       # Decode Google services configuration file from secrets
       - name: 🔐 Decode google-services.json
@@ -148,7 +148,7 @@ jobs:
         uses: actions/setup-java@v3
         with:
           distribution: 'adopt'
-          java-version: '11'
+          java-version: '17'
 
       # Decode Google services configuration file from secrets
       - name: 🔐 Decode google-services.json

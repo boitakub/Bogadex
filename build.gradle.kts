@@ -1,7 +1,7 @@
 plugins {
     id("io.gitlab.arturbosch.detekt") version "1.19.0"
     id("com.diffplug.spotless") version "6.3.0"
-    id("nl.neotech.plugin.rootcoverage") version "1.6.0"
+    // id("nl.neotech.plugin.rootcoverage") version "1.6.0" // TODO: Fix coverage / Wait for Gradle 8 compatibility
     id("org.sonarqube") version "3.5.0.2730"
 }
 
@@ -16,7 +16,7 @@ buildscript {
     }
     dependencies {
         // -- Core plugins
-        classpath("com.android.tools.build:gradle:7.4.2")
+        classpath("com.android.tools.build:gradle:8.0.2")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
 
         // -- Application plugins
@@ -38,27 +38,27 @@ sonarqube {
     }
 }
 
-rootCoverage {
-    // Class & package exclude patterns
-    excludes = listOf("**/*Hilt*.**", "**/*Generated*.**")
-
-    // Since 1.1 generateHtml is by default true
-    generateCsv = true
-    generateHtml = true
-    generateXml = true
-
-    // Since 1.2: Same as executeTests except that this only affects the instrumented Android tests
-    executeAndroidTests = true
-
-    // Since 1.2: Same as executeTests except that this only affects the unit tests
-    executeUnitTests = true
-
-    // Since 1.2: When true include results from instrumented Android tests into the coverage report
-    includeAndroidTestResults = true
-
-    // Since 1.2: When true include results from unit tests into the coverage report
-    includeUnitTestResults = true
-}
+// rootCoverage {
+//    // Class & package exclude patterns
+//    excludes = listOf("**/*Hilt*.**", "**/*Generated*.**")
+//
+//    // Since 1.1 generateHtml is by default true
+//    generateCsv = true
+//    generateHtml = true
+//    generateXml = true
+//
+//    // Since 1.2: Same as executeTests except that this only affects the instrumented Android tests
+//    executeAndroidTests = true
+//
+//    // Since 1.2: Same as executeTests except that this only affects the unit tests
+//    executeUnitTests = true
+//
+//    // Since 1.2: When true include results from instrumented Android tests into the coverage report
+//    includeAndroidTestResults = true
+//
+//    // Since 1.2: When true include results from unit tests into the coverage report
+//    includeUnitTestResults = true
+// }
 
 allprojects {
     apply(plugin = "io.gitlab.arturbosch.detekt")
