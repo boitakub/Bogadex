@@ -97,7 +97,7 @@ fun BoardGameRecommendInfo(
             Icon(
                 modifier = Modifier.size(16.dp),
                 imageVector = ImageVector.vectorResource(id = iconRes),
-                contentDescription = stringResource(id = R.string.recommended_players),
+                contentDescription = stringResource(id = fr.boitakub.bogadex.common.R.string.recommended_players),
                 tint = tintColor,
             )
             Text(

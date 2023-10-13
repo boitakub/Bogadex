@@ -139,24 +139,24 @@ private fun SettingsContent(
         verticalArrangement = Arrangement.spacedBy(8.dp),
         content = {
             ClickableLineComponent(
-                iconRes = R.drawable.ic_user_solid,
-                titleRes = R.string.bgg_username,
-                subtitleRes = R.string.bgg_username_summary,
+                iconRes = fr.boitakub.bogadex.common.R.drawable.ic_user_solid,
+                titleRes = fr.boitakub.bogadex.common.R.string.bgg_username,
+                subtitleRes = fr.boitakub.bogadex.common.R.string.bgg_username_summary,
                 onClick = onBggUsernameClick,
             )
             SwitchComponent(
-                iconRes = R.drawable.ic_person_carry_box_solid,
-                titleRes = R.string.filter_previously_own,
-                subtitleRes = R.string.filter_previously_own_summary,
+                iconRes = fr.boitakub.bogadex.common.R.drawable.ic_person_carry_box_solid,
+                titleRes = fr.boitakub.bogadex.common.R.string.filter_previously_own,
+                subtitleRes = fr.boitakub.bogadex.common.R.string.filter_previously_own_summary,
                 previousState = state.displayPreviouslyOwned,
                 updateSelection = {
                     viewModel.updateFilterPreviouslyOwned(it)
                 },
             )
             ClickableLineComponent(
-                iconRes = R.drawable.ic_eclipse_solid,
-                titleRes = R.string.pref_night_title,
-                subtitleRes = R.string.pref_night_summary,
+                iconRes = fr.boitakub.bogadex.common.R.drawable.ic_eclipse_solid,
+                titleRes = fr.boitakub.bogadex.common.R.string.pref_night_title,
+                subtitleRes = fr.boitakub.bogadex.common.R.string.pref_night_summary,
                 onClick = onThemeSelectionClick,
             )
         },
@@ -174,7 +174,7 @@ fun BggUsernameTextDialog(
     TextDialog(
         title = {
             Text(
-                text = stringResource(id = R.string.bgg_username),
+                text = stringResource(id = fr.boitakub.bogadex.common.R.string.bgg_username),
                 style = MaterialTheme.typography.headlineSmall,
             )
         },
@@ -212,7 +212,7 @@ fun ThemeListDialog(
     TextDialog(
         title = {
             Text(
-                text = stringResource(id = R.string.pref_night_title),
+                text = stringResource(id = fr.boitakub.bogadex.common.R.string.pref_night_title),
                 style = MaterialTheme.typography.headlineSmall,
             )
         },
@@ -408,12 +408,12 @@ fun TopBar(
         }) {
             Icon(
                 imageVector = Icons.Default.ArrowBack,
-                contentDescription = stringResource(id = R.string.back),
+                contentDescription = stringResource(id = fr.boitakub.bogadex.common.R.string.back),
                 tint = MaterialTheme.colorScheme.primary,
             )
         }
         Text(
-            text = stringResource(id = R.string.settings),
+            text = stringResource(id = fr.boitakub.bogadex.common.R.string.settings),
             style = MaterialTheme.typography.titleLarge,
             textAlign = TextAlign.Start,
             maxLines = 1,

@@ -37,11 +37,11 @@ enum class CollectionType(
     @StringRes val labelRes: Int,
     @DrawableRes val iconRes: Int,
 ) {
-    ALL("all", R.string.display_all, R.drawable.ic_clear_all_24),
-    MY_COLLECTION("collection", R.string.display_collection, R.drawable.ic_outline_all_inbox_24),
-    WISHLIST("wishlist", R.string.display_wishlist, R.drawable.ic_outline_shopping_cart_24),
-    SOLO("solo", R.string.display_solo, R.drawable.ic_user_solid),
-    FILLER("filler", R.string.display_filler, R.drawable.ic_stopwatch_solid),
+    ALL("all", fr.boitakub.bogadex.common.R.string.display_all, R.drawable.ic_clear_all_24),
+    MY_COLLECTION("collection", fr.boitakub.bogadex.common.R.string.display_collection, R.drawable.ic_outline_all_inbox_24),
+    WISHLIST("wishlist", fr.boitakub.bogadex.common.R.string.display_wishlist, R.drawable.ic_outline_shopping_cart_24),
+    SOLO("solo", fr.boitakub.bogadex.common.R.string.display_solo, fr.boitakub.bogadex.common.R.drawable.ic_user_solid),
+    FILLER("filler", fr.boitakub.bogadex.common.R.string.display_filler, R.drawable.ic_stopwatch_solid),
     ;
 
     companion object {

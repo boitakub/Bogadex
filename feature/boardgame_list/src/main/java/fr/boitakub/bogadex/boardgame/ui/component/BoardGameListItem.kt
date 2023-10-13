@@ -110,7 +110,7 @@ fun BoardGameListItem(
                 Icon(
                     modifier = Modifier.padding(4.dp).size(16.dp),
                     imageVector = ImageVector.vectorResource(id = R.drawable.ic_puzzle_piece_solid),
-                    contentDescription = stringResource(id = R.string.expansion_icon),
+                    contentDescription = stringResource(id = fr.boitakub.bogadex.common.R.string.expansion_icon),
                     tint = MaterialTheme.colorScheme.secondary,
                 )
             }

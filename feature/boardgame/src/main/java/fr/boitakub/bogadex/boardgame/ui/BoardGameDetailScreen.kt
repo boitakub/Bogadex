@@ -111,7 +111,7 @@ fun TopBar(
         }) {
             Icon(
                 imageVector = Icons.Default.ArrowBack,
-                contentDescription = stringResource(id = R.string.back),
+                contentDescription = stringResource(id = fr.boitakub.bogadex.common.R.string.back),
                 tint = MaterialTheme.colorScheme.primary,
             )
         }
@@ -194,7 +194,7 @@ private fun GameDetailLinks(
                 }
             },
         ) {
-            Text(resources.getString(R.string.link_to_boardgamegeek))
+            Text(resources.getString(fr.boitakub.bogadex.common.R.string.link_to_boardgamegeek))
         }
         Button(
             modifier = Modifier.padding(4.dp),
@@ -210,7 +210,7 @@ private fun GameDetailLinks(
                 }
             },
         ) {
-            Text(resources.getString(R.string.link_to_bgstats))
+            Text(resources.getString(fr.boitakub.bogadex.common.R.string.link_to_bgstats))
         }
     }
 }

@@ -84,7 +84,7 @@ fun SearchInputField(
         leadingIcon = {
             Icon(
                 imageVector = Icons.Default.Search,
-                contentDescription = stringResource(id = R.string.decorative_image),
+                contentDescription = stringResource(id = fr.boitakub.bogadex.common.R.string.decorative_image),
             )
         },
         trailingIcon = {
@@ -95,7 +95,7 @@ fun SearchInputField(
                 }) {
                     Icon(
                         imageVector = Icons.Default.Close,
-                        contentDescription = stringResource(id = R.string.searchbar_clear),
+                        contentDescription = stringResource(id = fr.boitakub.bogadex.common.R.string.searchbar_clear),
                     )
                 }
             }
@@ -106,7 +106,7 @@ fun SearchInputField(
         },
         maxLines = 1,
         singleLine = true,
-        placeholder = { Text(text = stringResource(id = R.string.searchbar_hint)) },
+        placeholder = { Text(text = stringResource(id = fr.boitakub.bogadex.common.R.string.searchbar_hint)) },
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Text,
         ),

@@ -110,7 +110,7 @@ fun BoardGameCollectionScreen(
                     imageVector = ImageVector.vectorResource(id = R.drawable.ic_filter_solid),
                     contentDescription = "Add FAB",
                 )
-                Text(modifier = Modifier.padding(start = 8.dp), text = stringResource(id = R.string.filters))
+                Text(modifier = Modifier.padding(start = 8.dp), text = stringResource(id = fr.boitakub.bogadex.common.R.string.filters))
             }
         },
     ) { padding ->
@@ -213,7 +213,7 @@ private fun TopBar(
             }) {
                 Icon(
                     imageVector = Icons.Default.List,
-                    contentDescription = stringResource(id = R.string.change_display),
+                    contentDescription = stringResource(id = fr.boitakub.bogadex.common.R.string.change_display),
                     tint = MaterialTheme.colorScheme.primary,
                 )
             }
@@ -222,7 +222,7 @@ private fun TopBar(
             }) {
                 Icon(
                     imageVector = Icons.Default.Settings,
-                    contentDescription = stringResource(id = R.string.settings),
+                    contentDescription = stringResource(id = fr.boitakub.bogadex.common.R.string.settings),
                     tint = MaterialTheme.colorScheme.primary,
                 )
             }
