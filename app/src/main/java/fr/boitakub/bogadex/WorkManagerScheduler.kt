@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021-2023, Boitakub
+ * Copyright (c) 2023, Boitakub
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,45 +26,48 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package fr.boitakub.bogadex.boardgame.usecase
+package fr.boitakub.bogadex
 
 import android.content.Context
 import androidx.work.Constraints
-import androidx.work.Data
+import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.NetworkType
-import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.PeriodicWorkRequest
 import androidx.work.WorkManager
-import dagger.hilt.android.qualifiers.ApplicationContext
-import fr.boitakub.bogadex.boardgame.UpdateBoardGameIntentWorker
-import fr.boitakub.bogadex.boardgame.model.CollectionItemWithDetails
-import javax.inject.Inject
-import javax.inject.Singleton
+import java.util.concurrent.TimeUnit
 
-@Singleton
-class RefreshGameDetails @Inject constructor(@ApplicationContext val context: Context) {
+object WorkManagerScheduler {
+    fun upsetMissingBoardGame(context: Context) {
+        val myConstraints = Constraints.Builder()
+            .setRequiredNetworkType(NetworkType.CONNECTED)
+            .build()
 
-    var scheduledRefresh = SCHEDULED_REFRESH_START
+        val work = PeriodicWorkRequest.Builder(UpsetMissingBoardGameWork::class.java, 15, TimeUnit.MINUTES)
+            .setConstraints(myConstraints)
+            .addTag("UpsetMissingBoardGameWork")
+            .build()
 
-    fun apply(input: CollectionItemWithDetails) {
-        if (scheduledRefresh < SCHEDULED_REFRESH_MAX) {
-            val data = Data.Builder()
-            data.putString("bggId", input.item.bggId)
-
-            val request = OneTimeWorkRequestBuilder<UpdateBoardGameIntentWorker>()
-                .addTag("Sync")
-                .setInputData(data.build())
-                .setConstraints(
-                    Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build(),
-                )
-                .build()
-
-            scheduledRefresh++
-            WorkManager.getInstance(context).enqueue(request)
-        }
+        WorkManager.getInstance(context).enqueueUniquePeriodicWork(
+            "UpsetMissingBoardGameWork",
+            ExistingPeriodicWorkPolicy.UPDATE,
+            work,
+        )
     }
+    fun refreshUpdateExistingBoardGameWork(context: Context) {
+        val myConstraints = Constraints.Builder()
+            .setRequiredNetworkType(NetworkType.CONNECTED)
+            .setRequiresCharging(true)
+            .build()
 
-    companion object {
-        const val SCHEDULED_REFRESH_START = 0
-        const val SCHEDULED_REFRESH_MAX = 20
+        val work = PeriodicWorkRequest.Builder(UpdateExistingBoardGameWork::class.java, 24, TimeUnit.HOURS)
+            .setConstraints(myConstraints)
+            .addTag("UpdateExistingBoardGameWork")
+            .build()
+
+        WorkManager.getInstance(context).enqueueUniquePeriodicWork(
+            "UpdateExistingBoardGameWork",
+            ExistingPeriodicWorkPolicy.UPDATE,
+            work,
+        )
     }
 }

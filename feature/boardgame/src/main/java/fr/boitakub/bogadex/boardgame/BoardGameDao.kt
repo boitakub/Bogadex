@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021, Boitakub
+ * Copyright (c) 2021-2023, Boitakub
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -37,6 +37,9 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface BoardGameDao {
+
+    @Query("SELECT * FROM boardgame ORDER BY update_date DESC")
+    fun getBoardGameByUpdateDate(): List<BoardGame>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAllBoardGame(boardGames: List<BoardGame>)

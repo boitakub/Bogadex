@@ -59,7 +59,9 @@ dependencies {
     val roomVersion: String by project
     val workVersion: String by project
     val junitVersion: String by project
+    val testCoreVersion: String by project
     val espressoVersion: String by project
+    val mockkVersion: String by project
 
     implementation(project(":common"))
     implementation(project(":shared:architecture"))
@@ -123,7 +125,18 @@ dependencies {
 
     //region AndroidTest
 
+    androidTestImplementation(project(":shared:tests_tools"))
+
+    androidTestImplementation("androidx.test:core-ktx:$testCoreVersion")
     androidTestImplementation("androidx.test.espresso:espresso-core:$espressoVersion")
+
+    androidTestImplementation("io.mockk:mockk-android:$mockkVersion")
+    androidTestImplementation("io.mockk:mockk-agent:$mockkVersion")
+
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4:$composeVersion")
+    debugImplementation("androidx.compose.ui:ui-test-manifest:$composeVersion")
+
+    androidTestImplementation("androidx.work:work-testing:$workVersion")
 
     //endregion
 }

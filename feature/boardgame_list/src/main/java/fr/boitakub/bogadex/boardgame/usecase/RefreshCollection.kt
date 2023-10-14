@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021-2023, Boitakub
+ * Copyright (c) 2023, Boitakub
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,44 +26,6 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package fr.boitakub.bogadex.boardgame
+package fr.boitakub.bogadex.boardgame.usecase
 
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
-import androidx.room.Transaction
-import fr.boitakub.bogadex.boardgame.model.CollectionItem
-import fr.boitakub.bogadex.boardgame.model.CollectionItemWithDetails
-import kotlinx.coroutines.flow.Flow
-
-@Dao
-interface BoardGameListDao {
-
-    @Query("SELECT * FROM collection_item")
-    fun getAll(): Flow<List<CollectionItem>>
-
-    @Transaction
-    @Query("SELECT * FROM collection_item")
-    fun collectionWithDetailsFlow(): Flow<List<CollectionItemWithDetails>>
-
-    @Transaction
-    @Query("SELECT * FROM collection_item")
-    fun collectionWithDetails(): List<CollectionItemWithDetails>
-
-    @Transaction
-    suspend fun updateCollection(boardGames: List<CollectionItem>) {
-        deleteCollectionItemTable()
-        insertAllCollectionItem(boardGames)
-    }
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAllCollectionItem(boardGames: List<CollectionItem>)
-
-    @Query("DELETE FROM collection_item")
-    fun deleteCollectionItemTable()
-
-    @Delete
-    suspend fun delete(boardGame: CollectionItem)
-}
+class RefreshCollection

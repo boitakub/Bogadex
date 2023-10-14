@@ -26,7 +26,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package fr.boitakub.bogadex.boardgame
+package fr.boitakub.bogadex.tests
 
 import android.content.Context
 import androidx.test.core.app.ApplicationProvider
@@ -37,7 +37,9 @@ import androidx.work.testing.TestListenableWorkerBuilder
 import com.tickaroo.tikxml.TikXml
 import fr.boitakub.bgg.client.BggGameInfoResult
 import fr.boitakub.bgg.client.BggService
+import fr.boitakub.bogadex.boardgame.BoardGameDao
 import fr.boitakub.bogadex.boardgame.mapper.BoardGameMapper
+import fr.boitakub.bogadex.boardgame.work.RetrieveMissingBoardGameWork
 import fr.boitakub.bogadex.tests.tools.FileReader.readStringFromFile
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
@@ -50,7 +52,7 @@ import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Before
 import org.junit.Test
 
-class UpdateBoardGameIntentWorkerImplementationTest {
+class RetrieveMissingBoardGameWorkImplementationTest {
     private lateinit var context: Context
 
     @MockK
@@ -59,13 +61,19 @@ class UpdateBoardGameIntentWorkerImplementationTest {
     @MockK
     lateinit var service: BggService
 
-    class UpdateBoardGameIntentWorkerFactory(private val dao: BoardGameDao, val service: BggService) : WorkerFactory() {
+    class RetrieveMissingBoardGameWorkFactory(private val dao: BoardGameDao, val service: BggService) : WorkerFactory() {
         override fun createWorker(
             appContext: Context,
             workerClassName: String,
             workerParameters: WorkerParameters
         ): ListenableWorker {
-            return UpdateBoardGameIntentWorker(appContext, workerParameters, service, dao, BoardGameMapper())
+            return RetrieveMissingBoardGameWork(
+                appContext,
+                workerParameters,
+                service,
+                dao,
+                BoardGameMapper()
+            )
         }
     }
 
@@ -85,8 +93,8 @@ class UpdateBoardGameIntentWorkerImplementationTest {
     fun updateBoardGameIntentWorker_should_returnSuccess() {
         coEvery { service.boardGame(any()) } answers { readStubData("86246") }
 
-        val worker = TestListenableWorkerBuilder<UpdateBoardGameIntentWorker>(context)
-            .setWorkerFactory(UpdateBoardGameIntentWorkerFactory(dao, service))
+        val worker = TestListenableWorkerBuilder<RetrieveMissingBoardGameWork>(context)
+            .setWorkerFactory(RetrieveMissingBoardGameWorkFactory(dao, service))
             .build()
         runBlocking {
             val result = worker.doWork()
@@ -101,8 +109,8 @@ class UpdateBoardGameIntentWorkerImplementationTest {
     fun updateBoardGameIntentWorker_shouldRetryOnce_OnError() {
         coEvery { service.boardGame(any()) } throws IllegalStateException()
 
-        val worker = TestListenableWorkerBuilder<UpdateBoardGameIntentWorker>(context)
-            .setWorkerFactory(UpdateBoardGameIntentWorkerFactory(dao, service))
+        val worker = TestListenableWorkerBuilder<RetrieveMissingBoardGameWork>(context)
+            .setWorkerFactory(RetrieveMissingBoardGameWorkFactory(dao, service))
             .build()
         runBlocking {
             val result = worker.doWork()
@@ -117,8 +125,8 @@ class UpdateBoardGameIntentWorkerImplementationTest {
     fun updateBoardGameIntentWorker_shouldNotRetryTwice_OnTwosError() {
         coEvery { service.boardGame(any()) } throws IllegalStateException()
 
-        val worker = TestListenableWorkerBuilder<UpdateBoardGameIntentWorker>(context)
-            .setWorkerFactory(UpdateBoardGameIntentWorkerFactory(dao, service))
+        val worker = TestListenableWorkerBuilder<RetrieveMissingBoardGameWork>(context)
+            .setWorkerFactory(RetrieveMissingBoardGameWorkFactory(dao, service))
             .setRunAttemptCount(3)
             .build()
         runBlocking {

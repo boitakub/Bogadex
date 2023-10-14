@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021-2022, Boitakub
+ * Copyright (c) 2021-2023, Boitakub
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,47 +26,63 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package fr.boitakub.bogadex.boardgame
+package fr.boitakub.bogadex.boardgame.work
 
 import android.content.Context
 import android.util.Log
 import androidx.hilt.work.HiltWorker
+import androidx.work.Constraints
 import androidx.work.CoroutineWorker
+import androidx.work.Data
+import androidx.work.ExistingWorkPolicy
+import androidx.work.NetworkType
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
 import androidx.work.WorkerParameters
 import com.tickaroo.tikxml.TikXml
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import fr.boitakub.bgg.client.BggGameInfoResult
 import fr.boitakub.bgg.client.BggService
+import fr.boitakub.bogadex.boardgame.BoardGameDao
+import fr.boitakub.bogadex.boardgame.BuildConfig
 import fr.boitakub.bogadex.boardgame.mapper.BoardGameMapper
-import kotlinx.coroutines.CancellationException
 import okio.buffer
 import okio.sink
 import java.io.File
+import java.util.concurrent.CancellationException
 
 @HiltWorker
-class UpdateBoardGameIntentWorker @AssistedInject constructor(
+class RetrieveMissingBoardGameWork @AssistedInject constructor(
     @Assisted val context: Context,
     @Assisted val workerParams: WorkerParameters,
     val service: BggService,
     val database: BoardGameDao,
-    val mapper: BoardGameMapper
+    val mapper: BoardGameMapper,
 ) : CoroutineWorker(context, workerParams) {
+
+    companion object {
+        const val MAX_RETRIEVE_REQUEST_PER_SESSION = 30
+    }
+
     override suspend fun doWork(): Result {
-        if (runAttemptCount > 2) {
+        Log.d("RetrieveMissingBoardGameWork", "Checking")
+        if (runAttemptCount > 4) {
             return Result.failure()
         }
+        Log.d("RetrieveMissingBoardGameWork", "Starting job")
 
         val result = try {
             val bggId = inputData.getString("bggId")
             val networkResult = service.boardGame(bggId)
-            if (BuildConfig.DEBUG) writeMockData(bggId, networkResult)
+            Log.d("RetrieveMissingBoardGameWork", "Retrieving : $bggId")
             val mappedValues = networkResult?.let { mapper.map(it.games) }
+            if (BuildConfig.DEBUG) writeMockData(bggId, networkResult)
             mappedValues?.let { database.insertAllBoardGame(listOf(it)) }
             Result.success()
         } catch (error: IllegalStateException) {
             if (error is CancellationException) {
-                Log.d("UpdateBoardGameIntentWorker", "Job was Cancelled....")
+                Log.d("RetrieveMissingBoardGameWork", "Job was Cancelled....")
             }
             Result.retry()
         }
@@ -81,4 +97,26 @@ class UpdateBoardGameIntentWorker @AssistedInject constructor(
             parser.write(sink, result)
         }
     }
+}
+
+fun scheduleRetrieveMissingBoardGameWork(context: Context, bggId: String) {
+    val data = Data.Builder()
+    data.putString("bggId", bggId)
+
+    // define constraints
+    val myConstraints = Constraints.Builder()
+        .setRequiredNetworkType(NetworkType.CONNECTED)
+        .build()
+
+    val refreshCpnWork = OneTimeWorkRequestBuilder<RetrieveMissingBoardGameWork>()
+        .setConstraints(myConstraints)
+        .setInputData(data.build())
+        .addTag("RetrieveMissingBoardGameWork$bggId")
+        .build()
+
+    WorkManager.getInstance(context).enqueueUniqueWork(
+        "RetrieveMissingBoardGameWork$bggId",
+        ExistingWorkPolicy.REPLACE,
+        refreshCpnWork,
+    )
 }

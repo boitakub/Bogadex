@@ -46,6 +46,8 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.EntryPointAccessors
 import dagger.hilt.android.components.ActivityComponent
+import fr.boitakub.bogadex.WorkManagerScheduler.refreshUpdateExistingBoardGameWork
+import fr.boitakub.bogadex.WorkManagerScheduler.upsetMissingBoardGame
 import fr.boitakub.bogadex.boardgame.BoardGameCollectionRepository
 import fr.boitakub.bogadex.boardgame.ui.BoardGameCollectionNavigation
 import fr.boitakub.bogadex.boardgame.ui.BoardGameCollectionViewModel
@@ -74,6 +76,8 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        upsetMissingBoardGame(this)
+        refreshUpdateExistingBoardGameWork(this)
 
         setContent {
             val settingsState by userSettingsFlow.collectAsStateWithLifecycle(
