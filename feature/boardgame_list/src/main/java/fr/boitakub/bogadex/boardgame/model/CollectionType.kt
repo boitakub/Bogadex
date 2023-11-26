@@ -38,9 +38,18 @@ enum class CollectionType(
     @DrawableRes val iconRes: Int,
 ) {
     ALL("all", fr.boitakub.bogadex.common.R.string.display_all, R.drawable.ic_clear_all_24),
-    MY_COLLECTION("collection", fr.boitakub.bogadex.common.R.string.display_collection, R.drawable.ic_outline_all_inbox_24),
+    MY_COLLECTION(
+        "collection",
+        fr.boitakub.bogadex.common.R.string.display_collection,
+        R.drawable.ic_outline_all_inbox_24,
+    ),
     WISHLIST("wishlist", fr.boitakub.bogadex.common.R.string.display_wishlist, R.drawable.ic_outline_shopping_cart_24),
     SOLO("solo", fr.boitakub.bogadex.common.R.string.display_solo, fr.boitakub.bogadex.common.R.drawable.ic_user_solid),
+    DUO(
+        "duo",
+        fr.boitakub.bogadex.common.R.string.display_duo,
+        fr.boitakub.bogadex.common.R.drawable.ic_user_group_solid,
+    ),
     FILLER("filler", fr.boitakub.bogadex.common.R.string.display_filler, R.drawable.ic_stopwatch_solid),
     ;
 

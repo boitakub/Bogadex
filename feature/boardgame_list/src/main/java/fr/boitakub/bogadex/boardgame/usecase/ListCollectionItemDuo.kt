@@ -26,44 +26,28 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package fr.boitakub.bogadex.boardgame.model
+package fr.boitakub.bogadex.boardgame.usecase
 
-import androidx.room.Embedded
-import androidx.room.Relation
+import fr.boitakub.architecture.UseCase
+import fr.boitakub.bogadex.boardgame.BoardGameCollectionRepository
+import fr.boitakub.bogadex.boardgame.model.CollectionItemWithDetails
+import fr.boitakub.bogadex.common.UserSettings
+import fr.boitakub.bogadex.filter.FilterViewModel
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
+import javax.inject.Inject
 
-data class CollectionItemWithDetails(
-    @Embedded val item: CollectionItem,
-    @Relation(
-        entity = BoardGame::class,
-        parentColumn = "bgg_id",
-        entityColumn = "bgg_id",
-    ) var details: BoardGame?,
-) {
-
-    fun averageRating(): Float {
-        return details?.statistic?.average ?: 0.0f
-    }
-
-    fun averageWeight(): Float {
-        return details?.statistic?.averageWeight ?: 0.0f
-    }
-
-    fun averageDuration(): Float {
-        return minPlayTime() + maxPlayTime() / 2.0f
-    }
-
-    fun minPlayTime(): Int {
-        return details?.minPlayTime ?: 0
-    }
-
-    fun maxPlayTime(): Int {
-        return details?.maxPlayTime ?: 0
-    }
-
-    fun bestContains(numOfPlayers: Int): Boolean {
-        if (details?.recommendedPlayers.isNullOrEmpty()) {
-            return false
+class ListCollectionItemDuo @Inject constructor(
+    repository: BoardGameCollectionRepository,
+    private val filterViewModel: FilterViewModel,
+    private val userSettingsFlow: Flow<UserSettings>,
+) : UseCase<Flow<List<CollectionItemWithDetails>>, String>,
+    ListCollection(repository, filterViewModel, userSettingsFlow) {
+    override fun apply(): Flow<List<CollectionItemWithDetails>> {
+        return super.apply().map {
+            it.filter { item ->
+                item.bestContains(2)
+            }
         }
-        return details?.recommendedPlayers!![0] == numOfPlayers
     }
 }

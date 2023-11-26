@@ -28,6 +28,7 @@
     <string name="change_display">Changer la vue</string>
     <string name="content_change_display">Changer la vue d\'affichage de la collection</string>
     <string name="display_solo">Jouable en solo</string>
+    <string name="display_duo">Top 2 joueurs</string>
     <string name="browse_games">Collection</string>
     <string name="content_browse_games">Parcourir ma collection de jeux</string>
     <string name="game_tools">Outils de jeux</string>

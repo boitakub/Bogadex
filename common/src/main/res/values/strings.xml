@@ -32,6 +32,7 @@
     <string name="display_collection">My collection</string>
     <string name="display_wishlist">My wishlist</string>
     <string name="display_solo">Single player</string>
+    <string name="display_duo">Best for 2 players</string>
     <string name="display_best_for_two">Best for two players</string>
     <string name="display_filler">Filler games</string>
 

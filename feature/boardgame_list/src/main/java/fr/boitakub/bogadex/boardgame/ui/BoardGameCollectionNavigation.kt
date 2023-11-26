@@ -38,6 +38,7 @@ import fr.boitakub.bogadex.boardgame.BoardGameCollectionRepository
 import fr.boitakub.bogadex.boardgame.model.CollectionType
 import fr.boitakub.bogadex.boardgame.usecase.ListCollection
 import fr.boitakub.bogadex.boardgame.usecase.ListCollectionFiller
+import fr.boitakub.bogadex.boardgame.usecase.ListCollectionItemDuo
 import fr.boitakub.bogadex.boardgame.usecase.ListCollectionItemOwned
 import fr.boitakub.bogadex.boardgame.usecase.ListCollectionItemSolo
 import fr.boitakub.bogadex.boardgame.usecase.ListCollectionItemWanted
@@ -101,6 +102,7 @@ object BoardGameCollectionNavigation {
             CollectionType.MY_COLLECTION -> ListCollectionItemOwned(repository, filterViewModel, userSettingsFlow)
             CollectionType.WISHLIST -> ListCollectionItemWanted(repository, filterViewModel, userSettingsFlow)
             CollectionType.SOLO -> ListCollectionItemSolo(repository, filterViewModel, userSettingsFlow)
+            CollectionType.DUO -> ListCollectionItemDuo(repository, filterViewModel, userSettingsFlow)
             CollectionType.ALL -> ListCollection(repository, filterViewModel, userSettingsFlow)
         }
     }
