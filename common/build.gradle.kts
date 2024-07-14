@@ -6,11 +6,12 @@ plugins {
 }
 
 android {
+    val composeCompilerVersion: String by project
     compileSdk = 33
 
     defaultConfig {
         minSdk = 23
-        targetSdk = 31
+        targetSdk = 33
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -33,7 +34,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.2"
+        kotlinCompilerExtensionVersion = composeCompilerVersion
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
@@ -49,8 +50,7 @@ dependencies {
     val lifecycleVersion: String by project
     val daggerVersion: String by project
     val hiltVersion: String by project
-    val materialVersion: String by project
-    val composeVersion: String by project
+    val composeBomVersion: String by project
     val junitVersion: String by project
     val espressoVersion: String by project
 
@@ -59,17 +59,14 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:$lifecycleVersion")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion")
 
-    //region UI
-    implementation("androidx.compose.material3:material3:$materialVersion")
-
-    //region Compose
-
-    implementation("androidx.compose.foundation:foundation:$composeVersion")
-    implementation("androidx.compose.ui:ui:$composeVersion")
-
-    // Android Studio Preview support
-    implementation("androidx.compose.ui:ui-tooling-preview:$composeVersion")
-    debugImplementation("androidx.compose.ui:ui-tooling:$composeVersion")
+    //region UI / Compose
+    val composeBom = platform("androidx.compose:compose-bom:$composeBomVersion")
+    implementation(composeBom)
+    implementation("androidx.compose.material3:material3")
+    implementation("androidx.compose.foundation:foundation")
+    implementation("androidx.compose.ui:ui")
+    implementation("androidx.compose.ui:ui-tooling-preview")
+    debugImplementation("androidx.compose.ui:ui-tooling")
 
     //endregion
 

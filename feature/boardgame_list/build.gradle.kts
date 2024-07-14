@@ -6,11 +6,12 @@ plugins {
 }
 
 android {
+    val composeCompilerVersion: String by project
     compileSdk = 33
 
     defaultConfig {
         minSdk = 23
-        targetSdk = 31
+        targetSdk = 33
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -33,7 +34,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.2"
+        kotlinCompilerExtensionVersion = composeCompilerVersion
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
@@ -47,14 +48,12 @@ android {
 
 dependencies {
     val androidCoreVersion: String by project
-    val appcompatVersion: String by project
     val okioVersion: String by project
     val navigationVersion: String by project
     val lifecycleVersion: String by project
     val daggerVersion: String by project
     val hiltVersion: String by project
-    val materialVersion: String by project
-    val composeVersion: String by project
+    val composeBomVersion: String by project
     val coilVersion: String by project
     val roomVersion: String by project
     val workVersion: String by project
@@ -71,7 +70,6 @@ dependencies {
     //region Core & Lifecycle
 
     implementation("androidx.core:core-ktx:$androidCoreVersion")
-    implementation("androidx.appcompat:appcompat:$appcompatVersion")
     implementation("com.squareup.okio:okio:$okioVersion")
 
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:$lifecycleVersion")
@@ -91,16 +89,16 @@ dependencies {
 
     //region UI
 
-    implementation("androidx.compose.foundation:foundation:$composeVersion")
-    implementation("androidx.compose.ui:ui:$composeVersion")
-    implementation("androidx.compose.material3:material3:$materialVersion")
+    val composeBom = platform("androidx.compose:compose-bom:$composeBomVersion")
+    implementation(composeBom)
+    implementation("androidx.compose.material3:material3")
     implementation("androidx.navigation:navigation-compose:$navigationVersion")
     implementation("androidx.hilt:hilt-navigation-compose:$hiltVersion")
     implementation("io.coil-kt:coil-compose:$coilVersion")
 
     // UI - Tooling
-    implementation("androidx.compose.ui:ui-tooling-preview:$composeVersion")
-    debugImplementation("androidx.compose.ui:ui-tooling:$composeVersion")
+    implementation("androidx.compose.ui:ui-tooling-preview")
+    debugImplementation("androidx.compose.ui:ui-tooling")
 
     //endregion
 
@@ -132,10 +130,6 @@ dependencies {
 
     androidTestImplementation("io.mockk:mockk-android:$mockkVersion")
     androidTestImplementation("io.mockk:mockk-agent:$mockkVersion")
-
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4:$composeVersion")
-    debugImplementation("androidx.compose.ui:ui-test-manifest:$composeVersion")
-
     androidTestImplementation("androidx.work:work-testing:$workVersion")
 
     //endregion

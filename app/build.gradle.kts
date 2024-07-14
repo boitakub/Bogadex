@@ -80,7 +80,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.2"
+        kotlinCompilerExtensionVersion = "1.5.14"
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
@@ -110,14 +110,11 @@ android {
 dependencies {
     val androidCoreVersion: String by project
     val lifecycleVersion: String by project
-    val appcompatVersion: String by project
-    val activityVersion: String by project
+    val composeBomVersion: String by project
     val coilVersion: String by project
     val navigationVersion: String by project
     val daggerVersion: String by project
     val hiltVersion: String by project
-    val composeVersion: String by project
-    val materialVersion: String by project
     val okhttpVersion: String by project
     val retrofitVersion: String by project
     val dataStoreVersion: String by project
@@ -139,7 +136,6 @@ dependencies {
     //region Core & Lifecycle
 
     implementation("androidx.core:core-ktx:$androidCoreVersion")
-    implementation("androidx.appcompat:appcompat:$appcompatVersion")
     implementation("androidx.lifecycle:lifecycle-runtime-compose:$lifecycleVersion")
 
     //endregion
@@ -155,15 +151,16 @@ dependencies {
 
     //region UI
 
-    implementation("androidx.compose.material3:material3:$materialVersion")
-    implementation("androidx.activity:activity-compose:$activityVersion")
     implementation("androidx.navigation:navigation-compose:$navigationVersion")
     implementation("io.coil-kt:coil-compose:$coilVersion")
 
     // UI - Tooling
-    implementation("androidx.compose.ui:ui-tooling-preview:$composeVersion")
-    debugImplementation("androidx.compose.ui:ui-tooling:$composeVersion")
-    debugImplementation("androidx.compose.ui:ui-test-manifest:$composeVersion")
+    val composeBom = platform("androidx.compose:compose-bom:$composeBomVersion")
+    implementation(composeBom)
+    implementation("androidx.compose.material3:material3")
+    implementation("androidx.compose.ui:ui-tooling-preview")
+    debugImplementation("androidx.compose.ui:ui-tooling")
+    debugImplementation("androidx.compose.ui:ui-test-manifest")
 
     //endregion
 
@@ -222,7 +219,6 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:$espressoVersion")
     androidTestImplementation("io.mockk:mockk-android:$mockkVersion")
     androidTestImplementation("io.mockk:mockk-agent:$mockkVersion")
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4:$composeVersion")
     androidTestImplementation("com.google.dagger:hilt-android-testing:$daggerVersion")
     kaptAndroidTest("com.google.dagger:hilt-compiler:$daggerVersion")
     androidTestImplementation("androidx.work:work-testing:$workVersion")
