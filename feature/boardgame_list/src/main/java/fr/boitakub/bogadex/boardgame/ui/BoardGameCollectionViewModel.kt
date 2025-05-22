@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021-2023, Boitakub
+ * Copyright (c) 2021-2025, Boitakub
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -37,14 +37,12 @@ import fr.boitakub.architecture.Presenter
 import fr.boitakub.bogadex.boardgame.usecase.ListCollection
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 
-class BoardGameCollectionViewModel @AssistedInject constructor(
-    @Assisted private val collection: ListCollection,
-) :
-    ViewModel(), Presenter {
+class BoardGameCollectionViewModel @AssistedInject constructor(@Assisted private val collection: ListCollection) :
+    ViewModel(),
+    Presenter {
 
     @AssistedFactory
     fun interface Factory {
@@ -55,9 +53,6 @@ class BoardGameCollectionViewModel @AssistedInject constructor(
         collection.apply()
             .map {
                 BoardGameListState(collection = it, error = null)
-            }
-            .catch {
-                BoardGameListState(error = null)
             }
             .stateIn(
                 scope = viewModelScope,

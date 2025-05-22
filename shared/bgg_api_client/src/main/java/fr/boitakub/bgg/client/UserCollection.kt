@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022, Boitakub
+ * Copyright (c) 2022-2025, Boitakub
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -28,21 +28,26 @@
  */
 package fr.boitakub.bgg.client
 
-import com.tickaroo.tikxml.annotation.Attribute
-import com.tickaroo.tikxml.annotation.Element
-import com.tickaroo.tikxml.annotation.Xml
+import kotlinx.serialization.Serializable
+import nl.adaptivity.xmlutil.serialization.XmlElement
+import nl.adaptivity.xmlutil.serialization.XmlSerialName
 
-@Xml(name = "items")
+@Serializable
+@XmlSerialName("items", "", "")
 class UserCollection {
-    @Attribute
+    @XmlElement(false)
+    @XmlSerialName
     var termsofuse: String? = null
 
-    @Attribute
+    @XmlElement(false)
+    @XmlSerialName
     var totalitems: String? = null
 
-    @Attribute
+    @XmlElement(false)
+    @XmlSerialName
     var pubdate: String? = null
 
-    @Element(name = "item")
+    @XmlElement(true)
+    @XmlSerialName("item", "", "")
     var games: List<UserBoardGame> = mutableListOf()
 }

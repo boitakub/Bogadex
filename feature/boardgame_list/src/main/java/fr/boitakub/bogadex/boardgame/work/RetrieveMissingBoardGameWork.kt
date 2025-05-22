@@ -39,16 +39,11 @@ import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
-import com.tickaroo.tikxml.TikXml
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
-import fr.boitakub.bgg.client.BggGameInfoResult
 import fr.boitakub.bgg.client.BggService
 import fr.boitakub.bogadex.boardgame.BoardGameDao
 import fr.boitakub.bogadex.boardgame.mapper.BoardGameMapper
-import okio.buffer
-import okio.sink
-import java.io.File
 import java.util.concurrent.CancellationException
 
 @HiltWorker
@@ -87,17 +82,6 @@ constructor(
                 Result.retry()
             }
         return result
-    }
-
-    private fun writeMockData(bggId: String?, result: BggGameInfoResult?) {
-        val parser: TikXml =
-            TikXml
-                .Builder()
-                .build()
-        val file = File(context.filesDir?.path + "/" + File.separator + bggId + ".xml")
-        file.sink().buffer().use { sink ->
-            parser.write(sink, result)
-        }
     }
 }
 

@@ -31,20 +31,17 @@ package fr.boitakub.bogadex.tests
 import android.content.Context
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.platform.app.InstrumentationRegistry
-import androidx.work.ListenableWorker
-import androidx.work.WorkerFactory
-import androidx.work.WorkerParameters
-import androidx.work.testing.TestListenableWorkerBuilder
-import fr.boitakub.bgg.client.BggGameInfoResult
 import fr.boitakub.bgg.client.BggService
+import fr.boitakub.bgg.client.UserCollection
 import fr.boitakub.bgg.client.XmlSanitizingInterceptor
-import fr.boitakub.bogadex.boardgame.BoardGameDao
-import fr.boitakub.bogadex.boardgame.mapper.BoardGameMapper
-import fr.boitakub.bogadex.boardgame.work.RetrieveMissingBoardGameWork
+import fr.boitakub.bogadex.boardgame.BoardGameCollectionRepository
+import fr.boitakub.bogadex.boardgame.BoardGameListDao
+import fr.boitakub.bogadex.boardgame.mapper.BoardGameStatusMapper
+import fr.boitakub.bogadex.boardgame.mapper.CollectionMapper
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
-import io.mockk.coVerify
 import io.mockk.impl.annotations.MockK
+import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.decodeFromString
 import nl.adaptivity.xmlutil.serialization.XML
@@ -54,31 +51,16 @@ import org.junit.Before
 import org.junit.Test
 import java.io.InputStreamReader
 
-class RetrieveMissingBoardGameWorkImplementationTest {
+class RetrieveBoardGameCollectionImplementationTest {
     private lateinit var context: Context
 
     @MockK
-    lateinit var dao: BoardGameDao
+    lateinit var dao: BoardGameListDao
 
     @MockK
     lateinit var service: BggService
 
-    class RetrieveMissingBoardGameWorkFactory(private val dao: BoardGameDao, val service: BggService) :
-        WorkerFactory() {
-        override fun createWorker(
-            appContext: Context,
-            workerClassName: String,
-            workerParameters: WorkerParameters,
-        ): ListenableWorker = RetrieveMissingBoardGameWork(
-            appContext,
-            workerParameters,
-            service,
-            dao,
-            BoardGameMapper(),
-        )
-    }
-
-    private fun readStubData(bggId: String): BggGameInfoResult {
+    private fun readStubData(bggId: String): UserCollection {
         val xml = XML()
         val raw = readStringFromFile("$bggId.xml")
         val sanitized = XmlSanitizingInterceptor().sanitizeXml(raw)
@@ -105,51 +87,23 @@ class RetrieveMissingBoardGameWorkImplementationTest {
     }
 
     @Test
-    fun updateBoardGameIntentWorker_should_returnSuccess() {
-        coEvery { service.boardGame(any()) } answers { readStubData("86246") }
+    fun retrieveCollection_should_returnSuccess() {
+        coEvery { service.userCollection(any()) } answers { readStubData("collection") }
+        coEvery { dao.collectionWithDetailsFlow() } answers { emptyFlow() }
+        coEvery { dao.insertAllCollectionItem(any()) } returns Unit
 
-        val worker = TestListenableWorkerBuilder<RetrieveMissingBoardGameWork>(context)
-            .setWorkerFactory(RetrieveMissingBoardGameWorkFactory(dao, service))
-            .build()
+        val boardGameCollectionRepository = BoardGameCollectionRepository(
+            context,
+            dao,
+            service,
+            CollectionMapper(BoardGameStatusMapper()),
+        )
+
         runBlocking {
-            val result = worker.doWork()
-            assertThat(result, `is`(ListenableWorker.Result.success()))
+            val userCollection = boardGameCollectionRepository.getRemote("user")
 
-            coVerify(exactly = 1) { service.boardGame(any()) }
-            coVerify(exactly = 1) { dao.insertAllBoardGame(any()) }
-        }
-    }
-
-    @Test
-    fun updateBoardGameIntentWorker_shouldRetryOnce_OnError() {
-        coEvery { service.boardGame(any()) } throws IllegalStateException()
-
-        val worker = TestListenableWorkerBuilder<RetrieveMissingBoardGameWork>(context)
-            .setWorkerFactory(RetrieveMissingBoardGameWorkFactory(dao, service))
-            .build()
-        runBlocking {
-            val result = worker.doWork()
-            assertThat(result, `is`(ListenableWorker.Result.retry()))
-
-            coVerify(exactly = 1) { service.boardGame(any()) }
-            coVerify(exactly = 0) { dao.insertAllBoardGame(any()) }
-        }
-    }
-
-    @Test
-    fun updateBoardGameIntentWorker_shouldNotRetryTwice_OnTwosError() {
-        coEvery { service.boardGame(any()) } throws IllegalStateException()
-
-        val worker = TestListenableWorkerBuilder<RetrieveMissingBoardGameWork>(context)
-            .setWorkerFactory(RetrieveMissingBoardGameWorkFactory(dao, service))
-            .setRunAttemptCount(5)
-            .build()
-        runBlocking {
-            val result = worker.doWork()
-            assertThat(result, `is`(ListenableWorker.Result.failure()))
-
-            coVerify(exactly = 0) { service.boardGame(any()) }
-            coVerify(exactly = 0) { dao.insertAllBoardGame(any()) }
+            assertThat(userCollection.totalitems, `is`("574"))
+            assertThat(userCollection.games.size, `is`(55))
         }
     }
 }

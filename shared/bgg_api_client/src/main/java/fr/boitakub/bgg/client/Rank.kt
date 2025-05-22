@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022, Boitakub
+ * Copyright (c) 2022-2025, Boitakub
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -28,26 +28,33 @@
  */
 package fr.boitakub.bgg.client
 
-import com.tickaroo.tikxml.annotation.Attribute
-import com.tickaroo.tikxml.annotation.Xml
+import kotlinx.serialization.Serializable
+import nl.adaptivity.xmlutil.serialization.XmlElement
+import nl.adaptivity.xmlutil.serialization.XmlSerialName
 
-@Xml
+@Serializable
 class Rank {
-    @Attribute
-    var id = 0
+    @XmlElement(false)
+    @XmlSerialName
+    var id: String? = null
 
-    @Attribute
+    @XmlElement(false)
+    @XmlSerialName
     var type: String? = null
 
-    @Attribute
+    @XmlElement(false)
+    @XmlSerialName
     var name: String? = null
 
-    @Attribute
+    @XmlElement(false)
+    @XmlSerialName
     var friendlyname: String? = null
 
-    @Attribute
+    @XmlElement(false)
+    @XmlSerialName
     var value: String? = null
 
-    @Attribute
+    @XmlElement(false)
+    @XmlSerialName
     var bayesaverage: String? = null
 }

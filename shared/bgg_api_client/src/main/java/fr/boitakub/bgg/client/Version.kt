@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022, Boitakub
+ * Copyright (c) 2022-2025, Boitakub
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -28,50 +28,60 @@
  */
 package fr.boitakub.bgg.client
 
-import com.tickaroo.tikxml.annotation.Attribute
-import com.tickaroo.tikxml.annotation.Element
-import com.tickaroo.tikxml.annotation.Path
-import com.tickaroo.tikxml.annotation.PropertyElement
-import com.tickaroo.tikxml.annotation.Xml
+import fr.boitakub.bgg.client.BoardGame.FloatHolder
+import fr.boitakub.bgg.client.BoardGame.IntHolder
+import fr.boitakub.bgg.client.BoardGame.StringHolder
+import kotlinx.serialization.Serializable
+import nl.adaptivity.xmlutil.serialization.XmlElement
+import nl.adaptivity.xmlutil.serialization.XmlSerialName
 
-@Xml(name = "item")
+@Serializable
 class Version {
-    @Attribute
+    @XmlElement(false)
+    @XmlSerialName
     var id = 0
 
-    @Attribute
+    @XmlElement(false)
+    @XmlSerialName
     var type: String? = null
 
-    @PropertyElement
-    var thumbnail: String? = null
+    @XmlElement(true)
+    @XmlSerialName
+    var image: String = ""
 
-    @PropertyElement
-    var image: String? = null
+    @XmlElement(true)
+    @XmlSerialName
+    var thumbnail: String = ""
 
-    @Path("name")
-    @Attribute(name = "value")
-    var name: String? = null
+    @XmlElement(true)
+    @XmlSerialName
+    var name: List<Name> = mutableListOf()
 
-    @Path("yearpublished")
-    @Attribute(name = "value")
-    var yearPublished = 0
+    @XmlElement(true)
+    @XmlSerialName("yearpublished")
+    var yearPublished: IntHolder = IntHolder(0)
 
-    @Element(name = "link")
-    var links: List<Link>? = null
+    @XmlElement(true)
+    @XmlSerialName("link", "", "")
+    var link: List<Link>? = null
 
-    @Path("width")
-    @Attribute(name = "value")
-    var width = 0.0
+    @XmlElement(true)
+    @XmlSerialName("productcode")
+    var productCode: StringHolder = StringHolder("")
 
-    @Path("length")
-    @Attribute(name = "value")
-    var length = 0.0
+    @XmlElement(true)
+    @XmlSerialName
+    var width: FloatHolder = FloatHolder(0.0f)
 
-    @Path("depth")
-    @Attribute(name = "value")
-    var depth = 0.0
+    @XmlElement(true)
+    @XmlSerialName
+    var length: FloatHolder = FloatHolder(0.0f)
 
-    @Path("weight")
-    @Attribute(name = "value")
-    var weight = 0.0
+    @XmlElement(true)
+    @XmlSerialName
+    var depth: FloatHolder = FloatHolder(0.0f)
+
+    @XmlElement(true)
+    @XmlSerialName
+    var weight: FloatHolder = FloatHolder(0.0f)
 }

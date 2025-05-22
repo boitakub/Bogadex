@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022, Boitakub
+ * Copyright (c) 2022-2025, Boitakub
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -28,65 +28,17 @@
  */
 package fr.boitakub.bgg.client
 
-import com.tickaroo.tikxml.annotation.Attribute
-import com.tickaroo.tikxml.annotation.Element
-import com.tickaroo.tikxml.annotation.Path
-import com.tickaroo.tikxml.annotation.Xml
+import kotlinx.serialization.Serializable
+import nl.adaptivity.xmlutil.serialization.XmlElement
+import nl.adaptivity.xmlutil.serialization.XmlSerialName
 
-@Xml
+@Serializable
 class Statistics {
-    @Attribute
+    @XmlElement(false)
+    @XmlSerialName
     var page = 0
 
-    @Path("ratings/usersrated")
-    @Attribute(name = "value")
-    var usersrated: String? = null
-
-    @Path("ratings/average")
-    @Attribute(name = "value")
-    var average: String? = null
-
-    @Path("ratings/bayesaverage")
-    @Attribute(name = "value")
-    var bayesaverage: String? = null
-
-    @Path("ratings/stddev")
-    @Attribute(name = "value")
-    var stddev: String? = null
-
-    @Path("ratings/median")
-    @Attribute(name = "value")
-    var median: String? = null
-
-    @Path("ratings/owned")
-    @Attribute(name = "value")
-    var owned = 0
-
-    @Path("ratings/trading")
-    @Attribute(name = "value")
-    var trading = 0
-
-    @Path("ratings/wanting")
-    @Attribute(name = "value")
-    var wanting = 0
-
-    @Path("ratings/wishing")
-    @Attribute(name = "value")
-    var wishing = 0
-
-    @Path("ratings/numcomments")
-    @Attribute(name = "value")
-    var numcomments = 0
-
-    @Path("ratings/numweights")
-    @Attribute(name = "value")
-    var numweights = 0
-
-    @Path("ratings/averageweight")
-    @Attribute(name = "value")
-    var averageweight = 0.0
-
-    @Path("ratings/ranks")
-    @Element
-    var ranks: List<Rank>? = null
+    @XmlElement(true)
+    @XmlSerialName("ratings", "", "")
+    var ratings = RatingStatistics()
 }

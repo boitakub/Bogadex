@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022, Boitakub
+ * Copyright (c) 2022-2025, Boitakub
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -28,38 +28,49 @@
  */
 package fr.boitakub.bgg.client
 
-import com.tickaroo.tikxml.annotation.Attribute
-import com.tickaroo.tikxml.annotation.Xml
+import kotlinx.serialization.Serializable
+import nl.adaptivity.xmlutil.serialization.XmlElement
+import nl.adaptivity.xmlutil.serialization.XmlSerialName
 
-@Xml
+@Serializable
 class UserBoardGameStatus {
-    @Attribute
+    @XmlElement(false)
+    @XmlSerialName
     var lastmodified: String? = null
 
-    @Attribute
+    @XmlElement(false)
+    @XmlSerialName
     var own = 0
 
-    @Attribute
+    @XmlElement(false)
+    @XmlSerialName
     var prevowned = 0
 
-    @Attribute
+    @XmlElement(false)
+    @XmlSerialName
     var fortrade = 0
 
-    @Attribute
+    @XmlElement(false)
+    @XmlSerialName
     var want = 0
 
-    @Attribute
+    @XmlElement(false)
+    @XmlSerialName
     var wanttoplay = 0
 
-    @Attribute
+    @XmlElement(false)
+    @XmlSerialName
     var wanttobuy = 0
 
-    @Attribute
+    @XmlElement(false)
+    @XmlSerialName
     var wishlist = 0
 
-    @Attribute
+    @XmlElement(false)
+    @XmlSerialName
     var wishlistpriority = 0
 
-    @Attribute
+    @XmlElement(false)
+    @XmlSerialName
     var preordered = 0
 }

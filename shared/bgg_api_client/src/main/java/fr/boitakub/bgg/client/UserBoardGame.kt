@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022, Boitakub
+ * Copyright (c) 2022-2025, Boitakub
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -28,55 +28,61 @@
  */
 package fr.boitakub.bgg.client
 
-import com.tickaroo.tikxml.annotation.Attribute
-import com.tickaroo.tikxml.annotation.Element
-import com.tickaroo.tikxml.annotation.PropertyElement
-import com.tickaroo.tikxml.annotation.Xml
-import com.tickaroo.tikxml.converter.htmlescape.HtmlEscapeStringConverter
+import kotlinx.serialization.Serializable
+import nl.adaptivity.xmlutil.serialization.XmlElement
+import nl.adaptivity.xmlutil.serialization.XmlSerialName
 
-@Xml
+@Serializable
 class UserBoardGame {
-    @JvmField
-    @Attribute
+    @XmlElement(false)
+    @XmlSerialName
     var objecttype: String? = null
 
-    @JvmField
-    @Attribute
+    @XmlElement(false)
+    @XmlSerialName
     var objectid: String = ""
 
-    @JvmField
-    @Attribute
+    @XmlElement(false)
+    @XmlSerialName
     var subtype: String? = null
 
-    @JvmField
-    @Attribute
+    @XmlElement(false)
+    @XmlSerialName
     var collid: String? = null
 
-    @JvmField
-    @PropertyElement(converter = HtmlEscapeStringConverter::class)
+    @XmlElement(true)
+    @XmlSerialName
     var name: String? = null
 
-    @JvmField
-    @PropertyElement
+    @XmlElement(true)
+    @XmlSerialName
+    var originalname: String? = null
+
+    @XmlElement(true)
+    @XmlSerialName
     var yearpublished = 0
 
-    @JvmField
-    @PropertyElement
+    @XmlElement(true)
+    @XmlSerialName
     var image: String? = null
 
-    @JvmField
-    @PropertyElement
+    @XmlElement(true)
+    @XmlSerialName
     var thumbnail: String? = null
 
-    @JvmField
-    @PropertyElement
+    @XmlElement(true)
+    @XmlSerialName
     var numplays = 0
 
-    @JvmField
-    @Element(name = "status")
+    @XmlElement(true)
+    @XmlSerialName
+    var comment: String? = null
+
+    @XmlElement(true)
+    @XmlSerialName("status", "", "")
     var status: UserBoardGameStatus = UserBoardGameStatus()
 
-    @JvmField
-    @Element(name = "stats")
-    var stats: UserBoardGameStatistics? = null
+    @XmlElement(true)
+    @XmlSerialName("stats", "", "")
+    var stats: UserBoardGameStatistics = UserBoardGameStatistics()
 }

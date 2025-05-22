@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021-2022, Boitakub
+ * Copyright (c) 2021-2025, Boitakub
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -28,12 +28,15 @@
  */
 package fr.boitakub.bgg.client
 
-import com.tickaroo.tikxml.TikXml
-import com.tickaroo.tikxml.converter.htmlescape.HtmlEscapeStringConverter
-import com.tickaroo.tikxml.retrofit.TikXmlConverterFactory
+import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
+import nl.adaptivity.xmlutil.serialization.XML
 import okhttp3.HttpUrl
 import okhttp3.Interceptor
+import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
+import okhttp3.Response
+import okhttp3.ResponseBody.Companion.toResponseBody
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.http.GET
 import retrofit2.http.Headers
@@ -54,47 +57,64 @@ interface BggService {
         private const val DEFAULT_API_CONNECTION_TIMEOUT_IN_SECONDS: Long = 30
         private const val DEFAULT_API_READ_WRITE_TIMEOUT_IN_SECONDS: Long = 30
 
-        fun getDefaultRetrofitClient(
-            baseUrl: HttpUrl,
-            okHttpClient: OkHttpClient
-        ): Retrofit {
+        fun getDefaultRetrofitClient(baseUrl: HttpUrl, okHttpClient: OkHttpClient): Retrofit {
+            val contentType = "text/xml".toMediaType()
             return Retrofit.Builder()
                 .baseUrl(baseUrl)
                 .client(okHttpClient)
-                .addConverterFactory(TikXmlConverterFactory.create(buildXmlParser()))
+                .addConverterFactory(XML.asConverterFactory(contentType))
                 .build()
         }
 
-        fun getDefaultOkHttpClient(
-            networkInterceptors: List<Interceptor>?
-        ): OkHttpClient {
+        fun getDefaultOkHttpClient(networkInterceptors: List<Interceptor>?): OkHttpClient {
             val okHttpClientBuild = OkHttpClient.Builder()
                 .connectTimeout(
                     DEFAULT_API_CONNECTION_TIMEOUT_IN_SECONDS,
-                    TimeUnit.SECONDS
+                    TimeUnit.SECONDS,
                 )
                 .readTimeout(
                     DEFAULT_API_READ_WRITE_TIMEOUT_IN_SECONDS,
-                    TimeUnit.SECONDS
+                    TimeUnit.SECONDS,
                 )
                 .writeTimeout(
                     DEFAULT_API_READ_WRITE_TIMEOUT_IN_SECONDS,
-                    TimeUnit.SECONDS
+                    TimeUnit.SECONDS,
                 )
+                .addInterceptor(XmlSanitizingInterceptor())
                 .addInterceptor(CollectionRequestQueuedInterceptor())
             if (networkInterceptors != null) {
                 for (networkInterceptor in networkInterceptors) {
                     okHttpClientBuild.addNetworkInterceptor(networkInterceptor)
                 }
             }
+            okHttpClientBuild.addInterceptor(
+                HttpLoggingInterceptor().apply {
+                    level = HttpLoggingInterceptor.Level.BODY
+                },
+            )
             return okHttpClientBuild.build()
         }
+    }
+}
 
-        private fun buildXmlParser(): TikXml {
-            return TikXml.Builder()
-                .exceptionOnUnreadXml(false)
-                .addTypeConverter(String::class.java, HtmlEscapeStringConverter())
-                .build()
+class XmlSanitizingInterceptor : Interceptor {
+    override fun intercept(chain: Interceptor.Chain): Response {
+        val originalResponse = chain.proceed(chain.request())
+
+        val originalBody = originalResponse.body?.string() ?: ""
+        val sanitizedBody = sanitizeXml(originalBody)
+
+        return originalResponse.newBuilder()
+            .body(sanitizedBody.toResponseBody("application/xml".toMediaType()))
+            .build()
+    }
+
+    fun sanitizeXml(xml: String): String {
+        val attrRegex = Regex("""(=\s*")(.*?)(?=")""")
+        return attrRegex.replace(xml) { matchResult ->
+            val fullAttr = matchResult.groupValues[2]
+            val escapedAttr = fullAttr.replace("&", "&amp;")
+            matchResult.groupValues[1] + escapedAttr
         }
     }
 }

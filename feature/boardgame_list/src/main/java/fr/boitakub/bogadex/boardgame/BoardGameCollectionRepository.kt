@@ -29,7 +29,6 @@
 package fr.boitakub.bogadex.boardgame
 
 import android.content.Context
-import com.tickaroo.tikxml.TikXml
 import dagger.hilt.android.qualifiers.ApplicationContext
 import fr.boitakub.architecture.Repository
 import fr.boitakub.bgg.client.BggService
@@ -41,9 +40,6 @@ import fr.boitakub.bogadex.boardgame.model.CollectionItemWithDetails
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flow
-import okio.buffer
-import okio.sink
-import java.io.File
 import javax.inject.Inject
 
 class BoardGameCollectionRepository
@@ -59,6 +55,8 @@ constructor(
             toUiModel(local, remote)
         }
 
+    suspend fun getRemote(user: String): UserCollection = remote.userCollection(user)
+
     private fun getAllRemoteResorts(user: String): Flow<List<CollectionItem>> = flow {
         emit(emptyList())
         val networkResult = remote.userCollection(user)
@@ -73,17 +71,6 @@ constructor(
     ): List<CollectionItemWithDetails> = localList.ifEmpty {
         remoteList.map {
             CollectionItemWithDetails(it, BoardGame())
-        }
-    }
-
-    private fun writeMockData(input: String?, result: UserCollection?) {
-        val parser: TikXml =
-            TikXml
-                .Builder()
-                .build()
-        val file = File(context.filesDir?.path + "/" + File.separator + input + ".xml")
-        file.sink().buffer().use { sink ->
-            parser.write(sink, result)
         }
     }
 }

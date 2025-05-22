@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022, Boitakub
+ * Copyright (c) 2022-2025, Boitakub
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -28,25 +28,25 @@
  */
 package fr.boitakub.bgg.client
 
-import com.tickaroo.tikxml.annotation.Attribute
-import com.tickaroo.tikxml.annotation.Element
-import com.tickaroo.tikxml.annotation.Xml
+import kotlinx.serialization.Serializable
+import nl.adaptivity.xmlutil.serialization.XmlElement
+import nl.adaptivity.xmlutil.serialization.XmlSerialName
 
-@Xml
+@Serializable
 class Poll {
-    @JvmField
-    @Attribute
+    @XmlElement(false)
+    @XmlSerialName
     var name: String? = null
 
-    @JvmField
-    @Attribute
+    @XmlElement(false)
+    @XmlSerialName
     var title: String? = null
 
-    @JvmField
-    @Attribute
+    @XmlElement(false)
+    @XmlSerialName
     var totalvotes = 0
 
-    @JvmField
-    @Element(name = "results")
+    @XmlElement(true)
+    @XmlSerialName("results", "", "")
     var results: List<PollResult>? = null
 }

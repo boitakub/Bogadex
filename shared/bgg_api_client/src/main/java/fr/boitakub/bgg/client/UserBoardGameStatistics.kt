@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022, Boitakub
+ * Copyright (c) 2022-2025, Boitakub
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -28,52 +28,37 @@
  */
 package fr.boitakub.bgg.client
 
-import com.tickaroo.tikxml.annotation.Attribute
-import com.tickaroo.tikxml.annotation.Element
-import com.tickaroo.tikxml.annotation.Path
-import com.tickaroo.tikxml.annotation.Xml
+import kotlinx.serialization.Serializable
+import nl.adaptivity.xmlutil.serialization.XmlElement
+import nl.adaptivity.xmlutil.serialization.XmlSerialName
 
-@Xml
+@Serializable
 class UserBoardGameStatistics {
-    @Attribute
+    @XmlElement(false)
+    @XmlSerialName
     var minplayers = 0
 
-    @Attribute
+    @XmlElement(false)
+    @XmlSerialName
     var maxplayers = 0
 
-    @Attribute
+    @XmlElement(false)
+    @XmlSerialName
     var minplaytime = 0
 
-    @Attribute
+    @XmlElement(false)
+    @XmlSerialName
     var maxplaytime = 0
 
-    @Attribute
+    @XmlElement(false)
+    @XmlSerialName
     var playingtime = 0
 
-    @Attribute
+    @XmlElement(false)
+    @XmlSerialName
     var numowned = 0
 
-    @Path("rating/usersrated")
-    @Attribute(name = "value")
-    var usersrated: String? = null
-
-    @Path("rating/average")
-    @Attribute(name = "value")
-    var average: String? = null
-
-    @Path("rating/bayesaverage")
-    @Attribute(name = "value")
-    var bayesaverage: String? = null
-
-    @Path("rating/stddev")
-    @Attribute(name = "value")
-    var stddev: String? = null
-
-    @Path("rating/median")
-    @Attribute(name = "value")
-    var median: String? = null
-
-    @Path("rating/ranks")
-    @Element
-    var ranks: List<Rank>? = null
+    @XmlElement(true)
+    @XmlSerialName("rating", "", "")
+    var ratings = RatingStatistics()
 }

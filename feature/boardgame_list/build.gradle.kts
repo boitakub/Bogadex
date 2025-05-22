@@ -40,6 +40,12 @@ android {
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_17.toString()
     }
+    packagingOptions {
+        resources {
+            excludes += "META-INF/LICENSE.md"
+            excludes += "META-INF/LICENSE-notice.md" // si besoin
+        }
+    }
     namespace = "fr.boitakub.boardgame_list"
 }
 
@@ -101,11 +107,12 @@ dependencies {
 
     //region AndroidTest
 
-    androidTestImplementation(project(":shared:tests_tools"))
-
     androidTestImplementation(libs.test.espresso)
     androidTestImplementation(libs.test.android)
-
+    androidTestImplementation("io.github.pdvrieze.xmlutil:core:0.91.0")
+    androidTestImplementation("io.github.pdvrieze.xmlutil:serialization:0.91.0")
+    androidTestImplementation(libs.test.work)
+    androidTestImplementation(libs.okhttp)
     androidTestImplementation(libs.test.mockk.android)
 
     //endregion

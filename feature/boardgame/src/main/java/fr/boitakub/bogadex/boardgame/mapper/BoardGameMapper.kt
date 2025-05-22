@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021-2023, Boitakub
+ * Copyright (c) 2021-2025, Boitakub
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -40,8 +40,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class BoardGameMapper @Inject constructor() :
-    Mapper<BoardGame, Iterable<fr.boitakub.bgg.client.BoardGame>> {
+class BoardGameMapper @Inject constructor() : Mapper<BoardGame, Iterable<fr.boitakub.bgg.client.BoardGame>> {
 
     companion object {
         const val BEST_AT_VALUE = "Best"
@@ -49,43 +48,39 @@ class BoardGameMapper @Inject constructor() :
         const val NOT_RECOMMENDED_AT_VALUE = "Not Recommended"
     }
 
-    private fun map(source: fr.boitakub.bgg.client.BoardGame): BoardGame =
-        BoardGame(
-            source.id.toString(),
-            BoardGameHelper.nameChooser(source.name),
-            source.description,
-            source.type.orEmpty(),
-            source.yearPublished,
-            source.minplayers,
-            source.maxplayers,
-            mapRecommendedPlayer(source.polls, source.maxplayers),
-            source.playingtime,
-            source.minplaytime,
-            source.maxplaytime,
-            source.minage,
-            mapRecommendedAge(source.polls),
-            source.image,
-            source.thumbnail,
-            Date(),
-            map(source.statistics),
-        )
+    private fun map(source: fr.boitakub.bgg.client.BoardGame): BoardGame = BoardGame(
+        source.id.toString(),
+        BoardGameHelper.nameChooser(source.name),
+        source.description,
+        source.type.orEmpty(),
+        source.yearPublished.value,
+        source.minplayers.value,
+        source.maxplayers.value,
+        mapRecommendedPlayer(source.polls, source.maxplayers.value),
+        source.playingtime.value,
+        source.minplaytime.value,
+        source.maxplaytime.value,
+        source.minage.value,
+        mapRecommendedAge(source.polls),
+        source.image,
+        source.thumbnail,
+        Date(),
+        map(source.statistics),
+    )
 
-    override fun map(source: Iterable<fr.boitakub.bgg.client.BoardGame>): BoardGame =
-        map(source.first())
+    override fun map(source: Iterable<fr.boitakub.bgg.client.BoardGame>): BoardGame = map(source.first())
 
-    private fun map(source: Statistics): BoardGameBggStatistic {
-        return BoardGameBggStatistic(
-            source.usersrated?.toIntOrNull() ?: 0,
-            source.average?.toFloatOrNull() ?: 0f,
-            source.bayesaverage?.toFloatOrNull() ?: 0f,
-            source.numweights,
-            source.averageweight.toFloat(),
-            source.owned,
-            source.wanting,
-            source.wishing,
-            source.trading,
-        )
-    }
+    private fun map(source: Statistics): BoardGameBggStatistic = BoardGameBggStatistic(
+        source.ratings.usersrated.value,
+        source.ratings.average.value,
+        source.ratings.bayesaverage.value,
+        source.ratings.numweights.value,
+        source.ratings.averageweight.value,
+        source.ratings.owned.value,
+        source.ratings.wanting.value,
+        source.ratings.wishing.value,
+        source.ratings.trading.value,
+    )
 
     private fun mapRecommendedPlayer(source: List<Poll>?, maxPlayers: Int, minVote: Int = 10): List<Int> {
         val intermediate = mutableMapOf<Int?, Int>()
@@ -99,11 +94,7 @@ class BoardGameMapper @Inject constructor() :
         return intermediate.toList().sortedByDescending { it.second }.map { it.first }.filterNotNull()
     }
 
-    private fun mapNumPlayers(
-        pollResult: PollResult,
-        maxPlayers: Int,
-        intermediate: MutableMap<Int?, Int>,
-    ) {
+    private fun mapNumPlayers(pollResult: PollResult, maxPlayers: Int, intermediate: MutableMap<Int?, Int>) {
         val numPlayers = pollResult.numplayers.ifPlus(maxPlayers)
         val bestScore = pollResult.results?.singleOrNull { it.value == BEST_AT_VALUE }?.numvotes
         val recommendedScore =
@@ -134,10 +125,7 @@ class BoardGameMapper @Inject constructor() :
         return table
     }
 
-    private fun mapPlayerAge(
-        poll: Poll,
-        table: List<Int>
-    ): List<Int> {
+    private fun mapPlayerAge(poll: Poll, table: List<Int>): List<Int> {
         var table1 = table
         poll.results?.forEach { result ->
             result.results?.let { results ->
@@ -150,9 +138,7 @@ class BoardGameMapper @Inject constructor() :
         return table1
     }
 
-    private fun tryParse(stringValue: String?): Int? {
-        return stringValue?.toIntOrNull()
-    }
+    private fun tryParse(stringValue: String?): Int? = stringValue?.toIntOrNull()
 }
 
 private fun String?.ifPlus(maxPlayers: Int): String? {

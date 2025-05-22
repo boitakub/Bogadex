@@ -164,8 +164,6 @@ dependencies {
 
     //region AndroidTest
 
-    androidTestImplementation(project(":shared:tests_tools"))
-
     androidTestImplementation(libs.test.espresso)
     androidTestImplementation(libs.test.mockk.android)
 

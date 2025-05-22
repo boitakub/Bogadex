@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021, Boitakub
+ * Copyright (c) 2022-2025, Boitakub
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,22 +26,35 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package fr.boitakub.bogadex.tests.tools
+package fr.boitakub.bgg.client
 
-import androidx.test.platform.app.InstrumentationRegistry
-import java.io.InputStreamReader
+import kotlinx.serialization.Serializable
+import nl.adaptivity.xmlutil.serialization.XmlChildrenName
+import nl.adaptivity.xmlutil.serialization.XmlElement
+import nl.adaptivity.xmlutil.serialization.XmlSerialName
 
-object FileReader {
-    fun readStringFromFile(fileName: String): String {
-        val inputStream =
-            InstrumentationRegistry.getInstrumentation().context.assets.open(
-                "data/$fileName"
-            )
-        val builder = StringBuilder()
-        val reader = InputStreamReader(inputStream, "UTF-8")
-        reader.readLines().forEach {
-            builder.append(it)
-        }
-        return builder.toString()
-    }
+@Serializable
+class PollSummary {
+    @XmlElement(false)
+    @XmlSerialName
+    var name: String? = null
+
+    @XmlElement(false)
+    @XmlSerialName
+    var title: String? = null
+
+    @XmlElement(true)
+    @XmlChildrenName("result", "", "")
+    var result: List<PollSummaryResult>? = null
+}
+
+@Serializable
+class PollSummaryResult {
+    @XmlElement(false)
+    @XmlSerialName
+    var name: String? = null
+
+    @XmlElement(false)
+    @XmlSerialName
+    var value: String? = null
 }

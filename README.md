@@ -79,6 +79,8 @@ This project evolves gradually in spare time. Here are upcoming explorations:
 - 🌱 Switch DI from Hilt → Koin — [guide](https://medium.com/@sgkantamani/migration-guide-from-hilt-to-koin-ea8083d3f7a9)
 - 🌐 Retrofit → Ktor — [migration article](https://medium.com/@santimattius/from-retrofit-to-ktorfit-on-the-way-to-kotlin-multiplatform-eebfa81f87ed)
 - 🖌️️ UI/UX improvements — [cookbook](https://github.com/Gurupreet/ComposeCookBook)
+- 🧭 Navigation - Migrate to [jetpack navigation 3](https://android-developers.googleblog.com/2025/05/announcing-jetpack-navigation-3-for-compose.html)
+- 📈 Performance improvements — [video](https://www.youtube.com/watch?v=d8SXNwy6VDs&list=WL&index=5)
 
 ## 🧭 Architecture
 

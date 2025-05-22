@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022, Boitakub
+ * Copyright (c) 2022-2025, Boitakub
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -28,72 +28,101 @@
  */
 package fr.boitakub.bgg.client
 
-import com.tickaroo.tikxml.annotation.Attribute
-import com.tickaroo.tikxml.annotation.Element
-import com.tickaroo.tikxml.annotation.Path
-import com.tickaroo.tikxml.annotation.PropertyElement
-import com.tickaroo.tikxml.annotation.Xml
-import com.tickaroo.tikxml.converter.htmlescape.HtmlEscapeStringConverter
+import kotlinx.serialization.Serializable
+import nl.adaptivity.xmlutil.serialization.XmlChildrenName
+import nl.adaptivity.xmlutil.serialization.XmlElement
+import nl.adaptivity.xmlutil.serialization.XmlSerialName
 
-@Xml
-class BoardGame : Publishable() {
+@Serializable
+class BoardGame {
 
-    @JvmField
-    @PropertyElement
+    @XmlElement(false)
+    @XmlSerialName
+    var type: String? = null
+
+    @XmlElement(false)
+    @XmlSerialName
+    var id = 0
+
+    @XmlElement(true)
+    @XmlSerialName
+    var name: List<Name> = mutableListOf()
+
+    @XmlElement(true)
+    @XmlSerialName("yearpublished")
+    var yearPublished: IntHolder = IntHolder(0)
+
+    @XmlElement(true)
+    @XmlSerialName
     var thumbnail: String? = null
 
-    @JvmField
-    @PropertyElement
+    @XmlElement(true)
+    @XmlSerialName
     var image: String? = null
 
-    @JvmField
-    @PropertyElement(converter = HtmlEscapeStringConverter::class)
+    @XmlElement(true)
+    @XmlSerialName
     var description: String? = null
 
-    @JvmField
-    @Path("minplayers")
-    @Attribute(name = "value")
-    var minplayers = 0
+    @XmlElement(true)
+    @XmlSerialName("minplayers")
+    var minplayers: IntHolder = IntHolder(0)
 
-    @JvmField
-    @Path("maxplayers")
-    @Attribute(name = "value")
-    var maxplayers = 0
+    @XmlSerialName("maxplayers")
+    @XmlElement(true)
+    var maxplayers: IntHolder = IntHolder(0)
 
-    @JvmField
-    @Path("playingtime")
-    @Attribute(name = "value")
-    var playingtime = 0
+    @XmlSerialName("playingtime")
+    @XmlElement(true)
+    var playingtime: IntHolder = IntHolder(0)
 
-    @JvmField
-    @Path("minplaytime")
-    @Attribute(name = "value")
-    var minplaytime = 0
+    @Serializable
+    data class IntHolder(
+        @XmlElement(false)
+        val value: Int,
+    )
 
-    @JvmField
-    @Path("maxplaytime")
-    @Attribute(name = "value")
-    var maxplaytime = 0
+    @Serializable
+    data class FloatHolder(
+        @XmlElement(false)
+        val value: Float,
+    )
 
-    @JvmField
-    @Path("minage")
-    @Attribute(name = "value")
-    var minage = 0
+    @Serializable
+    data class StringHolder(
+        @XmlElement(false)
+        val value: String,
+    )
 
-    @JvmField
-    @Element(name = "poll")
+    @XmlElement(true)
+    @XmlSerialName("minplaytime")
+    var minplaytime: IntHolder = IntHolder(0)
+
+    @XmlSerialName("maxplaytime")
+    @XmlElement(true)
+    var maxplaytime: IntHolder = IntHolder(0)
+
+    @XmlSerialName("minage")
+    @XmlElement(true)
+    var minage: IntHolder = IntHolder(0)
+
+    @XmlElement(true)
+    @XmlSerialName("poll", "", "")
     var polls: List<Poll>? = null
 
-    @JvmField
-    @Element(name = "link")
-    var links: List<Link>? = null
+    @XmlElement(true)
+    @XmlSerialName("poll-summary", "", "")
+    var pollSummary: PollSummary? = null
 
-    @JvmField
-    @Element
-    var statistics: Statistics = Statistics()
-
-    @JvmField
-    @Path("versions")
-    @Element
+    @XmlSerialName("versions", "", "")
+    @XmlChildrenName("item", "", "")
     var versions: List<Version>? = null
+
+    @XmlElement(true)
+    @XmlSerialName("link", "", "")
+    var link: List<Link>? = null
+
+    @XmlElement(true)
+    @XmlSerialName("statistics", "", "")
+    var statistics: Statistics = Statistics()
 }

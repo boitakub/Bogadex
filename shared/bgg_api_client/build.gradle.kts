@@ -1,7 +1,7 @@
 plugins {
     kotlin("android")
     alias(libs.plugins.android.library)
-    id("kotlin-kapt")
+    kotlin("plugin.serialization") version "2.0.21"
 }
 
 android {
@@ -40,21 +40,14 @@ android {
 
 dependencies {
     implementation(libs.okhttp)
+    implementation(libs.okhttp.logging)
     implementation(libs.retrofit)
 
     //region Parsing
-    api("com.tickaroo.tikxml:annotation:0.8.13") {
-        exclude(group = "com.squareup.okio")
-    }
-    implementation("com.tickaroo.tikxml:core:0.8.13") {
-        exclude(group = "com.squareup.okio")
-    }
-    implementation("com.tickaroo.tikxml:retrofit-converter:0.8.13") {
-        exclude(group = "com.squareup.okhttp3")
-        exclude(group = "com.squareup.retrofit2")
-    }
-    implementation("com.tickaroo.tikxml:converter-htmlescape:0.8.13")
-    kapt("com.tickaroo.tikxml:processor:0.8.13")
+    implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:1.0.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.8.1")
+    implementation("io.github.pdvrieze.xmlutil:core:0.91.0")
+    implementation("io.github.pdvrieze.xmlutil:serialization:0.91.0")
     //endregion
 
     //region Tests

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022, Boitakub
+ * Copyright (c) 2025, Boitakub
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -28,23 +28,67 @@
  */
 package fr.boitakub.bgg.client
 
-import com.tickaroo.tikxml.annotation.Attribute
-import com.tickaroo.tikxml.annotation.Element
-import com.tickaroo.tikxml.annotation.Path
-import com.tickaroo.tikxml.annotation.Xml
+import kotlinx.serialization.Serializable
+import nl.adaptivity.xmlutil.serialization.XmlChildrenName
+import nl.adaptivity.xmlutil.serialization.XmlElement
+import nl.adaptivity.xmlutil.serialization.XmlSerialName
 
-@Xml
-open class Publishable {
-    @Attribute
-    var type: String? = null
+@Serializable
+class RatingStatistics {
 
-    @Attribute
-    var id = 0
+    @XmlElement(false)
+    @XmlSerialName
+    var value: String? = ""
 
-    @Element
-    var name: List<Name> = mutableListOf()
+    @XmlElement(true)
+    @XmlSerialName
+    var usersrated = BoardGame.IntHolder(0)
 
-    @Path("yearpublished")
-    @Attribute(name = "value")
-    var yearPublished = 0
+    @XmlElement(true)
+    @XmlSerialName
+    var average = BoardGame.FloatHolder(0.0f)
+
+    @XmlElement(true)
+    @XmlSerialName
+    var bayesaverage = BoardGame.FloatHolder(0.0f)
+
+    @XmlElement(true)
+    @XmlSerialName
+    var stddev = BoardGame.FloatHolder(0.0f)
+
+    @XmlElement(true)
+    @XmlSerialName
+    var median = BoardGame.IntHolder(0)
+
+    @XmlElement(true)
+    @XmlSerialName
+    var owned = BoardGame.IntHolder(0)
+
+    @XmlElement(true)
+    @XmlSerialName
+    var trading = BoardGame.IntHolder(0)
+
+    @XmlElement(true)
+    @XmlSerialName
+    var wanting = BoardGame.IntHolder(0)
+
+    @XmlElement(true)
+    @XmlSerialName
+    var wishing = BoardGame.IntHolder(0)
+
+    @XmlElement(true)
+    @XmlSerialName
+    var numcomments = BoardGame.IntHolder(0)
+
+    @XmlElement(true)
+    @XmlSerialName
+    var numweights = BoardGame.IntHolder(0)
+
+    @XmlElement(true)
+    @XmlSerialName
+    var averageweight = BoardGame.FloatHolder(0.0f)
+
+    @XmlSerialName("ranks", "", "")
+    @XmlChildrenName("rank", "", "")
+    var ranks: List<Rank>? = null
 }
