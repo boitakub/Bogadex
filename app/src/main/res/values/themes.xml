@@ -1,8 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="NoTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
-        <item name="colorPrimary">#705D00</item>
-        <item name="colorPrimaryDark">#E3C54A</item>
-        <item name="colorAccent">#705D00</item>
+    <style name="Theme.AndroidStartup" parent="android:Theme.Material.Light.NoActionBar" >
+        <item name="android:colorPrimary">#705D00</item>
+        <item name="android:colorPrimaryDark">#E3C54A</item>
+        <item name="android:colorAccent">#705D00</item>
         <item name="android:statusBarColor">#705D00</item>
     </style>
 </resources>

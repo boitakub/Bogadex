@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021-2023, Boitakub
+ * Copyright (c) 2021-2025, Boitakub
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -42,10 +42,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -56,24 +55,23 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat.startActivity
 import androidx.navigation.NavHostController
-import coil.compose.AsyncImage
+import coil3.compose.AsyncImage
 import fr.boitakub.bogadex.boardgame.R
 import fr.boitakub.bogadex.boardgame.model.BoardGame
 import fr.boitakub.bogadex.common.ui.navigation.RatingBar
 
 @Composable
-fun BoardGameDetailScreen(
-    navController: NavHostController,
-    boardGame: BoardGame? = BoardGame()
-) {
+fun BoardGameDetailScreen(navController: NavHostController, boardGame: BoardGame? = BoardGame()) {
     Scaffold(
         topBar = { TopBar(navigator = navController, title = boardGame?.title ?: "") },
     ) { innerPadding ->
@@ -96,10 +94,7 @@ fun BoardGameDetailScreen(
 }
 
 @Composable
-fun TopBar(
-    title: String,
-    navigator: NavHostController,
-) {
+fun TopBar(title: String, navigator: NavHostController) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -110,9 +105,10 @@ fun TopBar(
             navigator.popBackStack()
         }) {
             Icon(
-                imageVector = Icons.Default.ArrowBack,
+                imageVector = ImageVector.vectorResource(fr.boitakub.bogadex.common.R.drawable.ic_arrow_left),
                 contentDescription = stringResource(id = fr.boitakub.bogadex.common.R.string.back),
                 tint = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.size(24.dp),
             )
         }
         Text(
@@ -127,9 +123,7 @@ fun TopBar(
 }
 
 @Composable
-private fun GameDetailHeader(
-    boardGame: BoardGame?,
-) {
+private fun GameDetailHeader(boardGame: BoardGame?) {
     Column {
         AsyncImage(
             modifier = Modifier
@@ -166,9 +160,7 @@ private fun GameDetailHeader(
 }
 
 @Composable
-private fun GameDetailLinks(
-    boardGame: BoardGame?,
-) {
+private fun GameDetailLinks(boardGame: BoardGame?) {
     val context = LocalContext.current
     val resources = context.resources
 
@@ -216,9 +208,7 @@ private fun GameDetailLinks(
 }
 
 @Composable
-private fun GameDetailSummary(
-    boardGame: BoardGame?,
-) {
+private fun GameDetailSummary(boardGame: BoardGame?) {
     Column {
         Spacer(modifier = Modifier.height(23.dp))
 

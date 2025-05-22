@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023, Boitakub
+ * Copyright (c) 2023-2025, Boitakub
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -44,8 +44,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -80,10 +78,7 @@ import fr.boitakub.bogadex.common.ui.theme.Theme
 import fr.boitakub.preferences.R
 
 @Composable
-fun UserSettingsScreen(
-    navController: NavHostController,
-    viewModel: UserSettingsViewModel = hiltViewModel(),
-) {
+fun UserSettingsScreen(navController: NavHostController, viewModel: UserSettingsViewModel = hiltViewModel()) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
 
     var isBggUsernameDialogVisible by remember { mutableStateOf(false) }
@@ -240,11 +235,7 @@ fun ThemeListDialog(
 }
 
 @Composable
-fun ThemeRadioComponent(
-    items: List<Theme>,
-    selected: Theme,
-    setSelected: (selected: Theme) -> Unit,
-) {
+fun ThemeRadioComponent(items: List<Theme>, selected: Theme, setSelected: (selected: Theme) -> Unit) {
     Column(
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -394,9 +385,7 @@ fun TextDialog(
 }
 
 @Composable
-fun TopBar(
-    navigator: NavHostController,
-) {
+fun TopBar(navigator: NavHostController) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -407,9 +396,10 @@ fun TopBar(
             navigator.popBackStack()
         }) {
             Icon(
-                imageVector = Icons.Default.ArrowBack,
+                imageVector = ImageVector.vectorResource(fr.boitakub.bogadex.common.R.drawable.ic_arrow_left),
                 contentDescription = stringResource(id = fr.boitakub.bogadex.common.R.string.back),
                 tint = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.size(24.dp),
             )
         }
         Text(

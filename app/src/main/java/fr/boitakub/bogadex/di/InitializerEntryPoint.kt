@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021-2025, Boitakub
+ * Copyright (c) 2025, Boitakub
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,51 +26,27 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package fr.boitakub.bogadex
+package fr.boitakub.bogadex.di
 
 import android.content.Context
-import androidx.room.AutoMigration
-import androidx.room.Database
-import androidx.room.Room
-import androidx.room.RoomDatabase
-import androidx.room.TypeConverters
-import fr.boitakub.bogadex.boardgame.BoardGameDao
-import fr.boitakub.bogadex.boardgame.BoardGameListDao
-import fr.boitakub.bogadex.boardgame.model.BoardGame
-import fr.boitakub.bogadex.boardgame.model.CollectionItem
+import dagger.hilt.EntryPoint
+import dagger.hilt.InstallIn
+import dagger.hilt.android.EntryPointAccessors
+import dagger.hilt.components.SingletonComponent
+import fr.boitakub.bogadex.initializer.WorkManagerInitializer
 
-@Database(
-    entities = [BoardGame::class, CollectionItem::class],
-    version = 2,
-    autoMigrations = [
-        AutoMigration(from = 1, to = 2),
-    ],
-    exportSchema = true,
-)
-@TypeConverters(DatabaseExtensions::class)
-abstract class BogadexDatabase : RoomDatabase() {
-    abstract fun boardGameDao(): BoardGameDao
-
-    abstract fun boardGameListDao(): BoardGameListDao
+@EntryPoint
+@InstallIn(SingletonComponent::class)
+interface InitializerEntryPoint {
+    fun inject(crashTrackerInitializer: WorkManagerInitializer)
 
     companion object {
-        internal const val DB_NAME = "bogadex_database.db"
-
-        @Volatile
-        private var instance: BogadexDatabase? = null
-        private val LOCK = Any()
-
-        operator fun invoke(context: Context) = instance ?: synchronized(LOCK) {
-            instance ?: buildDatabase(context).also {
-                instance = it
-            }
+        fun resolve(context: Context): InitializerEntryPoint {
+            val appContext = context.applicationContext ?: throw IllegalStateException()
+            return EntryPointAccessors.fromApplication(
+                appContext,
+                InitializerEntryPoint::class.java,
+            )
         }
-
-        private fun buildDatabase(context: Context) = Room
-            .databaseBuilder(
-                context.applicationContext,
-                BogadexDatabase::class.java,
-                DB_NAME,
-            ).build()
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021-2023, Boitakub
+ * Copyright (c) 2021-2025, Boitakub
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,7 +29,7 @@
 package fr.boitakub.bogadex
 
 import android.content.Context
-import coil.ImageLoader
+import coil3.ImageLoader
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -41,12 +41,9 @@ import okhttp3.HttpUrl.Companion.toHttpUrl
 @Module
 @InstallIn(SingletonComponent::class)
 open class BogadexApplicationModule {
-
     open fun baseUrl() = "https://www.boardgamegeek.com/".toHttpUrl()
 
-    open fun imageLoader(context: Context): ImageLoader {
-        return ImageLoader.Builder(context).build()
-    }
+    open fun imageLoader(context: Context): ImageLoader = ImageLoader.Builder(context).build()
 
     @Provides
     fun provideBaseUrl(): HttpUrl = baseUrl()

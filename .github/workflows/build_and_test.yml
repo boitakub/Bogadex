@@ -1,0 +1,40 @@
+name: Build and Test
+
+on:
+    push:
+        branches: [ main ]
+    pull_request:
+        types: [ opened, synchronize, reopened, ready_for_review ]
+
+concurrency:
+    group: ${{ github.head_ref || github.ref_name }}
+    cancel-in-progress: true
+
+jobs:
+    build-and-test:
+        runs-on: ubuntu-latest
+        timeout-minutes: 30
+
+        steps:
+            - name: 🛎️ Checkout
+              uses: actions/checkout@v3
+              with:
+                  fetch-depth: 0
+
+            - name: 🏭 Set up our JDK environment
+              uses: actions/setup-java@v3
+              with:
+                  distribution: 'adopt'
+                  java-version: '17'
+
+            # Decode Google services configuration file from secrets
+            - name: 🔐 Decode google-services.json
+              env:
+                  FIREBASE_CONFIG: ${{ secrets.FIREBASE_CONFIG }}
+              run: echo $FIREBASE_CONFIG > app/google-services.json
+
+            - name: 🏭 Setup Gradle
+              uses: gradle/gradle-build-action@v2
+
+            - name: 🔨 Build
+              run: ./gradlew build sonar --info

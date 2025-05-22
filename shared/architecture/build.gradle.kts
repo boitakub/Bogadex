@@ -1,14 +1,14 @@
 plugins {
-    id("com.android.library")
     kotlin("android")
+    alias(libs.plugins.android.library)
 }
 
 android {
-    compileSdk = 33
+    compileSdk = AndroidConfig.COMPILE_SDK
 
     defaultConfig {
-        minSdk = 23
-        targetSdk = 33
+        minSdk = AndroidConfig.MIN_SDK
+        targetSdk = AndroidConfig.TARGET_SDK
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -23,7 +23,7 @@ android {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                "proguard-rules.pro",
             )
         }
     }
@@ -31,22 +31,13 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_17.toString()
+    }
     namespace = "fr.boitakub.architecture"
 }
 
 dependencies {
-    val junitVersion: String by project
-    val espressoVersion: String by project
-
-    //region Test
-
-    testImplementation("junit:junit:$junitVersion")
-
-    //endregion
-
-    //region AndroidTest
-
-    androidTestImplementation("androidx.test.espresso:espresso-core:$espressoVersion")
-
-    //endregion
+    testImplementation(libs.test.junit)
+    androidTestImplementation(libs.test.espresso)
 }

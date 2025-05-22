@@ -4,25 +4,17 @@
 </p>
 </h1>
 
-[![Build](https://github.com/boitakub/Bogadex/actions/workflows/main.yml/badge.svg)](https://github.com/boitakub/Bogadex/actions/workflows/main.yml)
-[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=boitakub_Bogadex&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=boitakub_Bogadex)
-[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=boitakub_Bogadex&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=boitakub_Bogadex)
-[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=boitakub_Bogadex&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=boitakub_Bogadex)
-[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=boitakub_Bogadex&metric=bugs)](https://sonarcloud.io/summary/new_code?id=boitakub_Bogadex)
-[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=boitakub_Bogadex&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=boitakub_Bogadex)
-[![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=boitakub_Bogadex&metric=sqale_index)](https://sonarcloud.io/summary/new_code?id=boitakub_Bogadex)
-[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=boitakub_Bogadex&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=boitakub_Bogadex)
-[![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=boitakub_Bogadex&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=boitakub_Bogadex)
-[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=boitakub_Bogadex&metric=coverage)](https://sonarcloud.io/summary/new_code?id=boitakub_Bogadex)
-[![Kotlin](https://img.shields.io/badge/Kotlin-1.8.10-blue.svg?style=flat)](https://kotlinlang.org)
-[![API](https://img.shields.io/badge/API-23%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=23)
-[![License](https://img.shields.io/github/license/boitakub/bogadex)](LICENSE.md)
-[![gitmoji](https://img.shields.io/badge/gitmoji-%20😜%20😍-FFDD67.svg)](https://github.com/carloscuesta/gitmoji)
-[![Twitter](https://img.shields.io/badge/Twitter-@jforatier-blue.svg?style=flat)](http://twitter.com/jforatier)
+<p align="center">
+  <img alt="API" src="https://img.shields.io/badge/API-23%2B-brightgreen.svg?style=flat"/>
+  <img alt="Kotlin" src="https://img.shields.io/badge/Kotlin-2.1.0-blue.svg?style=flat"/>
+  <img src="https://img.shields.io/github/v/release/boitakub/Bogadex?label=version">
+  <img src="https://img.shields.io/date/1747906861?label=Last%20review">
+  <img src="https://img.shields.io/github/actions/workflow/status/boitakub/Bogadex/build_and_test.yml">
+  <img src="https://img.shields.io/github/license/boitakub/bogadex">
+</p>
 
 <p align="center">
-Bogadex is a small demo and functionnal application based on modern Android application tech-stacks and MVVM architecture.<br>This project aim to regroup and present most of current practices and patterns.<br>
-Also dealing with data (from <a href="https://www.boardgamegeek.com/">BoardGameGeek</a>) and presenting them in elegants ways.
+Bogadex is a minimalist yet functional Android application showcasing modern development standards with a focus on clean architecture, code quality, and progressive enhancements. It uses the BoardGameGeek API to explore, filter, and present board game collections elegantly.
 </p>
 </br>
 
@@ -30,104 +22,112 @@ Also dealing with data (from <a href="https://www.boardgamegeek.com/">BoardGameG
 <img src="/docs/assets/capture_1.gif" height="500" alt="Bogadex - Screenshot"/>
 </p>
 
-## Download 📲
+## ✨ Overview
 
-Go to the [Releases](https://github.com/boitakub/Bogadex/releases) to download the latest APK.
+Bogadex is a side project crafted with passion. It aims to demonstrate modern Android practices using Jetpack Compose, Material 3, and a scalable architecture. The app is a playground for exploring new concepts while keeping things simple, robust, and open.
 
-## Features ✨
+## 🔧 Key Features
 
-* Free and open source
-* List, Sort and Filter all you [BGG BoardGameGeekCollection](https://boardgamegeek.com/)
+- Browse your [BoardGameGeek](https://boardgamegeek.com/) collection
+- Sort and filter your games with Compose UI
+- Dark mode with Material 3 dynamic theming
+- Offline access via Room & caching
+- Android & Community best practices oriented
+- Full MVVM with a modular, scalable structure
+- Built-in CI/CD with quality gates (lint, test, sonar)
 
-## Tech Stack & Libraries 🧬
+## 🧬 Stack & Practices
 
-This project takes advantage of best practices, and many popular libraries and tools in the Android ecosystem.
-- [Kotlin](https://kotlinlang.org/) - 100% Kotlin - Code and Scripts
-- [Flow](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/) for asynchronous.
-- Lifecycle - dispose of observing data when lifecycle state changes.
-- ViewModel - UI related data holder, lifecycle aware.
-- [Hilt-Dagger](https://dagger.dev/hilt/) for dependency injection.
-- [JetPack](https://developer.android.com/jetpack)
-  * [Compose](https://developer.android.com/jetpack/compose?hl=fr) - UI build 100% with Jetpack Compose
-  * [WorkManager](https://developer.android.com/topic/libraries/architecture/workmanager) - Updating and maintaining data up-to-date periodically and asynchronous
-  * [DataStore](https://developer.android.com/topic/libraries/architecture/datastore) - for shared preferences
-  * [Room](https://developer.android.com/training/data-storage/room) - Database for cache / offline storage
+| Area               | Tools & Libraries |
+|--------------------|------------------|
+| **Language**        | Kotlin (100%) |
+| **UI**              | Jetpack Compose, Material 3 |
+| **Architecture**    | MVVM → MVI, Repository, UseCases |
+| **Dependency DI**   | Hilt (soon Koin) |
+| **Data Layer**      | Room, Retrofit (soon Ktor), DataStore |
+| **Asynchronous**    | Kotlin Flow, Coroutines |
+| **Image Loading**   | Coil |
+| **Build Tools**     | Gradle (optimized), GitHub Actions |
+| **Quality**         | KtLint, Spotless, Unit & Instrumentation Tests, SonarCloud |
 
-- [Material 3](https://m3.material.io/) - Using Material Design 3
-  * [Dark Mode](https://developer.android.com/guide/topics/ui/look-and-feel/darktheme) - Generate theme trough [Material Theme Builder](https://m3.material.io/theme-builder#/dynamic)
-- [Retrofit2 & OkHttp3](https://github.com/square/retrofit) - construct the REST APIs and paging network data.
-- [Coil](https://github.com/coil-kt/coil) - Async images management.
+## 📦 Code Standards
 
+Bogadex adheres to:
 
-- [SonarCloud](https://sonarcloud.io/project/overview?id=boitakub_Bogadex) - Code quality and coverage analysis
-- [Gradle optimizations](https://proandroiddev.com/how-we-reduced-our-gradle-build-times-by-over-80-51f2b6d6b05b) - Some gradle tips to optimize build time
+- **[Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/)** for clarity and semantic versioning.
+- **[SemVer](https://semver.org/)** for meaningful releases.
+- **CI-enforced formatting** via Spotless/KtLint.
+- Clear **module boundaries** by feature and responsibility.
 
-## Flow & Delivery 🚚
+## 🧪 Testing & Quality
 
-### Triggering a Release
+The project embraces automated testing and code quality:
 
-Release a build version triggers in the following scenarios:
-- You push a version tag to the repository.
-- You create a pull request targeting the main branch.
-- Check on pre-commit [Article](https://medium.com/@anjani.kjoshi/android-lint-pre-commit-hook-for-clean-code-747edfe57abf)
-  * lint - for Android critical issues
-  * KtLint - for kotlin file quality
-- Auto version from git tag [Article](https://dev.to/ychescale9/git-based-android-app-versioning-with-agp-4-0-24ip) [Plugin](https://github.com/ReactiveCircus/app-versioning)
-- Auto delivery from git tag
-  * on GitHub Release
-  * on Firebase App Distribution
-  * 🚧 on Google Play Store - Beta & Production
-- Release signing [Article](https://proandroiddev.com/how-to-securely-build-and-sign-your-android-app-with-github-actions-ad5323452ce)
+- Unit & instrumentation tests
+- Linting on commit
+- SonarCloud coverage & code smell detection
+- GitHub Actions for validation pipelines
 
-## Code formatting
+> Coming soon: test structure refactor & dedicated test module.
 
-The CI uses [Spotless](https://github.com/diffplug/spotless) to check if your code is formatted correctly and contains the right licenses.
-Internally, Spotless uses [ktlint](https://github.com/pinterest/ktlint) to check the formatting of your code.
-To set up ktlint correctly with Android Studio, follow one of the [listed setup options](https://github.com/pinterest/ktlint#-with-intellij-idea).
+## 🚧 Roadmap & Ideas
 
-Before committing your code, run `./gradlew app:spotlessApply` to automatically format your code.
+This project evolves gradually in spare time. Here are upcoming explorations:
 
-<!--- ## MAD Score
+- 🧩 Widgets (Glance + Compose) — [guide](https://joebirch.co/android/exploring-jetpack-compose-for-widgets-with-glance/)
+- 🔁 Rewrite test structure & introduce test automation
+- 🌱 Switch DI from Hilt → Koin — [guide](https://medium.com/@sgkantamani/migration-guide-from-hilt-to-koin-ea8083d3f7a9)
+- 🌐 Retrofit → Ktor — [migration article](https://medium.com/@santimattius/from-retrofit-to-ktorfit-on-the-way-to-kotlin-multiplatform-eebfa81f87ed)
+- 🖌️️ UI/UX improvements — [cookbook](https://github.com/Gurupreet/ComposeCookBook)
 
-![summary](https://user-images.githubusercontent.com/24237865/102366914-84f6b000-3ffc-11eb-8d49-b20694239782.png)
+## 🧭 Architecture
 
-![kotlin](https://user-images.githubusercontent.com/24237865/102366932-8a53fa80-3ffc-11eb-8131-fd6745a6f079.png)
+Bogadex follows a Clean Architecture and modular approach:
 
--->
+- **MVVM + MVI** for UI logic
+- **UseCases** as business logic orchestration
+- **Modular structure** per feature
+- **Repository pattern** for separation of concerns
 
-## Architecture 📐
+<p align="center">
+<img src="docs/assets/design_by_feature.png" alt="Design by feature"/>
+<img src="docs/assets/clean_architecture.png" alt="Clean architecture"/>
+</p>
 
-Bogadex is based on MVVM architecture and a repository pattern with a modular approach.
-- MVVM -> MVI Architecture (View - ViewModel - Model)
-- Business oriented with UseCases pattern - [By layer or feature? Why not both?! Guide to Android app modularization](https://www.youtube.com/watch?v=16SwTvzDO0A)
-- Repository pattern
-- UI 100% Jetpack compose
-
-Concerns are separate by modules containing feature
-![Design by features](docs/assets/design_by_feature.png)
-
-Each modules/feature share a common clean architecture pattern
-![Clean architecture](docs/assets/clean_architecture.png)
-
-<!---
-
-![architecture](https://user-images.githubusercontent.com/24237865/77502018-f7d36000-6e9c-11ea-92b0-1097240c8689.png)
-
--->
-
-## Credits & Inspiration 🎖️
-
-Bogadex is inspired by the wonderful repositories :
-
-- [Jaewoong Eum](https://github.com/skydoves), especially [Pokedex](https://github.com/skydoves/Pokedex).
-- [Igor Wojda](https://github.com/igorwojda) and his great repo [android-showcase](https://github.com/igorwojda/android-showcase).
-- [Lopez Mikhael](https://github.com/lopspower) with [Pokedex Compose](https://github.com/lopspower/PokeCardCompose)
-
-Thank you for the great job.
-
-## BoardGameGeek API 🎲
+## 🎲 BoardGameGeek API
 
 <img src="https://images.squarespace-cdn.com/content/v1/5902292fd482e9284cf47b8d/1567633051478-PRQ3UHYD6YFJSP80U3YV/BGG.jpeg?format=1500w" align="right" width="21%"/>
 
-Pokedex using the [BoardGameGeekAPI](https://boardgamegeek.com/wiki/page/BGG_XML_API2/) for constructing RESTful-oriented API.<br>
-BoardGameGeekAPI provides a XML API interface to highly detailed objects built from thousands of lines of data related to Boardgames.
+Bogadex uses the [BoardGameGeek XML API](https://boardgamegeek.com/wiki/page/BGG_XML_API2/) to query data from the largest board game database.
+
+The API provides rich details (titles, thumbnails, stats, etc.) through REST-like XML endpoints.
+
+## 🤝 Credits & Thanks
+
+Bogadex is inspired by many developers, creators, and open-source projects that share knowledge generously:
+
+### 👨‍💻 Developers
+
+- **[Jaewoong Eum (skydoves)](https://github.com/skydoves)**
+  Creator of [Pokedex](https://github.com/skydoves/Pokedex) and many other modern Android examples.
+  Inspiring clean architecture and Compose integrations.
+
+- **[Philipp Lackner](https://github.com/PhilippLackner)**
+  Developer advocate and educator — [YouTube Channel](https://www.youtube.com/@PhilippLackner)
+  Clear and insightful videos on advanced Android patterns, KMM, DI, Compose, and testing.
+
+### 📦 Projects
+
+- [Rocket.Chat (open source messaging platform)](https://github.com/RocketChat/Rocket.Chat)
+  Reference for scalable architecture and community-led development.
+
+- [Pokedex by skydoves](https://github.com/skydoves/Pokedex)
+  A well-designed Android app using Jetpack Compose, Hilt, and modern UI patterns.
+
+## ☕ Support
+
+Bogadex is a personal project made with ❤️ on personal time. If you find it useful, feel free to [support via Ko-Fi](https://ko-fi.com/S6S4IFFOB). It helps with tools, hosting, and motivation!
+
+## 📜 License
+
+This project is licensed under the terms of the [MIT License](LICENSE).

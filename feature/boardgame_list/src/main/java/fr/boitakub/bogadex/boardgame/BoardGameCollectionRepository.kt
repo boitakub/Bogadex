@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021-2023, Boitakub
+ * Copyright (c) 2021-2025, Boitakub
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -46,13 +46,14 @@ import okio.sink
 import java.io.File
 import javax.inject.Inject
 
-class BoardGameCollectionRepository @Inject constructor(
+class BoardGameCollectionRepository
+@Inject
+constructor(
     @ApplicationContext val context: Context,
     override val local: BoardGameListDao,
     override val remote: BggService,
     private val mapper: CollectionMapper,
 ) : Repository {
-
     fun get(user: String): Flow<List<CollectionItemWithDetails>> =
         local.collectionWithDetailsFlow().combine(getAllRemoteResorts(user)) { local, remote ->
             toUiModel(local, remote)
@@ -64,24 +65,22 @@ class BoardGameCollectionRepository @Inject constructor(
         val result: List<CollectionItem> = mapper.map(networkResult).boardgames
         emit(result)
         local.updateCollection(result)
-        if (BuildConfig.DEBUG) writeMockData(user, networkResult)
     }
 
     private fun toUiModel(
         localList: List<CollectionItemWithDetails>,
         remoteList: List<CollectionItem>,
-    ):
-        List<CollectionItemWithDetails> {
-        return localList.ifEmpty {
-            remoteList.map {
-                CollectionItemWithDetails(it, BoardGame())
-            }
+    ): List<CollectionItemWithDetails> = localList.ifEmpty {
+        remoteList.map {
+            CollectionItemWithDetails(it, BoardGame())
         }
     }
 
     private fun writeMockData(input: String?, result: UserCollection?) {
-        val parser: TikXml = TikXml.Builder()
-            .build()
+        val parser: TikXml =
+            TikXml
+                .Builder()
+                .build()
         val file = File(context.filesDir?.path + "/" + File.separator + input + ".xml")
         file.sink().buffer().use { sink ->
             parser.write(sink, result)

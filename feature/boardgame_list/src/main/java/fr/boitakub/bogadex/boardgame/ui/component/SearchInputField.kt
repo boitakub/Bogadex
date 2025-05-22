@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023, Boitakub
+ * Copyright (c) 2023-2025, Boitakub
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -31,11 +31,9 @@ package fr.boitakub.bogadex.boardgame.ui.component
 import android.content.res.Configuration
 import android.view.KeyEvent
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
@@ -48,9 +46,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
@@ -83,8 +83,9 @@ fun SearchInputField(
         value = searchedTermsField,
         leadingIcon = {
             Icon(
-                imageVector = Icons.Default.Search,
+                imageVector = ImageVector.vectorResource(R.drawable.ic_search),
                 contentDescription = stringResource(id = fr.boitakub.bogadex.common.R.string.decorative_image),
+                modifier = Modifier.size(24.dp),
             )
         },
         trailingIcon = {
@@ -94,8 +95,9 @@ fun SearchInputField(
                     onSearchTermChange(searchedTermsField.text)
                 }) {
                     Icon(
-                        imageVector = Icons.Default.Close,
+                        imageVector = ImageVector.vectorResource(R.drawable.ic_xmark),
                         contentDescription = stringResource(id = fr.boitakub.bogadex.common.R.string.searchbar_clear),
+                        modifier = Modifier.size(24.dp),
                     )
                 }
             }

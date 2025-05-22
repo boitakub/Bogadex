@@ -1,14 +1,14 @@
 plugins {
-    id("com.android.library")
     kotlin("android")
+    alias(libs.plugins.android.library)
 }
 
 android {
-    compileSdk = 33
+    compileSdk = AndroidConfig.COMPILE_SDK
 
     defaultConfig {
-        minSdk = 23
-        targetSdk = 33
+        minSdk = AndroidConfig.MIN_SDK
+        targetSdk = AndroidConfig.TARGET_SDK
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -23,7 +23,7 @@ android {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                "proguard-rules.pro",
             )
         }
     }
@@ -35,11 +35,5 @@ android {
 }
 
 dependencies {
-    val espressoVersion: String by project
-
-    //region AndroidTest
-
-    implementation("androidx.test.espresso:espresso-core:$espressoVersion")
-
-    //endregion
+    implementation(libs.test.espresso)
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023, Boitakub
+ * Copyright (c) 2023-2025, Boitakub
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -66,17 +66,14 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
+import coil3.compose.AsyncImage
 import fr.boitakub.boardgame_list.R
 import fr.boitakub.bogadex.boardgame.model.CollectionItemWithDetails
 import kotlin.math.cos
 import kotlin.math.sin
 
 @Composable
-fun BoardGameListItem(
-    item: CollectionItemWithDetails,
-    onClick: (CollectionItemWithDetails) -> Unit,
-) {
+fun BoardGameListItem(item: CollectionItemWithDetails, onClick: (CollectionItemWithDetails) -> Unit) {
     Row(
         modifier = Modifier
             .clickable(onClick = {
@@ -233,9 +230,8 @@ fun getWeightColor(averageWeight: Float?, isLight: Boolean = isSystemInDarkTheme
 }
 
 class PolyShape(private val sides: Int, private val radius: Float) : Shape {
-    override fun createOutline(size: Size, layoutDirection: LayoutDirection, density: Density): Outline {
-        return Outline.Generic(path = Path().apply { polygon(sides, radius, size.center) })
-    }
+    override fun createOutline(size: Size, layoutDirection: LayoutDirection, density: Density): Outline =
+        Outline.Generic(path = Path().apply { polygon(sides, radius, size.center) })
 }
 
 fun Path.polygon(sides: Int, radius: Float, center: Offset) {

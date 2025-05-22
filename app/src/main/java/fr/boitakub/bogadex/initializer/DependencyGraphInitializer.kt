@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021-2025, Boitakub
+ * Copyright (c) 2025, Boitakub
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,51 +26,16 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package fr.boitakub.bogadex
+package fr.boitakub.bogadex.initializer
 
 import android.content.Context
-import androidx.room.AutoMigration
-import androidx.room.Database
-import androidx.room.Room
-import androidx.room.RoomDatabase
-import androidx.room.TypeConverters
-import fr.boitakub.bogadex.boardgame.BoardGameDao
-import fr.boitakub.bogadex.boardgame.BoardGameListDao
-import fr.boitakub.bogadex.boardgame.model.BoardGame
-import fr.boitakub.bogadex.boardgame.model.CollectionItem
+import androidx.startup.Initializer
+import fr.boitakub.bogadex.di.InitializerEntryPoint
 
-@Database(
-    entities = [BoardGame::class, CollectionItem::class],
-    version = 2,
-    autoMigrations = [
-        AutoMigration(from = 1, to = 2),
-    ],
-    exportSchema = true,
-)
-@TypeConverters(DatabaseExtensions::class)
-abstract class BogadexDatabase : RoomDatabase() {
-    abstract fun boardGameDao(): BoardGameDao
-
-    abstract fun boardGameListDao(): BoardGameListDao
-
-    companion object {
-        internal const val DB_NAME = "bogadex_database.db"
-
-        @Volatile
-        private var instance: BogadexDatabase? = null
-        private val LOCK = Any()
-
-        operator fun invoke(context: Context) = instance ?: synchronized(LOCK) {
-            instance ?: buildDatabase(context).also {
-                instance = it
-            }
-        }
-
-        private fun buildDatabase(context: Context) = Room
-            .databaseBuilder(
-                context.applicationContext,
-                BogadexDatabase::class.java,
-                DB_NAME,
-            ).build()
+class DependencyGraphInitializer : Initializer<Unit> {
+    override fun create(context: Context) {
+        InitializerEntryPoint.resolve(context)
     }
+
+    override fun dependencies(): List<Class<out Initializer<*>>> = emptyList()
 }

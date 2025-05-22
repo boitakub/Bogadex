@@ -1,15 +1,15 @@
 plugins {
-    id("com.android.library")
     kotlin("android")
-    kotlin("kapt")
+    alias(libs.plugins.android.library)
+    id("kotlin-kapt")
 }
 
 android {
-    compileSdk = 33
+    compileSdk = AndroidConfig.COMPILE_SDK
 
     defaultConfig {
-        minSdk = 23
-        targetSdk = 33
+        minSdk = AndroidConfig.MIN_SDK
+        targetSdk = AndroidConfig.TARGET_SDK
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -24,7 +24,7 @@ android {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                "proguard-rules.pro",
             )
         }
     }
@@ -32,14 +32,15 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_17.toString()
+    }
     namespace = "fr.boitakub.api.client"
 }
 
 dependencies {
-    val okhttpVersion: String by project
-    val retrofitVersion: String by project
-    val junitVersion: String by project
-    val espressoVersion: String by project
+    implementation(libs.okhttp)
+    implementation(libs.retrofit)
 
     //region Parsing
     api("com.tickaroo.tikxml:annotation:0.8.13") {
@@ -56,22 +57,10 @@ dependencies {
     kapt("com.tickaroo.tikxml:processor:0.8.13")
     //endregion
 
-    //region Networking
+    //region Tests
 
-    implementation("com.squareup.okhttp3:okhttp:$okhttpVersion")
-    implementation("com.squareup.retrofit2:retrofit:$retrofitVersion")
-
-    //endregion
-
-    //region Test
-
-    testImplementation("junit:junit:$junitVersion")
-
-    //endregion
-
-    //region AndroidTest
-
-    androidTestImplementation("androidx.test.espresso:espresso-core:$espressoVersion")
+    testImplementation(libs.test.junit)
+    androidTestImplementation(libs.test.espresso)
 
     //endregion
 }

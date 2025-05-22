@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023, Boitakub
+ * Copyright (c) 2023-2025, Boitakub
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -36,9 +36,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.List
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
@@ -110,7 +107,10 @@ fun BoardGameCollectionScreen(
                     imageVector = ImageVector.vectorResource(id = R.drawable.ic_filter_solid),
                     contentDescription = "Add FAB",
                 )
-                Text(modifier = Modifier.padding(start = 8.dp), text = stringResource(id = fr.boitakub.bogadex.common.R.string.filters))
+                Text(
+                    modifier = Modifier.padding(start = 8.dp),
+                    text = stringResource(id = fr.boitakub.bogadex.common.R.string.filters),
+                )
             }
         },
     ) { padding ->
@@ -145,43 +145,42 @@ private fun CollectionScreenTopBar(
     isGridView: MutableState<Boolean>,
     searchedTerms: MutableState<String>,
     filterViewModel: FilterViewModel,
-) =
-    TopBar(
-        collectionAvailableList = CollectionType.values().toList(),
-        activeCollection = activeCollection.value,
-        onCollectionChanged = {
-            activeCollection.value = it
-            navController.navigate(
-                BoardGameCollectionNavigation.navigateTo(
+) = TopBar(
+    collectionAvailableList = CollectionType.values().toList(),
+    activeCollection = activeCollection.value,
+    onCollectionChanged = {
+        activeCollection.value = it
+        navController.navigate(
+            BoardGameCollectionNavigation.navigateTo(
+                it,
+                isGridView.value,
+            ),
+        )
+    },
+    currentTerm = searchedTerms.value,
+    onSearchTermChange = {
+        filterViewModel.mutate(
+            filterViewModel.filter.value.copy(
+                searchTerms = Regex("[^A-Za-z0-9]").replace(
                     it,
-                    isGridView.value,
+                    "",
                 ),
-            )
-        },
-        currentTerm = searchedTerms.value,
-        onSearchTermChange = {
-            filterViewModel.mutate(
-                filterViewModel.filter.value.copy(
-                    searchTerms = Regex("[^A-Za-z0-9]").replace(
-                        it,
-                        "",
-                    ),
-                ),
-            )
-        },
-        onToggleViewClick = {
-            isGridView.value = !isGridView.value
-            navController.navigate(
-                BoardGameCollectionNavigation.navigateTo(
-                    activeCollection.value,
-                    isGridView.value,
-                ),
-            )
-        },
-        onSettingButtonClick = {
-            navController.navigate("preferences")
-        },
-    )
+            ),
+        )
+    },
+    onToggleViewClick = {
+        isGridView.value = !isGridView.value
+        navController.navigate(
+            BoardGameCollectionNavigation.navigateTo(
+                activeCollection.value,
+                isGridView.value,
+            ),
+        )
+    },
+    onSettingButtonClick = {
+        navController.navigate("preferences")
+    },
+)
 
 @Composable
 private fun TopBar(
@@ -212,18 +211,20 @@ private fun TopBar(
                 onToggleViewClick()
             }) {
                 Icon(
-                    imageVector = Icons.Default.List,
+                    imageVector = ImageVector.vectorResource(R.drawable.ic_list),
                     contentDescription = stringResource(id = fr.boitakub.bogadex.common.R.string.change_display),
                     tint = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.size(24.dp),
                 )
             }
             IconButton(onClick = {
                 onSettingButtonClick()
             }) {
                 Icon(
-                    imageVector = Icons.Default.Settings,
+                    imageVector = ImageVector.vectorResource(R.drawable.ic_gear),
                     contentDescription = stringResource(id = fr.boitakub.bogadex.common.R.string.settings),
                     tint = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.size(24.dp),
                 )
             }
         }

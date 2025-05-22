@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023, Boitakub
+ * Copyright (c) 2023-2025, Boitakub
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -51,15 +51,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
+import coil3.compose.AsyncImage
 import fr.boitakub.boardgame_list.R
 import fr.boitakub.bogadex.boardgame.model.CollectionItemWithDetails
 
 @Composable
-fun BoardGameGridItem(
-    item: CollectionItemWithDetails,
-    onClick: (CollectionItemWithDetails) -> Unit,
-) {
+fun BoardGameGridItem(item: CollectionItemWithDetails, onClick: (CollectionItemWithDetails) -> Unit) {
     BogadexCard {
         Column(
             modifier = Modifier
@@ -155,10 +152,7 @@ private fun GameInfoSection(item: CollectionItemWithDetails) {
 }
 
 @Composable
-fun BogadexCard(
-    modifier: Modifier = Modifier.wrapContentSize(),
-    content: @Composable () -> Unit,
-) {
+fun BogadexCard(modifier: Modifier = Modifier.wrapContentSize(), content: @Composable () -> Unit) {
     Card(
         modifier = modifier,
         elevation = CardDefaults.cardElevation(

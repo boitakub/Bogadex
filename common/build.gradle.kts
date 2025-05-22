@@ -1,17 +1,17 @@
 plugins {
-    id("com.android.library")
     kotlin("android")
-    kotlin("kapt")
-    id("dagger.hilt.android.plugin")
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.hilt)
+    alias(libs.plugins.compose.compiler)
 }
 
 android {
-    val composeCompilerVersion: String by project
-    compileSdk = 33
+    compileSdk = AndroidConfig.COMPILE_SDK
 
     defaultConfig {
-        minSdk = 23
-        targetSdk = 33
+        minSdk = AndroidConfig.MIN_SDK
+        targetSdk = AndroidConfig.TARGET_SDK
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -26,15 +26,12 @@ android {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                "proguard-rules.pro",
             )
         }
     }
     buildFeatures {
         compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = composeCompilerVersion
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
@@ -47,26 +44,16 @@ android {
 }
 
 dependencies {
-    val lifecycleVersion: String by project
-    val daggerVersion: String by project
-    val hiltVersion: String by project
-    val composeBomVersion: String by project
-    val junitVersion: String by project
-    val espressoVersion: String by project
-
     implementation(project(":shared:architecture"))
 
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:$lifecycleVersion")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion")
-
     //region UI / Compose
-    val composeBom = platform("androidx.compose:compose-bom:$composeBomVersion")
+    val composeBom = platform(libs.compose.bom)
     implementation(composeBom)
-    implementation("androidx.compose.material3:material3")
-    implementation("androidx.compose.foundation:foundation")
-    implementation("androidx.compose.ui:ui")
-    implementation("androidx.compose.ui:ui-tooling-preview")
-    debugImplementation("androidx.compose.ui:ui-tooling")
+    implementation(libs.compose.material3)
+    implementation(libs.compose.foundation)
+    implementation(libs.compose.ui)
+    implementation(libs.compose.ui.tooling.preview)
+    debugImplementation(libs.compose.ui.tooling)
 
     //endregion
 
@@ -74,22 +61,17 @@ dependencies {
 
     //region Dependency Injection
 
-    implementation("com.google.dagger:hilt-android:$daggerVersion")
-    kapt("com.google.dagger:hilt-compiler:$daggerVersion")
-    implementation("androidx.hilt:hilt-work:$hiltVersion")
-    kapt("androidx.hilt:hilt-compiler:$hiltVersion")
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.compiler)
+    implementation(libs.hilt.work)
+    ksp(libs.hilt.work.compiler)
 
     //endregion
 
-    //region Test
+    //region Tests
 
-    testImplementation("junit:junit:$junitVersion")
-
-    //endregion
-
-    //region AndroidTest
-
-    androidTestImplementation("androidx.test.espresso:espresso-core:$espressoVersion")
+    testImplementation(libs.test.junit)
+    androidTestImplementation(libs.test.espresso)
 
     //endregion
 }
