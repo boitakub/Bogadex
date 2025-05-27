@@ -7,6 +7,7 @@ plugins {
     alias(libs.plugins.hilt)
     id("com.google.firebase.crashlytics")
     alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.kover)
     alias(libs.plugins.google.services)
 }
 
@@ -90,6 +91,16 @@ android {
 }
 
 dependencies {
+
+    //region - Merge coverage reports
+    kover(project(":common"))
+    kover(project(":shared:architecture"))
+    kover(project(":shared:bgg_api_client"))
+    kover(project(":feature:boardgame"))
+    kover(project(":feature:boardgame_list"))
+    kover(project(":feature:preferences"))
+    //endregion
+
     implementation(project(":common"))
     implementation(project(":shared:architecture"))
     implementation(project(":shared:bgg_api_client"))

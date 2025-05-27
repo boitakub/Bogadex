@@ -38,17 +38,17 @@ Bogadex is a side project crafted with passion. It aims to demonstrate modern An
 
 ## 🧬 Stack & Practices
 
-| Area               | Tools & Libraries |
-|--------------------|------------------|
-| **Language**        | Kotlin (100%) |
-| **UI**              | Jetpack Compose, Material 3 |
-| **Architecture**    | MVVM → MVI, Repository, UseCases |
-| **Dependency DI**   | Hilt (soon Koin) |
-| **Data Layer**      | Room, Retrofit (soon Ktor), DataStore |
-| **Asynchronous**    | Kotlin Flow, Coroutines |
-| **Image Loading**   | Coil |
-| **Build Tools**     | Gradle (optimized), GitHub Actions |
-| **Quality**         | KtLint, Spotless, Unit & Instrumentation Tests, SonarCloud |
+| Area               | Tools & Libraries                                                 |
+|--------------------|-------------------------------------------------------------------|
+| **Language**        | Kotlin (100%)                                                     |
+| **UI**              | Jetpack Compose, Material 3                                       |
+| **Architecture**    | MVVM → MVI, Repository, UseCases                                  |
+| **Dependency DI**   | Hilt (soon Koin)                                                  |
+| **Data Layer**      | Room, Retrofit (soon Ktor), DataStore                             |
+| **Asynchronous**    | Kotlin Flow, Coroutines                                           |
+| **Image Loading**   | Coil                                                              |
+| **Build Tools**     | Gradle (optimized), GitHub Actions                                |
+| **Quality**         | KtLint, Spotless, Unit & Instrumentation Tests, Kover, SonarCloud |
 
 ## 📦 Code Standards
 
@@ -67,6 +67,7 @@ The project embraces automated testing and code quality:
 - Linting on commit
 - SonarCloud coverage & code smell detection
 - GitHub Actions for validation pipelines
+- Code coverage with [Kover](https://kotlin.github.io/kotlinx-kover/)
 
 > Coming soon: test structure refactor & dedicated test module.
 

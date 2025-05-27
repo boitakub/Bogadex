@@ -8,6 +8,7 @@ plugins {
     id("com.google.firebase.crashlytics") version "3.0.3" apply false
     alias(libs.plugins.compose.compiler) apply false
     id("com.diffplug.spotless") version "7.0.1"
+    alias(libs.plugins.kover)
     id("org.sonarqube") version "6.2.0.5505"
 }
 

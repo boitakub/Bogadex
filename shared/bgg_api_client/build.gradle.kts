@@ -2,6 +2,7 @@ plugins {
     kotlin("android")
     alias(libs.plugins.android.library)
     kotlin("plugin.serialization") version "2.0.21"
+    alias(libs.plugins.kover)
 }
 
 android {
