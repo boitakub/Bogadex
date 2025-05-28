@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023, Boitakub
+ * Copyright (c) 2023-2025, Boitakub
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,7 +29,6 @@
 package fr.boitakub.bogadex.boardgame.ui
 
 import androidx.compose.runtime.Composable
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -45,6 +44,8 @@ import fr.boitakub.bogadex.boardgame.usecase.ListCollectionItemWanted
 import fr.boitakub.bogadex.common.UserSettings
 import fr.boitakub.bogadex.filter.FilterViewModel
 import kotlinx.coroutines.flow.Flow
+import org.koin.compose.viewmodel.koinViewModel
+import org.koin.core.parameter.parametersOf
 
 object BoardGameCollectionNavigation {
 
@@ -61,31 +62,32 @@ object BoardGameCollectionNavigation {
         },
     )
 
-    fun navigateTo(collection: CollectionType, isGridView: Boolean): String {
-        return ROUTE.replace(
-            oldValue = "{collection}",
-            newValue = collection.key,
-        ).replace(
-            oldValue = "{isGridView}",
-            newValue = isGridView.toString(),
-        )
-    }
+    fun navigateTo(collection: CollectionType, isGridView: Boolean): String = ROUTE.replace(
+        oldValue = "{collection}",
+        newValue = collection.key,
+    ).replace(
+        oldValue = "{isGridView}",
+        newValue = isGridView.toString(),
+    )
 
     @Composable
     fun onNavigation(
         navController: NavHostController,
         navBackStackEntry: NavBackStackEntry,
-        factory: BoardGameCollectionViewModel.Factory,
         repository: BoardGameCollectionRepository,
-        filterViewModel: FilterViewModel = hiltViewModel(),
+        filterViewModel: FilterViewModel = koinViewModel(),
         userSettingsFlow: Flow<UserSettings>,
     ) {
         val collectionType: CollectionType = CollectionType.from(navBackStackEntry.arguments?.getString("collection"))
+        val viewModel: BoardGameCollectionViewModel = koinViewModel(
+            parameters = { parametersOf(getCollection(collectionType, repository, filterViewModel, userSettingsFlow)) },
+        )
+
         val gridMode: Boolean = navBackStackEntry.arguments?.getBoolean("isGridView") ?: false
         BoardGameCollectionScreen(
             navController = navController,
             activeCollection = collectionType,
-            viewModel = factory.create(getCollection(collectionType, repository, filterViewModel, userSettingsFlow)),
+            viewModel = viewModel,
             filterViewModel = filterViewModel,
             gridMode = gridMode,
         )
@@ -96,14 +98,12 @@ object BoardGameCollectionNavigation {
         repository: BoardGameCollectionRepository,
         filterViewModel: FilterViewModel,
         userSettingsFlow: Flow<UserSettings>,
-    ): ListCollection {
-        return when (collectionType) {
-            CollectionType.FILLER -> ListCollectionFiller(repository, filterViewModel, userSettingsFlow)
-            CollectionType.MY_COLLECTION -> ListCollectionItemOwned(repository, filterViewModel, userSettingsFlow)
-            CollectionType.WISHLIST -> ListCollectionItemWanted(repository, filterViewModel, userSettingsFlow)
-            CollectionType.SOLO -> ListCollectionItemSolo(repository, filterViewModel, userSettingsFlow)
-            CollectionType.DUO -> ListCollectionItemDuo(repository, filterViewModel, userSettingsFlow)
-            CollectionType.ALL -> ListCollection(repository, filterViewModel, userSettingsFlow)
-        }
+    ): ListCollection = when (collectionType) {
+        CollectionType.FILLER -> ListCollectionFiller(repository, filterViewModel, userSettingsFlow)
+        CollectionType.MY_COLLECTION -> ListCollectionItemOwned(repository, filterViewModel, userSettingsFlow)
+        CollectionType.WISHLIST -> ListCollectionItemWanted(repository, filterViewModel, userSettingsFlow)
+        CollectionType.SOLO -> ListCollectionItemSolo(repository, filterViewModel, userSettingsFlow)
+        CollectionType.DUO -> ListCollectionItemDuo(repository, filterViewModel, userSettingsFlow)
+        CollectionType.ALL -> ListCollection(repository, filterViewModel, userSettingsFlow)
     }
 }

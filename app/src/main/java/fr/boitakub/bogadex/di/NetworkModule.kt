@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021-2022, Boitakub
+ * Copyright (c) 2021-2025, Boitakub
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -28,30 +28,21 @@
  */
 package fr.boitakub.bogadex.di
 
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
+import android.content.Context
+import coil3.ImageLoader
 import fr.boitakub.bgg.client.BggService
-import okhttp3.HttpUrl
-import okhttp3.OkHttpClient
+import okhttp3.HttpUrl.Companion.toHttpUrl
+import org.koin.core.module.dsl.singleOf
+import org.koin.dsl.module
 import retrofit2.Retrofit
-import javax.inject.Singleton
 
-@Module
-@InstallIn(SingletonComponent::class)
-object NetworkModule {
+val networkModule = module {
+    fun baseUrl() = "https://www.boardgamegeek.com/".toHttpUrl()
+    fun imageLoader(context: Context): ImageLoader = ImageLoader.Builder(context).build()
 
-    @Provides
-    @Singleton
-    fun provideOkHttpClient() = BggService.getDefaultOkHttpClient(null)
-
-    @Provides
-    @Singleton
-    fun provideRetrofit(okHttpClient: OkHttpClient, baseUrl: HttpUrl): Retrofit =
-        BggService.getDefaultRetrofitClient(baseUrl, okHttpClient)
-
-    @Provides
-    @Singleton
-    fun provideApiService(retrofit: Retrofit): BggService = retrofit.create(BggService::class.java)
+    singleOf(::baseUrl)
+    single<ImageLoader> { imageLoader(get()) }
+    single { BggService.getDefaultOkHttpClient(null) }
+    single { BggService.getDefaultRetrofitClient(get(), get()) }
+    single { (get() as Retrofit).create(BggService::class.java) }
 }

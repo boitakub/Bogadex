@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021-2023, Boitakub
+ * Copyright (c) 2021-2025, Boitakub
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -35,16 +35,17 @@ import fr.boitakub.bogadex.common.UserSettings
 import fr.boitakub.bogadex.filter.FilterViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import javax.inject.Inject
 
-class ListCollectionItemSolo @Inject constructor(
+class ListCollectionItemSolo(
     repository: BoardGameCollectionRepository,
     private val filterViewModel: FilterViewModel,
     private val userSettingsFlow: Flow<UserSettings>,
-) : UseCase<Flow<List<CollectionItemWithDetails>>, String>,
-    ListCollection(repository, filterViewModel, userSettingsFlow) {
-    override fun apply(): Flow<List<CollectionItemWithDetails>> {
-        return super.apply()
-            .map { it.filter { boardGame -> boardGame.details?.minPlayer == 1 } }
-    }
+) : ListCollection(
+    repository,
+    filterViewModel,
+    userSettingsFlow,
+),
+    UseCase<Flow<List<CollectionItemWithDetails>>, String> {
+    override fun apply(): Flow<List<CollectionItemWithDetails>> = super.apply()
+        .map { it.filter { boardGame -> boardGame.details?.minPlayer == 1 } }
 }

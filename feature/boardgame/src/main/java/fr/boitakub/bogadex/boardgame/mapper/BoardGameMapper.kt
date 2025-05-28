@@ -36,11 +36,8 @@ import fr.boitakub.bgg.client.Statistics
 import fr.boitakub.bogadex.boardgame.model.BoardGame
 import fr.boitakub.bogadex.boardgame.model.BoardGameBggStatistic
 import java.util.Date
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class BoardGameMapper @Inject constructor() : Mapper<BoardGame, Iterable<fr.boitakub.bgg.client.BoardGame>> {
+class BoardGameMapper : Mapper<BoardGame, Iterable<fr.boitakub.bgg.client.BoardGame>> {
 
     companion object {
         const val BEST_AT_VALUE = "Best"

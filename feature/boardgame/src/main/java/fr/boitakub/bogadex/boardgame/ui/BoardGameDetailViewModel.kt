@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021, Boitakub
+ * Copyright (c) 2021-2025, Boitakub
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,21 +29,13 @@
 package fr.boitakub.bogadex.boardgame.ui
 
 import androidx.lifecycle.ViewModel
-import dagger.hilt.android.lifecycle.HiltViewModel
 import fr.boitakub.architecture.Presenter
 import fr.boitakub.bogadex.boardgame.BoardGameRepository
 import fr.boitakub.bogadex.boardgame.model.BoardGame
 import kotlinx.coroutines.flow.Flow
-import javax.inject.Inject
 
-/**
- * Inspiring source : https://code.luasoftware.com/tutorials/android/jetpack-compose-load-data/
- */
-@HiltViewModel
-class BoardGameDetailViewModel @Inject constructor(
-    private val repository: BoardGameRepository
-) : ViewModel(), Presenter {
-    fun load(id: String): Flow<BoardGame?> {
-        return repository.loadBoardGameById(id)
-    }
+class BoardGameDetailViewModel(private val repository: BoardGameRepository) :
+    ViewModel(),
+    Presenter {
+    fun load(id: String): Flow<BoardGame?> = repository.loadBoardGameById(id)
 }

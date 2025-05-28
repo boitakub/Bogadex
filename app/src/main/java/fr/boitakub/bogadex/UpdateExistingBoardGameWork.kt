@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021-2023, Boitakub
+ * Copyright (c) 2021-2025, Boitakub
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -30,20 +30,16 @@ package fr.boitakub.bogadex
 
 import android.content.Context
 import android.util.Log
-import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedInject
 import fr.boitakub.bgg.client.BggService
 import fr.boitakub.bogadex.boardgame.BoardGameDao
 import fr.boitakub.bogadex.boardgame.work.scheduleRetrieveMissingBoardGameWork
 import kotlinx.coroutines.CancellationException
 
-@HiltWorker
-class UpdateExistingBoardGameWork @AssistedInject constructor(
-    @Assisted val context: Context,
-    @Assisted val workerParams: WorkerParameters,
+class UpdateExistingBoardGameWork(
+    val context: Context,
+    val workerParams: WorkerParameters,
     val service: BggService,
     val database: BoardGameDao,
 ) : CoroutineWorker(context, workerParams) {

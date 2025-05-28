@@ -4,7 +4,6 @@ plugins {
     kotlin("android")
     alias(libs.plugins.android.application)
     alias(libs.plugins.ksp)
-    alias(libs.plugins.hilt)
     id("com.google.firebase.crashlytics")
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.kover)
@@ -24,7 +23,7 @@ android {
         applicationId = "fr.boitakub.bogadex"
 
         testApplicationId = "fr.boitakub.bogadex.tests"
-        testInstrumentationRunner = "fr.boitakub.bogadex.tests.InstrumentHiltTestRunner"
+        testInstrumentationRunner = "fr.boitakub.bogadex.tests.InstrumentationTestRunner"
     }
     signingConfigs {
         create("release") {
@@ -79,6 +78,12 @@ android {
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_17.toString()
     }
+    packagingOptions {
+        resources {
+            excludes += "META-INF/LICENSE.md"
+            excludes += "META-INF/LICENSE-notice.md" // si besoin
+        }
+    }
     sourceSets {
         getByName("androidTest").assets.srcDirs("src/androidTest/assets")
     }
@@ -114,10 +119,10 @@ dependencies {
 
     //region Dependency Injection
 
-    implementation(libs.hilt.android)
-    ksp(libs.hilt.compiler)
-    implementation(libs.hilt.work)
-    ksp(libs.hilt.work.compiler)
+    val koinBom = platform(libs.koin.bom)
+    implementation(koinBom)
+    implementation(libs.koin.android)
+    implementation(libs.koin.android.workmanager)
 
     //endregion
 
@@ -176,7 +181,13 @@ dependencies {
     //region AndroidTest
 
     androidTestImplementation(libs.test.espresso)
+    androidTestImplementation(composeBom)
+    androidTestImplementation(libs.test.compose.ui)
     androidTestImplementation(libs.test.mockk.android)
+    androidTestImplementation(libs.test.mockwebserver)
+    androidTestImplementation(libs.test.koin)
+    androidTestImplementation(libs.test.koin.android)
+    androidTestImplementation(libs.test.coil)
 
     //endregion
 }

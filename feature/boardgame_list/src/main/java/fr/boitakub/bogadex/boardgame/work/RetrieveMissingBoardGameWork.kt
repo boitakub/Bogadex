@@ -30,7 +30,6 @@ package fr.boitakub.bogadex.boardgame.work
 
 import android.content.Context
 import android.util.Log
-import androidx.hilt.work.HiltWorker
 import androidx.work.Constraints
 import androidx.work.CoroutineWorker
 import androidx.work.Data
@@ -39,19 +38,14 @@ import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedInject
 import fr.boitakub.bgg.client.BggService
 import fr.boitakub.bogadex.boardgame.BoardGameDao
 import fr.boitakub.bogadex.boardgame.mapper.BoardGameMapper
 import java.util.concurrent.CancellationException
 
-@HiltWorker
-class RetrieveMissingBoardGameWork
-@AssistedInject
-constructor(
-    @Assisted val context: Context,
-    @Assisted val workerParams: WorkerParameters,
+class RetrieveMissingBoardGameWork(
+    val context: Context,
+    val workerParams: WorkerParameters,
     val service: BggService,
     val database: BoardGameDao,
     val mapper: BoardGameMapper,

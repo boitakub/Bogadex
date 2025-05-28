@@ -29,7 +29,34 @@
 package fr.boitakub.bogadex
 
 import android.app.Application
-import dagger.hilt.android.HiltAndroidApp
+import fr.boitakub.bogadex.di.applicationModule
+import fr.boitakub.bogadex.di.databaseModule
+import fr.boitakub.bogadex.di.networkModule
+import fr.boitakub.bogadex.di.viewModelModule
+import fr.boitakub.bogadex.preferences.preferencesModule
+import org.koin.android.ext.koin.androidContext
+import org.koin.androidx.workmanager.koin.workManagerFactory
+import org.koin.core.component.KoinComponent
+import org.koin.core.context.GlobalContext.startKoin
 
-@HiltAndroidApp
-class BogadexApplication : Application()
+class BogadexApplication :
+    Application(),
+    KoinComponent {
+
+    override fun onCreate() {
+        super.onCreate()
+        startKoin {
+            androidContext(this@BogadexApplication)
+            workManagerFactory()
+            modules(
+                listOf(
+                    applicationModule,
+                    networkModule,
+                    databaseModule,
+                    preferencesModule,
+                    viewModelModule,
+                ),
+            )
+        }
+    }
+}

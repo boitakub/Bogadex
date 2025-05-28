@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023, Boitakub
+ * Copyright (c) 2023-2025, Boitakub
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -33,31 +33,16 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStoreFile
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
-import dagger.hilt.components.SingletonComponent
 import fr.boitakub.bogadex.preferences.user.UserSettingsRepository
-import javax.inject.Singleton
+import org.koin.dsl.module
 
-@Module
-@InstallIn(SingletonComponent::class)
-object PreferencesModule {
-
-    @Singleton
-    @Provides
-    fun provideUserSettingsDataStore(
-        @ApplicationContext context: Context,
-    ): DataStore<Preferences> {
-        return PreferenceDataStoreFactory
-            .create(
-                produceFile = {
-                    context.preferencesDataStoreFile("user_settings")
-                },
-            )
+val preferencesModule = module {
+    single<DataStore<Preferences>> {
+        PreferenceDataStoreFactory.create(
+            produceFile = {
+                get<Context>().preferencesDataStoreFile("user_settings")
+            },
+        )
     }
-
-    @Provides
-    fun provideUserSetting(userSettingsRepository: UserSettingsRepository) = userSettingsRepository.userSettings()
+    single { UserSettingsRepository(get()) }
 }

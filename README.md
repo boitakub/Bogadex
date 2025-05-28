@@ -30,6 +30,7 @@ Bogadex is a side project crafted with passion. It aims to demonstrate modern An
 
 - Browse your [BoardGameGeek](https://boardgamegeek.com/) collection
 - Sort and filter your games with Compose UI
+- Background data refresh & sync with Work Manager
 - Dark mode with Material 3 dynamic theming
 - Offline access via Room & caching
 - Android & Community best practices oriented
@@ -43,9 +44,9 @@ Bogadex is a side project crafted with passion. It aims to demonstrate modern An
 | **Language**        | Kotlin (100%)                                                     |
 | **UI**              | Jetpack Compose, Material 3                                       |
 | **Architecture**    | MVVM → MVI, Repository, UseCases                                  |
-| **Dependency DI**   | Hilt (soon Koin)                                                  |
+| **Dependency DI**   | Koin                                                              |
 | **Data Layer**      | Room, Retrofit (soon Ktor), DataStore                             |
-| **Asynchronous**    | Kotlin Flow, Coroutines                                           |
+| **Asynchronous**    | Kotlin Flow, Coroutines, Work Manager                             |
 | **Image Loading**   | Coil                                                              |
 | **Build Tools**     | Gradle (optimized), GitHub Actions                                |
 | **Quality**         | KtLint, Spotless, Unit & Instrumentation Tests, Kover, SonarCloud |
@@ -69,19 +70,16 @@ The project embraces automated testing and code quality:
 - GitHub Actions for validation pipelines
 - Code coverage with [Kover](https://kotlin.github.io/kotlinx-kover/)
 
-> Coming soon: test structure refactor & dedicated test module.
-
 ## 🚧 Roadmap & Ideas
 
 This project evolves gradually in spare time. Here are upcoming explorations:
 
 - 🧩 Widgets (Glance + Compose) — [guide](https://joebirch.co/android/exploring-jetpack-compose-for-widgets-with-glance/)
-- 🔁 Rewrite test structure & introduce test automation
-- 🌱 Switch DI from Hilt → Koin — [guide](https://medium.com/@sgkantamani/migration-guide-from-hilt-to-koin-ea8083d3f7a9)
 - 🌐 Retrofit → Ktor — [migration article](https://medium.com/@santimattius/from-retrofit-to-ktorfit-on-the-way-to-kotlin-multiplatform-eebfa81f87ed)
 - 🖌️️ UI/UX improvements — [cookbook](https://github.com/Gurupreet/ComposeCookBook)
 - 🧭 Navigation - Migrate to [jetpack navigation 3](https://android-developers.googleblog.com/2025/05/announcing-jetpack-navigation-3-for-compose.html)
 - 📈 Performance improvements — [video](https://www.youtube.com/watch?v=d8SXNwy6VDs&list=WL&index=5)
+- 🔁 Rewrite test structure & introduce test automation
 
 ## 🧭 Architecture
 
@@ -101,7 +99,7 @@ Bogadex follows a Clean Architecture and modular approach:
 
 <img src="https://images.squarespace-cdn.com/content/v1/5902292fd482e9284cf47b8d/1567633051478-PRQ3UHYD6YFJSP80U3YV/BGG.jpeg?format=1500w" align="right" width="21%"/>
 
-Bogadex uses the [BoardGameGeek XML API](https://boardgamegeek.com/wiki/page/BGG_XML_API2/) to query data from the largest board game database.
+Bogadex uses the [BoardGameGeek XML API](https://boardgamegeek.com/wiki/page/BGG_XML_API2) to query data from the largest board game database.
 
 The API provides rich details (titles, thumbnails, stats, etc.) through REST-like XML endpoints.
 
@@ -133,4 +131,4 @@ Bogadex is a personal project made with ❤️ on personal time. If you find it 
 
 ## 📜 License
 
-This project is licensed under the terms of the [MIT License](LICENSE).
+This project is licensed under the terms of the [BSD 3-Clause](LICENSE).

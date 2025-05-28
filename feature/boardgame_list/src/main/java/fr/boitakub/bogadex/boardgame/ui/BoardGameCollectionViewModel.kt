@@ -30,9 +30,6 @@ package fr.boitakub.bogadex.boardgame.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
 import fr.boitakub.architecture.Presenter
 import fr.boitakub.bogadex.boardgame.usecase.ListCollection
 import kotlinx.coroutines.flow.SharingStarted
@@ -40,14 +37,9 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 
-class BoardGameCollectionViewModel @AssistedInject constructor(@Assisted private val collection: ListCollection) :
+class BoardGameCollectionViewModel(val collection: ListCollection) :
     ViewModel(),
     Presenter {
-
-    @AssistedFactory
-    fun interface Factory {
-        fun create(repository: ListCollection): BoardGameCollectionViewModel
-    }
 
     val uiState: StateFlow<BoardGameListState> =
         collection.apply()

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021, Boitakub
+ * Copyright (c) 2021-2025, Boitakub
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -28,24 +28,12 @@
  */
 package fr.boitakub.bogadex.di
 
-import android.content.Context
 import androidx.room.Room
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
-import dagger.hilt.components.SingletonComponent
 import fr.boitakub.bogadex.BogadexDatabase
-import javax.inject.Singleton
+import org.koin.dsl.module
 
-@Module
-@InstallIn(SingletonComponent::class)
-object DatabaseModule {
-
-    @Singleton
-    @Provides
-    fun providesBogadexDatabase(@ApplicationContext context: Context): BogadexDatabase {
-        return Room.databaseBuilder(context, BogadexDatabase::class.java, BogadexDatabase.DB_NAME)
-            .build()
-    }
+val databaseModule = module {
+    single { Room.databaseBuilder(get(), BogadexDatabase::class.java, BogadexDatabase.DB_NAME).build() }
+    single { (get() as BogadexDatabase).boardGameDao() }
+    single { (get() as BogadexDatabase).boardGameListDao() }
 }

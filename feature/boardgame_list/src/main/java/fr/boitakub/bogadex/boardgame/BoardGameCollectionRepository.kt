@@ -29,7 +29,6 @@
 package fr.boitakub.bogadex.boardgame
 
 import android.content.Context
-import dagger.hilt.android.qualifiers.ApplicationContext
 import fr.boitakub.architecture.Repository
 import fr.boitakub.bgg.client.BggService
 import fr.boitakub.bgg.client.UserCollection
@@ -40,12 +39,9 @@ import fr.boitakub.bogadex.boardgame.model.CollectionItemWithDetails
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flow
-import javax.inject.Inject
 
-class BoardGameCollectionRepository
-@Inject
-constructor(
-    @ApplicationContext val context: Context,
+class BoardGameCollectionRepository(
+    val context: Context,
     override val local: BoardGameListDao,
     override val remote: BggService,
     private val mapper: CollectionMapper,

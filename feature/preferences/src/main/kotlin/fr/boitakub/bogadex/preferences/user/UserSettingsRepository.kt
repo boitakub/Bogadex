@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023, Boitakub
+ * Copyright (c) 2023-2025, Boitakub
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -38,25 +38,18 @@ import fr.boitakub.bogadex.common.ui.theme.Theme
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class UserSettingsRepository @Inject constructor(
-    private val userSettingsDataStore: DataStore<Preferences>,
-) {
-    fun userSettings(): Flow<UserSettings> {
-        return combine(
-            bggUserName,
-            activeTheme,
-            displayPreviouslyOwned,
-        ) { bggUserName, activeTheme, displayPreviouslyOwned ->
-            UserSettings(
-                bggUserName = bggUserName,
-                activeTheme = Theme.getValueOf(activeTheme),
-                displayPreviouslyOwned = displayPreviouslyOwned,
-            )
-        }
+class UserSettingsRepository(private val userSettingsDataStore: DataStore<Preferences>) {
+    fun userSettings(): Flow<UserSettings> = combine(
+        bggUserName,
+        activeTheme,
+        displayPreviouslyOwned,
+    ) { bggUserName, activeTheme, displayPreviouslyOwned ->
+        UserSettings(
+            bggUserName = bggUserName,
+            activeTheme = Theme.getValueOf(activeTheme),
+            displayPreviouslyOwned = displayPreviouslyOwned,
+        )
     }
 
     // region BGG Username

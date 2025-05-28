@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023, Boitakub
+ * Copyright (c) 2023-2025, Boitakub
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -32,12 +32,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import fr.boitakub.bogadex.boardgame.model.BoardGame
+import org.koin.compose.viewmodel.koinViewModel
 
 object BoardGameDetailNavigation {
 
@@ -50,16 +50,14 @@ object BoardGameDetailNavigation {
         },
     )
 
-    fun navigateTo(boardGameId: String): String {
-        return ROUTE.replace(
-            oldValue = "{boardGameId}",
-            newValue = boardGameId,
-        )
-    }
+    fun navigateTo(boardGameId: String): String = ROUTE.replace(
+        oldValue = "{boardGameId}",
+        newValue = boardGameId,
+    )
 
     @Composable
     fun onNavigation(navController: NavHostController, navBackStackEntry: NavBackStackEntry) {
-        val boardGameDetailViewModel: BoardGameDetailViewModel = hiltViewModel()
+        val boardGameDetailViewModel: BoardGameDetailViewModel = koinViewModel()
         val boardGameId: String? = navBackStackEntry.arguments?.getString("boardGameId")
 
         val boardGame = remember { mutableStateOf<BoardGame?>(BoardGame()) }

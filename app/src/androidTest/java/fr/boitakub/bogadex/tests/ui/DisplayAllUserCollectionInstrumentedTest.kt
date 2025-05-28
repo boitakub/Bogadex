@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021-2023, Boitakub
+ * Copyright (c) 2021-2025, Boitakub
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,74 +26,46 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package fr.boitakub.bogadex.tests.boardgame_list
+package fr.boitakub.bogadex.tests.ui
 
-import android.util.Log
-import androidx.activity.compose.setContent
 import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.hasText
-import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.navigation.compose.rememberNavController
-import androidx.test.platform.app.InstrumentationRegistry
-import androidx.work.Configuration
-import androidx.work.testing.SynchronousExecutor
-import androidx.work.testing.WorkManagerTestInitHelper
-import dagger.hilt.android.testing.HiltAndroidRule
-import dagger.hilt.android.testing.HiltAndroidTest
-import fr.boitakub.bogadex.MainActivity
 import fr.boitakub.bogadex.NavigationGraph
 import fr.boitakub.bogadex.boardgame.BoardGameCollectionRepository
 import fr.boitakub.bogadex.boardgame.model.CollectionType
 import fr.boitakub.bogadex.boardgame.ui.BoardGameCollectionNavigation
-import fr.boitakub.bogadex.common.UserSettings
 import fr.boitakub.bogadex.common.ui.theme.BogadexTheme
+import fr.boitakub.bogadex.preferences.user.UserSettingsRepository
 import fr.boitakub.bogadex.tests.MockedWebResponseDispatcher
 import io.mockk.MockKAnnotations
 import kotlinx.coroutines.InternalCoroutinesApi
-import kotlinx.coroutines.flow.Flow
 import okhttp3.mockwebserver.MockWebServer
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import javax.inject.Inject
+import org.koin.test.KoinTest
+import org.koin.test.inject
 
-@HiltAndroidTest
 @OptIn(ExperimentalTestApi::class)
-class DisplayAllUserCollectionInstrumentedTest {
+class DisplayAllUserCollectionInstrumentedTest : KoinTest {
 
-    @get:Rule
-    var hiltRule = HiltAndroidRule(this)
+    @get:Rule val composeTestRule = createComposeRule()
 
-    @get:Rule
-    val composeTestRule = createAndroidComposeRule<MainActivity>()
-
-    val mockWebServer by lazy { MockWebServer() }
-
-    @Inject
-    lateinit var userSettingsFlow: Flow<UserSettings>
-
-    @Inject
-    lateinit var repository: BoardGameCollectionRepository
+    lateinit var mockWebServer: MockWebServer
+    val repository: BoardGameCollectionRepository by inject()
+    val settingsRepository: UserSettingsRepository by inject()
 
     @Before
     fun setUp() {
-        hiltRule.inject()
-        mockWebServer.start(8080)
-
-        val context = InstrumentationRegistry.getInstrumentation().targetContext
-        val config = Configuration.Builder()
-            .setMinimumLoggingLevel(Log.DEBUG)
-            .setExecutor(SynchronousExecutor())
-            .build()
-
-        // Initialize WorkManager for instrumentation tests.
-        WorkManagerTestInitHelper.initializeTestWorkManager(context, config)
-
         MockKAnnotations.init(this, relaxUnitFun = true)
+        mockWebServer = MockWebServer()
+        mockWebServer.start(8080)
     }
 
     @After
@@ -105,7 +77,7 @@ class DisplayAllUserCollectionInstrumentedTest {
     @InternalCoroutinesApi
     fun has_homeList_displayed() {
         mockWebServer.dispatcher = MockedWebResponseDispatcher()
-        composeTestRule.activity.setContent {
+        composeTestRule.setContent {
             val navController = rememberNavController()
 
             BogadexTheme(false) {
@@ -113,7 +85,7 @@ class DisplayAllUserCollectionInstrumentedTest {
                     navController = navController,
                     startDestination = BoardGameCollectionNavigation.ROUTE,
                     repository = repository,
-                    userSettingsFlow = userSettingsFlow,
+                    userSettingsFlow = settingsRepository.userSettings(),
                 )
             }
         }
@@ -128,7 +100,7 @@ class DisplayAllUserCollectionInstrumentedTest {
     @InternalCoroutinesApi
     fun has_collectionList_displayed() {
         mockWebServer.dispatcher = MockedWebResponseDispatcher()
-        composeTestRule.activity.setContent {
+        composeTestRule.setContent {
             val navController = rememberNavController()
 
             BogadexTheme(false) {
@@ -136,7 +108,7 @@ class DisplayAllUserCollectionInstrumentedTest {
                     navController = navController,
                     startDestination = BoardGameCollectionNavigation.ROUTE,
                     repository = repository,
-                    userSettingsFlow = userSettingsFlow,
+                    userSettingsFlow = settingsRepository.userSettings(),
                 )
             }
         }
@@ -151,7 +123,7 @@ class DisplayAllUserCollectionInstrumentedTest {
     @InternalCoroutinesApi
     fun has_wishList_displayed() {
         mockWebServer.dispatcher = MockedWebResponseDispatcher()
-        composeTestRule.activity.setContent {
+        composeTestRule.setContent {
             val navController = rememberNavController()
 
             BogadexTheme(false) {
@@ -159,7 +131,7 @@ class DisplayAllUserCollectionInstrumentedTest {
                     navController = navController,
                     startDestination = BoardGameCollectionNavigation.ROUTE,
                     repository = repository,
-                    userSettingsFlow = userSettingsFlow,
+                    userSettingsFlow = settingsRepository.userSettings(),
                 )
             }
         }
@@ -174,7 +146,7 @@ class DisplayAllUserCollectionInstrumentedTest {
     @InternalCoroutinesApi
     fun has_collectionList_displayedOnGrid() {
         mockWebServer.dispatcher = MockedWebResponseDispatcher()
-        composeTestRule.activity.setContent {
+        composeTestRule.setContent {
             val navController = rememberNavController()
 
             BogadexTheme(false) {
@@ -182,7 +154,7 @@ class DisplayAllUserCollectionInstrumentedTest {
                     navController = navController,
                     startDestination = BoardGameCollectionNavigation.ROUTE,
                     repository = repository,
-                    userSettingsFlow = userSettingsFlow,
+                    userSettingsFlow = settingsRepository.userSettings(),
                 )
             }
 

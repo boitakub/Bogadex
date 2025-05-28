@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022-2023, Boitakub
+ * Copyright (c) 2022-2025, Boitakub
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -31,15 +31,12 @@ package fr.boitakub.bogadex.filter
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import javax.inject.Inject
 
-class FilterViewModel @Inject constructor() : ViewModel() {
+class FilterViewModel : ViewModel() {
     private val _filter = MutableStateFlow(FilterState())
     val filter: StateFlow<FilterState> = _filter
 
-    fun get(): StateFlow<FilterState> {
-        return filter
-    }
+    fun get(): StateFlow<FilterState> = filter
 
     fun mutate(filter: FilterState) {
         _filter.value = filter

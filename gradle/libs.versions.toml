@@ -5,6 +5,7 @@ ksp = "2.1.20-1.0.32"
 compose-bom = "2025.05.00"
 navigation = "2.9.0"
 android-core = "1.15.0"
+koin-bom = "4.0.3"
 room = "2.6.1"
 work = "2.10.0"
 datastore = "1.1.1"
@@ -12,9 +13,6 @@ coil = "3.2.0"
 okhttp = "4.12.0"
 retrofit = "2.11.0"
 firebase = "33.7.0"
-hilt = "2.56.2"
-hilt-worker = "1.2.0"
-hilt-navigation = "1.2.0"
 google-services = "4.4.2"
 
 # Testing
@@ -32,7 +30,6 @@ android-application = { id = "com.android.application", version.ref = "agp" }
 android-library = { id = "com.android.library", version.ref = "agp" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
-hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }
 google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
 
@@ -50,11 +47,11 @@ okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhtt
 okhttp-logging = { module = "com.squareup.okhttp3:logging-interceptor", version.ref = "okhttp" }
 retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
 
-hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
-hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hilt" }
-hilt-work = { module = "androidx.hilt:hilt-work", version.ref = "hilt-worker" }
-hilt-work-compiler = { module = "androidx.hilt:hilt-compiler", version.ref = "hilt-worker" }
-hilt-navigation = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hilt-navigation" }
+# DI
+koin-bom = { module = "io.insert-koin:koin-bom", version.ref = "koin-bom" }
+koin-android = { module = "io.insert-koin:koin-android" }
+koin-android-compose = { module = "io.insert-koin:koin-compose-viewmodel" }
+koin-android-workmanager = { module = "io.insert-koin:koin-androidx-workmanager" }
 
 # Compose
 compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "compose-bom" }
@@ -64,6 +61,7 @@ compose-ui = { module = "androidx.compose.ui:ui" }
 compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview" }
 compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
 compose-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest" }
+test-compose-ui = { module = "androidx.compose.ui:ui-test-junit4" }
 
 # Navigation
 navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigation" }
@@ -77,7 +75,11 @@ firebase-analytics = { module = "com.google.firebase:firebase-analytics-ktx" }
 test-junit = { group = "junit", name = "junit", version.ref = "junit" }
 test-android = { group = "androidx.test", name = "core", version.ref = "android-test" }
 test-espresso = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso" }
+test-koin = { group = "io.insert-koin", name = "koin-test-junit4", version.ref = "koin-bom" }
+test-koin-android = { group = "io.insert-koin", name = "koin-android-test", version.ref = "koin-bom" }
 test-mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
 test-mockk-android = { group = "io.mockk", name = "mockk-android", version.ref = "mockk" }
+test-mockwebserver = { module = "com.squareup.okhttp3:mockwebserver", version.ref = "okhttp" }
 test-work = { group = "androidx.work", name = "work-testing", version.ref = "work" }
+test-coil = { group = "io.coil-kt.coil3", name = "coil-test", version.ref = "coil" }
 test-konsist = { module = "com.lemonappdev:konsist", version.ref = "konsist" }

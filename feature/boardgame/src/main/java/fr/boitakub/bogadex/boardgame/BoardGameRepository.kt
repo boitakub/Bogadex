@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021, Boitakub
+ * Copyright (c) 2021-2025, Boitakub
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -30,12 +30,8 @@ package fr.boitakub.bogadex.boardgame
 
 import fr.boitakub.architecture.Repository
 import fr.boitakub.bgg.client.BggService
-import javax.inject.Inject
 
-class BoardGameRepository @Inject constructor(
-    override val local: BoardGameDao,
-    override val remote: BggService
-) : Repository {
+class BoardGameRepository(override val local: BoardGameDao, override val remote: BggService) : Repository {
 
     fun loadBoardGameById(id: String) = local.getBoardGameWithId(id)
 }

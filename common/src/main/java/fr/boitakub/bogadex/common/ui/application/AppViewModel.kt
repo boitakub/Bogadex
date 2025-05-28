@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021-2022, Boitakub
+ * Copyright (c) 2021-2025, Boitakub
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,20 +29,16 @@
 package fr.boitakub.bogadex.common.ui.application
 
 import androidx.lifecycle.ViewModel
-import dagger.hilt.android.lifecycle.HiltViewModel
 import fr.boitakub.architecture.Presenter
 import fr.boitakub.bogadex.filter.FilterViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import javax.inject.Inject
 
-@HiltViewModel
-class AppViewModel @Inject constructor() : ViewModel(), Presenter {
+class AppViewModel(val filterViewModel: FilterViewModel) :
+    ViewModel(),
+    Presenter {
     private val _applicationState = MutableStateFlow(ApplicationState())
     val applicationState: StateFlow<ApplicationState> = _applicationState
-
-    @Inject
-    lateinit var filterViewModel: FilterViewModel
 
     fun switchLayout(state: ApplicationState) {
         if (state.viewType == 1) {

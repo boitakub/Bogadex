@@ -25,14 +25,6 @@
             tools:node="merge">
 
             <meta-data
-                android:name="fr.boitakub.bogadex.initializer.DependencyGraphInitializer"
-                android:value="androidx.startup" />
-
-            <meta-data
-                android:name="fr.boitakub.bogadex.initializer.WorkManagerInitializer"
-                android:value="androidx.startup" />
-
-            <meta-data
                 android:name="androidx.work.WorkManagerInitializer"
                 android:value="androidx.startup"
                 tools:node="remove" />

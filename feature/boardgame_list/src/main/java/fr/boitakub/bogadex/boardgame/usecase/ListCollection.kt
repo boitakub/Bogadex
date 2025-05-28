@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021-2023, Boitakub
+ * Copyright (c) 2021-2025, Boitakub
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -34,58 +34,53 @@ import fr.boitakub.bogadex.boardgame.model.CollectionItemWithDetails
 import fr.boitakub.bogadex.common.UserSettings
 import fr.boitakub.bogadex.filter.FilterState
 import fr.boitakub.bogadex.filter.FilterViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
-import javax.inject.Inject
 
-open class ListCollection @Inject constructor(
+@OptIn(ExperimentalCoroutinesApi::class)
+open class ListCollection(
     private val repository: BoardGameCollectionRepository,
     private val filterViewModel: FilterViewModel,
     private val userSettingsFlow: Flow<UserSettings>,
 ) : UseCase<Flow<List<CollectionItemWithDetails>>, String> {
-    override fun apply(): Flow<List<CollectionItemWithDetails>> {
-        return userSettingsFlow
-            .flatMapLatest { userSettings ->
-                repository.get(userSettings.bggUserName)
-                    .combine(filterViewModel.filter) { collectionList, filter ->
-                        // Apply session filters
-                        collectionList.asSequence().filter { item ->
-                            ratingFilter(item, filter)
-                        }.filter { item ->
-                            weightFilter(item, filter)
-                        }.filter { item ->
-                            durationFilter(item, filter)
-                        }.filter {
-                            // Apply global app filters
-                            if (!userSettings.displayPreviouslyOwned) {
-                                !it.item.status.previouslyOwned
-                            } else {
-                                true
-                            }
-                        }.filter { item ->
-                            searchTermFilter(filter, item)
-                        }.toList()
-                        // Apply grouping
-                    }
-            }
-    }
+    override fun apply(): Flow<List<CollectionItemWithDetails>> = userSettingsFlow
+        .flatMapLatest { userSettings ->
+            repository.get(userSettings.bggUserName)
+                .combine(filterViewModel.filter) { collectionList, filter ->
+                    // Apply session filters
+                    collectionList.asSequence().filter { item ->
+                        ratingFilter(item, filter)
+                    }.filter { item ->
+                        weightFilter(item, filter)
+                    }.filter { item ->
+                        durationFilter(item, filter)
+                    }.filter {
+                        // Apply global app filters
+                        if (!userSettings.displayPreviouslyOwned) {
+                            !it.item.status.previouslyOwned
+                        } else {
+                            true
+                        }
+                    }.filter { item ->
+                        searchTermFilter(filter, item)
+                    }.toList()
+                    // Apply grouping
+                }
+        }
 
-    private fun searchTermFilter(
-        filter: FilterState,
-        item: CollectionItemWithDetails,
-    ) = if (filter.searchTerms.isNotBlank()) {
-        item.item.title?.contains(filter.searchTerms.lowercase()) == true || item.details?.title?.contains(
-            filter.searchTerms.lowercase(),
-        ) == true
-    } else {
-        true
-    }
+    private fun searchTermFilter(filter: FilterState, item: CollectionItemWithDetails) =
+        if (filter.searchTerms.isNotBlank()) {
+            item.item.title?.contains(filter.searchTerms.lowercase()) == true ||
+                item.details?.title?.contains(
+                    filter.searchTerms.lowercase(),
+                ) == true
+        } else {
+            true
+        }
 
-    private fun ratingFilter(
-        item: CollectionItemWithDetails,
-        filter: FilterState,
-    ): Boolean {
+    private fun ratingFilter(item: CollectionItemWithDetails, filter: FilterState): Boolean {
         if (filter.ratingFilter.second.minValue == filter.ratingFilter.first.minValueRange &&
             filter.ratingFilter.second.maxValue == filter.ratingFilter.first.maxValueRange
         ) {
@@ -94,10 +89,7 @@ open class ListCollection @Inject constructor(
         return item.averageRating() in filter.ratingFilter.second.minValue..filter.ratingFilter.second.maxValue
     }
 
-    private fun weightFilter(
-        item: CollectionItemWithDetails,
-        filter: FilterState,
-    ): Boolean {
+    private fun weightFilter(item: CollectionItemWithDetails, filter: FilterState): Boolean {
         if (filter.weightFilter.second.minValue == filter.weightFilter.first.minValueRange &&
             filter.weightFilter.second.maxValue == filter.weightFilter.first.maxValueRange
         ) {
@@ -106,10 +98,7 @@ open class ListCollection @Inject constructor(
         return item.averageWeight() in filter.weightFilter.second.minValue..filter.weightFilter.second.maxValue
     }
 
-    private fun durationFilter(
-        item: CollectionItemWithDetails,
-        filter: FilterState,
-    ): Boolean {
+    private fun durationFilter(item: CollectionItemWithDetails, filter: FilterState): Boolean {
         if (filter.durationFilter.second.minValue == filter.durationFilter.first.minValueRange &&
             filter.durationFilter.second.maxValue == filter.durationFilter.first.maxValueRange
         ) {

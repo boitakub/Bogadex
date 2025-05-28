@@ -2,7 +2,6 @@ plugins {
     kotlin("android")
     alias(libs.plugins.android.library)
     alias(libs.plugins.ksp)
-    alias(libs.plugins.hilt)
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.kover)
 }
@@ -41,6 +40,12 @@ android {
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_17.toString()
     }
+    packagingOptions {
+        resources {
+            excludes += "META-INF/LICENSE.md"
+            excludes += "META-INF/LICENSE-notice.md" // si besoin
+        }
+    }
     sourceSets {
         getByName("androidTest").assets.srcDirs("src/androidTest/assets")
     }
@@ -60,10 +65,10 @@ dependencies {
 
     //region Dependency Injection
 
-    implementation(libs.hilt.android)
-    ksp(libs.hilt.compiler)
-    implementation(libs.hilt.work)
-    ksp(libs.hilt.work.compiler)
+    val koinBom = platform(libs.koin.bom)
+    implementation(koinBom)
+    implementation(libs.koin.android)
+    implementation(libs.koin.android.compose)
 
     //endregion
 
@@ -79,7 +84,6 @@ dependencies {
 
     // UI third-party
     implementation(libs.navigation.compose)
-    implementation(libs.hilt.navigation)
     implementation(libs.coil)
 
     //endregion

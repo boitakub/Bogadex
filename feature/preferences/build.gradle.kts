@@ -2,7 +2,6 @@ plugins {
     kotlin("android")
     alias(libs.plugins.android.library)
     alias(libs.plugins.ksp)
-    alias(libs.plugins.hilt)
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.kover)
 }
@@ -56,10 +55,14 @@ dependencies {
 
     //region Dependency Injection
 
-    implementation(libs.hilt.android)
-    ksp(libs.hilt.compiler)
-    implementation(libs.hilt.work)
-    ksp(libs.hilt.work.compiler)
+    //region Dependency Injection
+
+    val koinBom = platform(libs.koin.bom)
+    implementation(koinBom)
+    implementation(libs.koin.android)
+    implementation(libs.koin.android.compose)
+
+    //endregion
 
     //endregion
 
@@ -78,7 +81,6 @@ dependencies {
     // Navigation
 
     implementation(libs.navigation.compose)
-    implementation(libs.hilt.navigation)
 
     //endregion
 

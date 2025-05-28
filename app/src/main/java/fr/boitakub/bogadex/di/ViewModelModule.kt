@@ -26,16 +26,26 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package fr.boitakub.bogadex.initializer
+package fr.boitakub.bogadex.di
 
-import android.content.Context
-import androidx.startup.Initializer
-import fr.boitakub.bogadex.di.InitializerEntryPoint
+import fr.boitakub.bogadex.boardgame.ui.BoardGameCollectionViewModel
+import fr.boitakub.bogadex.boardgame.ui.BoardGameDetailViewModel
+import fr.boitakub.bogadex.boardgame.usecase.ListCollection
+import fr.boitakub.bogadex.common.ui.application.AppViewModel
+import fr.boitakub.bogadex.filter.FilterViewModel
+import fr.boitakub.bogadex.preferences.user.UserSettingsViewModel
+import org.koin.core.module.dsl.viewModel
+import org.koin.core.module.dsl.viewModelOf
+import org.koin.dsl.module
 
-class DependencyGraphInitializer : Initializer<Unit> {
-    override fun create(context: Context) {
-        InitializerEntryPoint.resolve(context)
+val viewModelModule = module {
+    viewModelOf(::UserSettingsViewModel)
+    viewModelOf(::BoardGameDetailViewModel)
+    viewModelOf(::FilterViewModel)
+    viewModelOf(::AppViewModel)
+    viewModel { (collection: ListCollection) ->
+        BoardGameCollectionViewModel(
+            collection = collection,
+        )
     }
-
-    override fun dependencies(): List<Class<out Initializer<*>>> = emptyList()
 }

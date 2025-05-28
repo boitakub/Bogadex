@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021-2023, Boitakub
+ * Copyright (c) 2021-2025, Boitakub
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -28,51 +28,35 @@
  */
 package fr.boitakub.bogadex
 
-import android.app.Activity
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import dagger.hilt.EntryPoint
-import dagger.hilt.InstallIn
-import dagger.hilt.android.AndroidEntryPoint
-import dagger.hilt.android.EntryPointAccessors
-import dagger.hilt.android.components.ActivityComponent
 import fr.boitakub.bogadex.WorkManagerScheduler.refreshUpdateExistingBoardGameWork
 import fr.boitakub.bogadex.WorkManagerScheduler.upsetMissingBoardGame
 import fr.boitakub.bogadex.boardgame.BoardGameCollectionRepository
 import fr.boitakub.bogadex.boardgame.ui.BoardGameCollectionNavigation
-import fr.boitakub.bogadex.boardgame.ui.BoardGameCollectionViewModel
 import fr.boitakub.bogadex.boardgame.ui.BoardGameDetailNavigation
 import fr.boitakub.bogadex.common.UserSettings
 import fr.boitakub.bogadex.common.ui.theme.BogadexTheme
 import fr.boitakub.bogadex.common.ui.theme.Theme
 import fr.boitakub.bogadex.preferences.PreferencesNavigation
+import fr.boitakub.bogadex.preferences.user.UserSettingsRepository
 import kotlinx.coroutines.flow.Flow
-import javax.inject.Inject
+import org.koin.android.ext.android.inject
 
-@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
-    @Inject
-    lateinit var repository: BoardGameCollectionRepository
+    val repository: BoardGameCollectionRepository by inject()
 
-    @Inject
-    lateinit var userSettingsFlow: Flow<UserSettings>
-
-    @EntryPoint
-    @InstallIn(ActivityComponent::class)
-    fun interface ViewModelFactoryProvider {
-        fun boardGameCollectionViewModelFactory(): BoardGameCollectionViewModel.Factory
-    }
+    val userRepository: UserSettingsRepository by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -80,7 +64,7 @@ class MainActivity : ComponentActivity() {
         refreshUpdateExistingBoardGameWork(this)
 
         setContent {
-            val settingsState by userSettingsFlow.collectAsStateWithLifecycle(
+            val settingsState by userRepository.userSettings().collectAsStateWithLifecycle(
                 lifecycle = lifecycle,
                 initialValue = UserSettings(),
             )
@@ -97,7 +81,7 @@ class MainActivity : ComponentActivity() {
                     navController = navHostController,
                     startDestination = BoardGameCollectionNavigation.ROUTE,
                     repository = repository,
-                    userSettingsFlow = userSettingsFlow,
+                    userSettingsFlow = userRepository.userSettings(),
                 )
             }
         }
@@ -111,11 +95,6 @@ fun NavigationGraph(
     repository: BoardGameCollectionRepository,
     userSettingsFlow: Flow<UserSettings>,
 ) {
-    val factory = EntryPointAccessors.fromActivity(
-        LocalContext.current as Activity,
-        MainActivity.ViewModelFactoryProvider::class.java,
-    ).boardGameCollectionViewModelFactory()
-
     NavHost(
         navController = navController,
         startDestination = startDestination,
@@ -127,7 +106,6 @@ fun NavigationGraph(
                 BoardGameCollectionNavigation.onNavigation(
                     navController = navController,
                     navBackStackEntry = it,
-                    factory = factory,
                     repository = repository,
                     userSettingsFlow = userSettingsFlow,
                 )

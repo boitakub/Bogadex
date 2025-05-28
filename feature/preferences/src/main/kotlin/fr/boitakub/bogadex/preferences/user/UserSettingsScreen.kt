@@ -70,15 +70,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import fr.boitakub.bogadex.common.UserSettings
 import fr.boitakub.bogadex.common.ui.theme.Theme
-import fr.boitakub.preferences.R
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-fun UserSettingsScreen(navController: NavHostController, viewModel: UserSettingsViewModel = hiltViewModel()) {
+fun UserSettingsScreen(navController: NavHostController, viewModel: UserSettingsViewModel = koinViewModel()) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
 
     var isBggUsernameDialogVisible by remember { mutableStateOf(false) }
