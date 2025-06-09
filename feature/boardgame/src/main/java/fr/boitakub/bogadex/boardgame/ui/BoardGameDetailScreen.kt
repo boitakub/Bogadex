@@ -30,7 +30,6 @@ package fr.boitakub.bogadex.boardgame.ui
 
 import android.content.ActivityNotFoundException
 import android.content.Intent
-import android.net.Uri
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -63,7 +62,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.core.content.ContextCompat.startActivity
+import androidx.core.net.toUri
 import androidx.navigation.NavHostController
 import coil3.compose.AsyncImage
 import fr.boitakub.bogadex.boardgame.R
@@ -175,14 +174,14 @@ private fun GameDetailLinks(boardGame: BoardGame?) {
         Button(
             modifier = Modifier.padding(4.dp),
             onClick = {
+                val webIntent = Intent(
+                    Intent.ACTION_VIEW,
+                    "https://boardgamegeek.com/boardgame/${boardGame?.bggId}".toUri(),
+                )
                 try {
-                    val openUrlIntent = Intent(
-                        Intent.ACTION_VIEW,
-                        Uri.parse("https://boardgamegeek.com/boardgame/${boardGame?.bggId}"),
-                    )
-                    startActivity(context, openUrlIntent, null)
+                    context.startActivity(webIntent)
                 } catch (e: ActivityNotFoundException) {
-                    Log.d("Bogadex", "No application can handle this request.", e)
+                    Log.e("Bogadex", "No application can handle this request.", e)
                 }
             },
         ) {
@@ -191,14 +190,14 @@ private fun GameDetailLinks(boardGame: BoardGame?) {
         Button(
             modifier = Modifier.padding(4.dp),
             onClick = {
+                val webIntent = Intent(
+                    Intent.ACTION_VIEW,
+                    "https://app.bgstatsapp.com/addPlay.html?gameId=${boardGame?.bggId}".toUri(),
+                )
                 try {
-                    val openUrlIntent = Intent(
-                        Intent.ACTION_VIEW,
-                        Uri.parse("https://app.bgstatsapp.com/addPlay.html?gameId=${boardGame?.bggId}"),
-                    )
-                    startActivity(context, openUrlIntent, null)
+                    context.startActivity(webIntent)
                 } catch (e: ActivityNotFoundException) {
-                    Log.d("Bogadex", "No application can handle this request.", e)
+                    Log.e("Bogadex", "No application can handle this request.", e)
                 }
             },
         ) {
