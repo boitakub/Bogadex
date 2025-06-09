@@ -1,0 +1,64 @@
+name: Release
+
+on:
+    push:
+        branches-ignore:
+            - 'develop'
+            - 'main'
+        tags:
+            - 'v*-alpha'
+
+concurrency:
+    group: ${{ github.head_ref || github.ref_name }}
+    cancel-in-progress: true
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        environment: Release
+        steps:
+            - name: 🛎️ Checkout
+              uses: actions/checkout@v4
+              with:
+                  fetch-depth: 0
+
+            - name: 🏭 Set up our JDK environment
+              uses: actions/setup-java@v3
+              with:
+                  distribution: 'adopt'
+                  java-version: '17'
+
+            -   name: 🔐 Decode Keystore
+                env:
+                    ENCODED_STRING: ${{ secrets.KEYSTORE }}
+                run: |
+                    TMP_KEYSTORE_FILE_PATH="${RUNNER_TEMP}"/keystore
+                    mkdir "${TMP_KEYSTORE_FILE_PATH}"
+                    echo $ENCODED_STRING | base64 -di > "${TMP_KEYSTORE_FILE_PATH}"/keystore_file.jks
+
+            -   name: 🔐 Decode google-services.json
+                env:
+                    FIREBASE_CONFIG: ${{ secrets.FIREBASE_CONFIG }}
+                run: echo $FIREBASE_CONFIG > app/google-services.json
+
+            - name: 🏭 Setup Gradle
+              uses: gradle/gradle-build-action@v2
+
+            - name: 🔨️ Build Release
+              run: ./gradlew app:bundleRelease app:assembleRelease
+              env:
+                  SIGNING_KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
+                  SIGNING_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
+                  SIGNING_STORE_PASSWORD: ${{ secrets.SIGNING_STORE_PASSWORD }}
+
+            - uses: actions/upload-artifact@v4
+              with:
+                  name: apk
+                  path: |
+                      **/release/*.apk
+                      **/release/*.aab
+
+            - uses: actions/upload-artifact@v4
+              with:
+                  name: mapping.txt
+                  path: app/build/outputs/mapping/release/mapping.txt

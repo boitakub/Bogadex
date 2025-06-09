@@ -5,18 +5,19 @@
 </h1>
 
 <p align="center">
-  <img alt="API" src="https://img.shields.io/badge/API-23%2B-brightgreen.svg?style=flat"/>
-  <img alt="Kotlin" src="https://img.shields.io/badge/Kotlin-2.1.0-blue.svg?style=flat"/>
-  <img src="https://img.shields.io/github/v/release/boitakub/Bogadex?label=version">
-  <img src="https://img.shields.io/date/1747906861?label=Last%20review">
-  <img src="https://img.shields.io/github/actions/workflow/status/boitakub/Bogadex/build_and_test.yml">
-  <img src="https://img.shields.io/github/license/boitakub/bogadex">
+  <a href="https://opensource.org/license/bsd-3-clause"><img alt="License" src="https://img.shields.io/github/license/boitakub/bogadex"></a>
+  <a href="https://apilevels.com"><img alt="API" src="https://img.shields.io/badge/API-23%2B-brightgreen.svg?style=flat"/></a>
+  <a href="https://kotlinlang.org/"><img alt="Kotlin" src="https://img.shields.io/badge/Kotlin-2.1.0-blue.svg?style=flat"/></a>
+  <a href="https://github.com/boitakub/Bogadex/actions"><img alt="Build Status" src="https://img.shields.io/github/actions/workflow/status/boitakub/Bogadex/build_and_test.yml"></a>
+  <a href="https://github.com/boitakub/Bogadex/commits/main/"><img alt="Last edition date" src="https://img.shields.io/date/1749462542?label=Last%20review"></a><br>
+<a href="https://sonarcloud.io/project/overview?id=boitakub_Bogadex"><img alt="Sonar quality gate" src="https://sonarcloud.io/api/project_badges/measure?project=boitakub_Bogadex&metric=alert_status" /></a>
+<a href="https://sonarcloud.io/project/overview?id=boitakub_Bogadex"><img alt="Sonar bugs" src="https://sonarcloud.io/api/project_badges/measure?project=boitakub_Bogadex&metric=bugs" /></a>
+<a href="https://sonarcloud.io/project/overview?id=boitakub_Bogadex"><img alt="Sonar code smells" src="https://sonarcloud.io/api/project_badges/measure?project=boitakub_Bogadex&metric=code_smells" /></a>
 </p>
 
 <p align="center">
 Bogadex is a minimalist yet functional Android application showcasing modern development standards with a focus on clean architecture, code quality, and progressive enhancements. It uses the BoardGameGeek API to explore, filter, and present board game collections elegantly.
 </p>
-</br>
 
 <p align="center">
 <img src="/docs/assets/capture_1.gif" height="500" alt="Bogadex - Screenshot"/>

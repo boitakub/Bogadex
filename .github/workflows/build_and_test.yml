@@ -37,10 +37,10 @@ jobs:
               uses: gradle/gradle-build-action@v2
 
             - name: 🔨 Build
-              run: ./gradlew assembleDebug koverHtmlReport
+              run: ./gradlew assembleDebug testDebugUnitTest koverHtmlReport
 
     android-tests:
-        runs-on: macos-latest
+        runs-on: [ macos-latest ]
         steps:
             - name: 🛎️ Checkout
               uses: actions/checkout@v4
@@ -56,5 +56,22 @@ jobs:
             - name: Instrumented Tests
               uses: reactivecircus/android-emulator-runner@v2
               with:
-                api-level: 33
-                script: ./gradlew connectedCheck koverHtmlReport
+                  api-level: 35
+                  arch: x86_64
+                  profile: "pixel_7"
+                  target: "google_apis"
+                  force-avd-creation: false
+                  disable-animations: true
+                  disk-size: 1G
+                  heap-size: 1G
+                  emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+                  script: ./gradlew connectedDebugAndroidTest
+
+            -   name: Upload test results
+                if: always()
+                uses: actions/upload-artifact@v4
+                with:
+                    name: Instrumentation test results (API${{ matrix.configuration.api-level }}) ${{ matrix.configuration.target }}
+                    path: |
+                        **/build/reports/*
+                        **/build/outputs/*/connected/*

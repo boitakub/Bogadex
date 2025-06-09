@@ -80,7 +80,7 @@ class DisplayAllUserCollectionInstrumentedTest : KoinTest {
         composeTestRule.setContent {
             val navController = rememberNavController()
 
-            BogadexTheme(false) {
+            BogadexTheme {
                 NavigationGraph(
                     navController = navController,
                     startDestination = BoardGameCollectionNavigation.ROUTE,
@@ -103,7 +103,7 @@ class DisplayAllUserCollectionInstrumentedTest : KoinTest {
         composeTestRule.setContent {
             val navController = rememberNavController()
 
-            BogadexTheme(false) {
+            BogadexTheme {
                 NavigationGraph(
                     navController = navController,
                     startDestination = BoardGameCollectionNavigation.ROUTE,
@@ -126,7 +126,7 @@ class DisplayAllUserCollectionInstrumentedTest : KoinTest {
         composeTestRule.setContent {
             val navController = rememberNavController()
 
-            BogadexTheme(false) {
+            BogadexTheme {
                 NavigationGraph(
                     navController = navController,
                     startDestination = BoardGameCollectionNavigation.ROUTE,
@@ -149,7 +149,7 @@ class DisplayAllUserCollectionInstrumentedTest : KoinTest {
         composeTestRule.setContent {
             val navController = rememberNavController()
 
-            BogadexTheme(false) {
+            BogadexTheme {
                 NavigationGraph(
                     navController = navController,
                     startDestination = BoardGameCollectionNavigation.ROUTE,
