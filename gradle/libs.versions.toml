@@ -14,6 +14,7 @@ okhttp = "4.12.0"
 retrofit = "2.11.0"
 firebase = "33.7.0"
 google-services = "4.4.2"
+app-versionning = "1.4.0"
 
 # Testing
 # https://developer.android.com/jetpack/androidx/releases/test?hl=fr
@@ -32,6 +33,7 @@ compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }
 google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
+appversionning = { id = "io.github.reactivecircus.app-versioning", version.ref = "app-versionning" }
 
 [libraries]
 android-core = { group = "androidx.core", name = "core-ktx", version.ref = "android-core" }

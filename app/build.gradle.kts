@@ -8,6 +8,7 @@ plugins {
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.kover)
     alias(libs.plugins.google.services)
+    alias(libs.plugins.appversionning)
 }
 
 ksp {
