@@ -37,6 +37,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import fr.boitakub.bogadex.boardgame.model.BoardGame
+import kotlinx.coroutines.flow.catch
 import org.koin.compose.viewmodel.koinViewModel
 
 object BoardGameDetailNavigation {
@@ -66,6 +67,9 @@ object BoardGameDetailNavigation {
             boardGameId?.let {
                 boardGameDetailViewModel
                     .load(it)
+                    .catch { error ->
+                        boardGameDetailViewModel.addError(error)
+                    }
                     .collect { result ->
                         boardGame.value = result
                     }
@@ -75,6 +79,7 @@ object BoardGameDetailNavigation {
         BoardGameDetailScreen(
             navController = navController,
             boardGame = boardGame.value,
+            errors = boardGameDetailViewModel.errors,
         )
     }
 }

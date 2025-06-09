@@ -6,7 +6,7 @@ on:
             - 'develop'
             - 'main'
         tags:
-            - 'v*-alpha'
+            - 'v*'
 
 concurrency:
     group: ${{ github.head_ref || github.ref_name }}

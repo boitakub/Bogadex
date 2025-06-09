@@ -48,7 +48,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -67,12 +66,19 @@ import androidx.navigation.NavHostController
 import coil3.compose.AsyncImage
 import fr.boitakub.bogadex.boardgame.R
 import fr.boitakub.bogadex.boardgame.model.BoardGame
+import fr.boitakub.bogadex.common.ui.CommonComposable.DefaultScreenUI
 import fr.boitakub.bogadex.common.ui.navigation.RatingBar
+import kotlinx.coroutines.flow.StateFlow
 
 @Composable
-fun BoardGameDetailScreen(navController: NavHostController, boardGame: BoardGame? = BoardGame()) {
-    Scaffold(
+fun BoardGameDetailScreen(
+    navController: NavHostController,
+    errors: StateFlow<Throwable?>,
+    boardGame: BoardGame? = BoardGame(),
+) {
+    DefaultScreenUI(
         topBar = { TopBar(navigator = navController, title = boardGame?.title ?: "") },
+        errors = errors,
     ) { innerPadding ->
         Column(
             modifier = Modifier

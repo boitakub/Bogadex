@@ -28,14 +28,14 @@
  */
 package fr.boitakub.bogadex.boardgame.ui
 
-import androidx.lifecycle.ViewModel
 import fr.boitakub.architecture.Presenter
 import fr.boitakub.bogadex.boardgame.BoardGameRepository
 import fr.boitakub.bogadex.boardgame.model.BoardGame
+import fr.boitakub.bogadex.common.BaseViewModel
 import kotlinx.coroutines.flow.Flow
 
 class BoardGameDetailViewModel(private val repository: BoardGameRepository) :
-    ViewModel(),
+    BaseViewModel(),
     Presenter {
     fun load(id: String): Flow<BoardGame?> = repository.loadBoardGameById(id)
 }

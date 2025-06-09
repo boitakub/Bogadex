@@ -42,7 +42,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
@@ -63,6 +62,7 @@ import fr.boitakub.boardgame_list.R
 import fr.boitakub.bogadex.boardgame.model.CollectionType
 import fr.boitakub.bogadex.boardgame.ui.component.CollectionTabBar
 import fr.boitakub.bogadex.boardgame.ui.component.SearchInputField
+import fr.boitakub.bogadex.common.ui.CommonComposable.DefaultScreenUI
 import fr.boitakub.bogadex.filter.FilterLayout
 import fr.boitakub.bogadex.filter.FilterViewModel
 
@@ -87,7 +87,7 @@ fun BoardGameCollectionScreen(
         skipPartiallyExpanded = skipPartiallyExpanded.value,
     )
 
-    Scaffold(
+    DefaultScreenUI(
         topBar = {
             CollectionScreenTopBar(
                 activeCollection,
@@ -113,6 +113,7 @@ fun BoardGameCollectionScreen(
                 )
             }
         },
+        errors = viewModel.errors,
     ) { padding ->
         BoardGameListScreen(
             modifier = Modifier.padding(padding),

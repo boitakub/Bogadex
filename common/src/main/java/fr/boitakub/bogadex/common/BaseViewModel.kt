@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023-2025, Boitakub
+ * Copyright (c) 2025, Boitakub
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -26,35 +26,27 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package fr.boitakub.bogadex.preferences.user
+package fr.boitakub.bogadex.common
 
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import fr.boitakub.bogadex.common.BaseViewModel
-import fr.boitakub.bogadex.common.UserSettings
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 
-class UserSettingsViewModel(val userSettingsRepository: UserSettingsRepository) : BaseViewModel() {
-    fun updateBggUsername(bggUsername: String) {
-        flow<UserSettings> {
-            userSettingsRepository.setBggUserName(bggUsername)
-        }.launchIn(viewModelScope)
+abstract class BaseViewModel : ViewModel() {
+    private val _errors = MutableSharedFlow<Throwable?>()
+    val errors = _errors
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5_000),
+            initialValue = null,
+        )
+
+    fun addError(error: Throwable) {
+        viewModelScope.launch {
+            _errors.emit(error)
+        }
     }
-
-    fun updateFilterPreviouslyOwned(previouslyOwned: Boolean) {
-        flow<UserSettings> {
-            userSettingsRepository.setDisplayPreviouslyOwned(previouslyOwned)
-        }.launchIn(viewModelScope)
-    }
-
-    val uiState: StateFlow<UserSettings> =
-        userSettingsRepository.userSettings()
-            .stateIn(
-                scope = viewModelScope,
-                started = SharingStarted.WhileSubscribed(5_000),
-                initialValue = UserSettings(),
-            )
 }

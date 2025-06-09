@@ -28,21 +28,25 @@
  */
 package fr.boitakub.bogadex.boardgame.ui
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import fr.boitakub.architecture.Presenter
 import fr.boitakub.bogadex.boardgame.usecase.ListCollection
+import fr.boitakub.bogadex.common.BaseViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 
 class BoardGameCollectionViewModel(val collection: ListCollection) :
-    ViewModel(),
+    BaseViewModel(),
     Presenter {
 
     val uiState: StateFlow<BoardGameListState> =
         collection.apply()
+            .catch { error ->
+                addError(error)
+            }
             .map {
                 BoardGameListState(collection = it, error = null)
             }

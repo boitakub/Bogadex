@@ -48,7 +48,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
@@ -72,6 +71,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import fr.boitakub.bogadex.common.UserSettings
+import fr.boitakub.bogadex.common.ui.CommonComposable.DefaultScreenUI
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -80,8 +80,9 @@ fun UserSettingsScreen(navController: NavHostController, viewModel: UserSettings
 
     var isBggUsernameDialogVisible by remember { mutableStateOf(false) }
 
-    Scaffold(
+    DefaultScreenUI(
         topBar = { TopBar(navigator = navController) },
+        errors = viewModel.errors,
     ) { innerPadding ->
         if (isBggUsernameDialogVisible) {
             BggUsernameTextDialog(

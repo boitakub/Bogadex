@@ -35,6 +35,7 @@ import fr.boitakub.bogadex.di.networkModule
 import fr.boitakub.bogadex.di.viewModelModule
 import fr.boitakub.bogadex.preferences.preferencesModule
 import org.koin.android.ext.koin.androidContext
+import org.koin.android.ext.koin.androidLogger
 import org.koin.androidx.workmanager.koin.workManagerFactory
 import org.koin.core.component.KoinComponent
 import org.koin.core.context.GlobalContext.startKoin
@@ -47,6 +48,7 @@ class BogadexApplication :
         super.onCreate()
         startKoin {
             androidContext(this@BogadexApplication)
+            androidLogger()
             workManagerFactory()
             modules(
                 listOf(
