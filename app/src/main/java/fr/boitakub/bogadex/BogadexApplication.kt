@@ -29,6 +29,7 @@
 package fr.boitakub.bogadex
 
 import android.app.Application
+import com.google.android.material.color.DynamicColors
 import fr.boitakub.bogadex.di.applicationModule
 import fr.boitakub.bogadex.di.databaseModule
 import fr.boitakub.bogadex.di.networkModule
@@ -46,6 +47,7 @@ class BogadexApplication :
 
     override fun onCreate() {
         super.onCreate()
+        DynamicColors.applyToActivitiesIfAvailable(this)
         startKoin {
             androidContext(this@BogadexApplication)
             androidLogger()

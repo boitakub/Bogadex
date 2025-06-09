@@ -135,6 +135,7 @@ dependencies {
     implementation(libs.compose.ui.tooling.preview)
     debugImplementation(libs.compose.ui.tooling)
     debugImplementation(libs.compose.ui.test.manifest)
+    implementation(libs.material)
 
     implementation(libs.navigation.compose)
     implementation(libs.coil)

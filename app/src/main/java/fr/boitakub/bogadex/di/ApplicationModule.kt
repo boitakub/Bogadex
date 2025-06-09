@@ -31,6 +31,7 @@ package fr.boitakub.bogadex.di
 import fr.boitakub.bogadex.UpdateExistingBoardGameWork
 import fr.boitakub.bogadex.UpsetMissingBoardGameWork
 import fr.boitakub.bogadex.boardgame.BoardGameCollectionRepository
+import fr.boitakub.bogadex.boardgame.BoardGameRepository
 import fr.boitakub.bogadex.boardgame.mapper.BoardGameMapper
 import fr.boitakub.bogadex.boardgame.mapper.BoardGameStatusMapper
 import fr.boitakub.bogadex.boardgame.mapper.CollectionMapper
@@ -57,6 +58,7 @@ val applicationModule = module {
     single { BoardGameStatusMapper() }
     single { BoardGameMapper() }
     single { BoardGameCollectionRepository(get(), get(), get(), get()) }
+    single { BoardGameRepository(get(), get()) }
 
     //region Use Case
     single<Flow<UserSettings>> { (get() as UserSettingsRepository).userSettings() }
