@@ -80,6 +80,8 @@ This project evolves gradually in spare time. Here are upcoming explorations:
 - 🧭 Navigation - Migrate to [jetpack navigation 3](https://android-developers.googleblog.com/2025/05/announcing-jetpack-navigation-3-for-compose.html)
 - 📈 Performance improvements — [video](https://www.youtube.com/watch?v=d8SXNwy6VDs&list=WL&index=5)
 - 🔁 Rewrite test structure & introduce test automation
+- 🧨 Global error handling with local logs technical and use friendly message overridable
+- ♿ Accessibility optimisations
 
 ## 🧭 Architecture
 

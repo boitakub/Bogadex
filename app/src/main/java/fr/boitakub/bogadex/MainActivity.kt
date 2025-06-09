@@ -31,10 +31,7 @@ package fr.boitakub.bogadex
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -46,7 +43,6 @@ import fr.boitakub.bogadex.boardgame.ui.BoardGameCollectionNavigation
 import fr.boitakub.bogadex.boardgame.ui.BoardGameDetailNavigation
 import fr.boitakub.bogadex.common.UserSettings
 import fr.boitakub.bogadex.common.ui.theme.BogadexTheme
-import fr.boitakub.bogadex.common.ui.theme.Theme
 import fr.boitakub.bogadex.preferences.PreferencesNavigation
 import fr.boitakub.bogadex.preferences.user.UserSettingsRepository
 import kotlinx.coroutines.flow.Flow
@@ -64,19 +60,9 @@ class MainActivity : ComponentActivity() {
         refreshUpdateExistingBoardGameWork(this)
 
         setContent {
-            val settingsState by userRepository.userSettings().collectAsStateWithLifecycle(
-                lifecycle = lifecycle,
-                initialValue = UserSettings(),
-            )
-
             val navHostController = rememberNavController()
-            val useDarkTheme = when (settingsState.activeTheme) {
-                Theme.Dark -> true
-                Theme.Light -> false
-                else -> isSystemInDarkTheme()
-            }
 
-            BogadexTheme(useDarkTheme = useDarkTheme) {
+            BogadexTheme {
                 NavigationGraph(
                     navController = navHostController,
                     startDestination = BoardGameCollectionNavigation.ROUTE,

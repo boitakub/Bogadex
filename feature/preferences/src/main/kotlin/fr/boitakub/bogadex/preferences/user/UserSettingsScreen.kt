@@ -48,7 +48,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
@@ -73,7 +72,6 @@ import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import fr.boitakub.bogadex.common.UserSettings
-import fr.boitakub.bogadex.common.ui.theme.Theme
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -81,7 +79,6 @@ fun UserSettingsScreen(navController: NavHostController, viewModel: UserSettings
     val state by viewModel.uiState.collectAsStateWithLifecycle()
 
     var isBggUsernameDialogVisible by remember { mutableStateOf(false) }
-    var isThemeDialogVisible by remember { mutableStateOf(false) }
 
     Scaffold(
         topBar = { TopBar(navigator = navController) },
@@ -96,23 +93,11 @@ fun UserSettingsScreen(navController: NavHostController, viewModel: UserSettings
                 onDismiss = { isBggUsernameDialogVisible = false },
             )
         }
-        if (isThemeDialogVisible) {
-            ThemeListDialog(
-                currentTheme = state.activeTheme,
-                onConfirmClick = {
-                    viewModel.updateTheme(it)
-                    isThemeDialogVisible = false
-                },
-                onCancelClick = { isThemeDialogVisible = false },
-                onDismiss = { isThemeDialogVisible = false },
-            )
-        }
         SettingsContent(
             innerPadding,
             state,
             viewModel,
             onBggUsernameClick = { isBggUsernameDialogVisible = true },
-            onThemeSelectionClick = { isThemeDialogVisible = true },
         )
     }
 }
@@ -123,7 +108,6 @@ private fun SettingsContent(
     state: UserSettings,
     viewModel: UserSettingsViewModel,
     onBggUsernameClick: () -> Unit,
-    onThemeSelectionClick: () -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -146,12 +130,6 @@ private fun SettingsContent(
                 updateSelection = {
                     viewModel.updateFilterPreviouslyOwned(it)
                 },
-            )
-            ClickableLineComponent(
-                iconRes = fr.boitakub.bogadex.common.R.drawable.ic_eclipse_solid,
-                titleRes = fr.boitakub.bogadex.common.R.string.pref_night_title,
-                subtitleRes = fr.boitakub.bogadex.common.R.string.pref_night_summary,
-                onClick = onThemeSelectionClick,
             )
         },
     )
@@ -192,82 +170,6 @@ fun BggUsernameTextDialog(
         },
         onDismiss = onDismiss,
     )
-}
-
-@Composable
-fun ThemeListDialog(
-    currentTheme: Theme,
-    onConfirmClick: (Theme) -> Unit = {},
-    onCancelClick: () -> Unit = {},
-    onDismiss: () -> Unit,
-) {
-    val (selected, setSelected) = remember { mutableStateOf(currentTheme) }
-
-    TextDialog(
-        title = {
-            Text(
-                text = stringResource(id = fr.boitakub.bogadex.common.R.string.pref_night_title),
-                style = MaterialTheme.typography.headlineSmall,
-            )
-        },
-        content = {
-            ThemeRadioComponent(
-                items = Theme.values().toList(),
-                selected = selected,
-                setSelected = setSelected,
-            )
-        },
-        dismissButton = {
-            TextButton(
-                onClick = onCancelClick,
-                content = { Text(stringResource(id = android.R.string.cancel)) },
-            )
-        },
-        confirmButton = {
-            TextButton(
-                onClick = { onConfirmClick(selected) },
-                content = { Text(stringResource(id = android.R.string.ok)) },
-            )
-        },
-        onDismiss = onDismiss,
-    )
-}
-
-@Composable
-fun ThemeRadioComponent(items: List<Theme>, selected: Theme, setSelected: (selected: Theme) -> Unit) {
-    Column(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
-    ) {
-        items.forEach { item ->
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clickable(onClick = {
-                        setSelected(item)
-                    }),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween,
-            ) {
-                Text(
-                    text = stringResource(id = item.titleRes),
-                    modifier = Modifier.padding(16.dp),
-                    style = MaterialTheme.typography.bodyLarge,
-                    textAlign = TextAlign.Start,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                )
-                RadioButton(
-                    selected = selected == item,
-                    onClick = {
-                        setSelected(item)
-                    },
-                    enabled = true,
-                )
-            }
-        }
-    }
 }
 
 @Composable

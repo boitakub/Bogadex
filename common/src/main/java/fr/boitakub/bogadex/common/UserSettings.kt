@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022-2023, Boitakub
+ * Copyright (c) 2022-2025, Boitakub
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -28,10 +28,4 @@
  */
 package fr.boitakub.bogadex.common
 
-import fr.boitakub.bogadex.common.ui.theme.Theme
-
-data class UserSettings(
-    val bggUserName: String = "cubenbois",
-    val activeTheme: Theme = Theme.System,
-    val displayPreviouslyOwned: Boolean = false,
-)
+data class UserSettings(val bggUserName: String = "cubenbois", val displayPreviouslyOwned: Boolean = false)

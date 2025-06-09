@@ -31,7 +31,6 @@ package fr.boitakub.bogadex.preferences.user
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import fr.boitakub.bogadex.common.UserSettings
-import fr.boitakub.bogadex.common.ui.theme.Theme
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.flow
@@ -48,12 +47,6 @@ class UserSettingsViewModel(val userSettingsRepository: UserSettingsRepository) 
     fun updateFilterPreviouslyOwned(previouslyOwned: Boolean) {
         flow<UserSettings> {
             userSettingsRepository.setDisplayPreviouslyOwned(previouslyOwned)
-        }.launchIn(viewModelScope)
-    }
-
-    fun updateTheme(theme: Theme) {
-        flow<UserSettings> {
-            userSettingsRepository.setActiveTheme(theme.value)
         }.launchIn(viewModelScope)
     }
 

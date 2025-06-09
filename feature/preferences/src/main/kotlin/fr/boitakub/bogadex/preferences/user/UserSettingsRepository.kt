@@ -34,7 +34,6 @@ import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import fr.boitakub.bogadex.common.UserSettings
-import fr.boitakub.bogadex.common.ui.theme.Theme
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
@@ -42,12 +41,10 @@ import kotlinx.coroutines.flow.map
 class UserSettingsRepository(private val userSettingsDataStore: DataStore<Preferences>) {
     fun userSettings(): Flow<UserSettings> = combine(
         bggUserName,
-        activeTheme,
         displayPreviouslyOwned,
-    ) { bggUserName, activeTheme, displayPreviouslyOwned ->
+    ) { bggUserName, displayPreviouslyOwned ->
         UserSettings(
             bggUserName = bggUserName,
-            activeTheme = Theme.getValueOf(activeTheme),
             displayPreviouslyOwned = displayPreviouslyOwned,
         )
     }
