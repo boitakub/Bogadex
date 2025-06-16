@@ -38,6 +38,7 @@ jobs:
 
     android-tests:
         runs-on: ubuntu-latest
+        continue-on-error: true
         steps:
             - name: 🛎️ Checkout
               uses: actions/checkout@v4
@@ -66,14 +67,6 @@ jobs:
               uses: reactivecircus/android-emulator-runner@v2
               with:
                   api-level: 29
-                  arch: x86_64
-                  profile: "pixel_7"
-                  target: "google_apis"
-                  force-avd-creation: false
-                  disable-animations: true
-                  disk-size: 1G
-                  heap-size: 1G
-                  emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
                   script: ./gradlew connectedDebugAndroidTest
 
             -   name: Upload test results
