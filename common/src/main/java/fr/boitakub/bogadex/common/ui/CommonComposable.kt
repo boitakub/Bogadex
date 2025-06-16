@@ -29,18 +29,27 @@
 package fr.boitakub.bogadex.common.ui
 
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import fr.boitakub.bogadex.common.ui.component.CollapsingTopAppBar
 import kotlinx.coroutines.flow.StateFlow
 
 object CommonComposable {
 
+    @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     fun DefaultScreenUI(
         topBar: @Composable () -> Unit = {},
@@ -50,6 +59,8 @@ object CommonComposable {
     ) {
         val state by errors.collectAsStateWithLifecycle()
         val snackbarHostState = remember { SnackbarHostState() }
+        val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
+        val toolBarHeight = 140.dp
 
         LaunchedEffect(state) {
             if (state != null) {
@@ -58,10 +69,19 @@ object CommonComposable {
         }
 
         Scaffold(
+            modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
             snackbarHost = {
                 SnackbarHost(hostState = snackbarHostState)
             },
-            topBar = topBar,
+            topBar = {
+                CollapsingTopAppBar(
+                    windowInsets = WindowInsets(top = 0.dp),
+                    content = topBar,
+                    scrollBehavior = scrollBehavior,
+                    contentHeight = toolBarHeight,
+                    contentHeightCollapsing = toolBarHeight,
+                )
+            },
             floatingActionButton = floatingActionButton,
         ) { padding ->
             content(padding)
