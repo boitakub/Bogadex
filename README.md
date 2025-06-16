@@ -9,7 +9,7 @@
   <a href="https://apilevels.com"><img alt="API" src="https://img.shields.io/badge/API-23%2B-brightgreen.svg?style=flat"/></a>
   <a href="https://kotlinlang.org/"><img alt="Kotlin" src="https://img.shields.io/badge/Kotlin-2.1.0-blue.svg?style=flat"/></a>
   <a href="https://github.com/boitakub/Bogadex/actions"><img alt="Build Status" src="https://img.shields.io/github/actions/workflow/status/boitakub/Bogadex/build_and_test.yml"></a>
-  <a href="https://github.com/boitakub/Bogadex/commits/main/"><img alt="Last edition date" src="https://img.shields.io/date/1749462542?label=Last%20review"></a><br>
+  <a href="https://github.com/boitakub/Bogadex/commits/main/"><img alt="Last edition date" src="https://img.shields.io/date/1750080272?label=Last%20review"></a><br>
 <a href="https://sonarcloud.io/project/overview?id=boitakub_Bogadex"><img alt="Sonar quality gate" src="https://sonarcloud.io/api/project_badges/measure?project=boitakub_Bogadex&metric=alert_status" /></a>
 <a href="https://sonarcloud.io/project/overview?id=boitakub_Bogadex"><img alt="Sonar bugs" src="https://sonarcloud.io/api/project_badges/measure?project=boitakub_Bogadex&metric=bugs" /></a>
 <a href="https://sonarcloud.io/project/overview?id=boitakub_Bogadex"><img alt="Sonar code smells" src="https://sonarcloud.io/api/project_badges/measure?project=boitakub_Bogadex&metric=code_smells" /></a>

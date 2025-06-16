@@ -30,6 +30,8 @@ package fr.boitakub.bogadex.common.ui.theme
 
 import android.app.Activity
 import android.os.Build
+import android.view.Window
+import android.view.WindowInsets
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
@@ -123,10 +125,10 @@ fun BogadexTheme(useDarkTheme: Boolean = isSystemInDarkTheme(), content: @Compos
     if (!view.isInEditMode) {
         SideEffect {
             val window = (view.context as Activity).window
-            window.statusBarColor = colors.primary.toArgb()
             WindowCompat
                 .getInsetsController(window, view)
                 .isAppearanceLightStatusBars = useDarkTheme
+            setStatusBarColor(window, colors.primary.toArgb())
         }
     }
 
@@ -134,4 +136,20 @@ fun BogadexTheme(useDarkTheme: Boolean = isSystemInDarkTheme(), content: @Compos
         colorScheme = colors,
         content = content,
     )
+}
+
+fun setStatusBarColor(window: Window, color: Int) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM) { // Android 15+
+        window.decorView.setOnApplyWindowInsetsListener { view, insets ->
+            val statusBarInsets = insets.getInsets(WindowInsets.Type.statusBars())
+            view.setBackgroundColor(color)
+
+            // Adjust padding to avoid overlap
+            view.setPadding(0, statusBarInsets.top, 0, 0)
+            insets
+        }
+    } else {
+        // For Android 14 and below
+        window.statusBarColor = color
+    }
 }
